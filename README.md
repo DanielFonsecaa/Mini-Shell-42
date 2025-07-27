@@ -1,5 +1,5 @@
 # Project Documentation
 
-- [Division Document](division.md)
-- [Pseudocode Details](pseudocode.md)
-- [Tasks](tasks.md)
+- [Pseudocode Details](guides/pseudocode.md)
+- [Tasks](guides/tasks.md)
+- [Division Document](guides/division.md)

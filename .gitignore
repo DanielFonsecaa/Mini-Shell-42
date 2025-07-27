@@ -1,0 +1,8 @@
+.build/
+*.o
+*.a
+.vscode/
+minishell
+lib/
+.DS_Store
+.git/
