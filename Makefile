@@ -21,11 +21,12 @@ SRC_PATH		= src
 INC_PATH		= include
 BUILD_PATH		= .build
 LIBS_PATH		= lib
+READLINE_PATH	= vendor/readline/
 
 FILES			= main.c
 
-SRC				= $(addprefix $(SRC_PATH)/, $(FILES))
-OBJS			= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
+SRC				= $(shell find $(SRC_DIR) -type f -name "*.c")
+OBJS				= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 
 HEADERS			= $(INC_PATH)/minishell.h
 
@@ -41,6 +42,7 @@ MAKE 			= make --no-print-directory -C
 CC				= cc
 
 CFLAGS			= -Wall -Wextra -Werror -g
+RLFLAG 			= -L$(READLINE_PATH)/lib -lreadline
 
 INC				= -I $(INC_PATH)
 
@@ -58,7 +60,7 @@ all: deps $(BUILD_PATH) $(NAME)	## Compile
 
 $(NAME): $(BUILD_PATH) $(LIBFT_ARC) $(OBJS)	## Compile
 	@echo "  $(B)$(GOLD)Compiling$(SILV)$(NAME)$(D)"
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_ARC) $(INC) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(RLFLAG) $(LIBFT_ARC) $(INC) -o $(NAME)
 	@clear
 	@printf "\n"
 	@printf "$(GOLD)\n"
