@@ -11,7 +11,7 @@ minishell/
 │       ├── echo.c
 │       ├── cd.c
 │       └── ...               # Other builtins (export, unset, etc.)
-├── include/
+├── includes/
 │   └── minishell.h           # Project-wide header and structure definitions
 ├── libft/                    # Your custom libft library
 ├── Makefile                  # Build script with required rules

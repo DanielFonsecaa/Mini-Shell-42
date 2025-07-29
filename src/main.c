@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "../includes/minishell.h"
 
 static void	run_shell(t_shell *mshell, t_token **token)
 {

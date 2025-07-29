@@ -30,7 +30,7 @@ Responsibilities:
  - Heredoc implementation
 
 Shared & Collaborative Tasks
- - Makefile, project structure, includes (minishell.h)
+ - Makefile, project structure, includess (minishell.h)
     Should be agreed on and maintained collaboratively.
 
  - Testing

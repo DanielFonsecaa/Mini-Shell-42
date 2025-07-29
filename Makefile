@@ -18,15 +18,18 @@ _SUCCESS 		= [$(B)$(GRN)SUCCESS$(D)]
 #==============================================================================#
 
 SRC_PATH		= src
-INC_PATH		= include
+INC_PATH		= includes
 BUILD_PATH		= .build
 LIBS_PATH		= lib
 READLINE_PATH	= vendor/readline/
 
-FILES			= main.c
+FILES			= main.c lexing/lexing.c handle/handler_funcs.c
 
-SRC				= $(shell find $(SRC_DIR) -type f -name "*.c")
-OBJS				= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
+SRC				= $(addprefix $(SRC_PATH)/, $(FILES))
+OBJS			= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
+
+$(info SRC = $(SRC))
+$(info OBJS = $(OBJS))
 
 HEADERS			= $(INC_PATH)/minishell.h
 
@@ -79,14 +82,14 @@ deps:		## Download/Update deps
 		echo "   $(B)$(RED)$(D) [$(GRN)Nothing to be done!$(D)]"; fi
 	@if test ! -d "$(LIBFT_PATH)"; then make get_libft; \
 		else echo "   $(B)$(GOLD)[libft]$(D) folder found ✔︎ 📂"; fi
-	
-$(BUILD_PATH)/%.o: $(SRC_PATH)/%.c $(HEADERS)
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(BUILD_PATH):
 	@$(MKDIR_P) $(BUILD_PATH)
 	@echo "  $(B)$(GOLD)Creating$(SILV)$(BUILD_PATH)$(GOLD)folder :$(D)$(_SUCCESS) ✔︎ 📂"
+	
+$(BUILD_PATH)/%.o: $(SRC_PATH)/%.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(LIBFT_ARC):
 	@$(MAKE) $(LIBFT_PATH) extra

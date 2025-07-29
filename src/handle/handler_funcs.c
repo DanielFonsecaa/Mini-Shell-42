@@ -1,4 +1,4 @@
-#include "../../include/minishell.h"
+#include "../../includes/minishell.h"
 
 void	*safe_malloc(size_t size)
 {

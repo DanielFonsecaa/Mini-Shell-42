@@ -16,7 +16,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <stdbool.h>
-
+# include <stddef.h>
 //	Custom libs
 # include "../lib/libft/libft/libft.h"
 
