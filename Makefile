@@ -23,7 +23,10 @@ BUILD_PATH		= .build
 LIBS_PATH		= lib
 READLINE_PATH	= vendor/readline/
 
-FILES			= main.c lexing/lexing.c handle/handler_funcs.c
+FILES			=	main.c \
+					lexing/lexing.c \
+					lexing/utils_lex.c \
+					handle/handler_funcs.c
 
 SRC				= $(addprefix $(SRC_PATH)/, $(FILES))
 OBJS			= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)

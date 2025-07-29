@@ -4,10 +4,13 @@
 // Type definitions
 # define CMD 1
 # define ARG 2
-# define REDIR 3
-# define PIPE 4
-# define HERE 5
-# define OPTS 6
+# define INFILE 3
+# define OUTFILE 4
+# define PIPE 5
+# define HERE 6
+# define FLAG 7
+# define TFILE 8
+# define APPEND 9
 
 //	C libraries
 # include <stdio.h>
@@ -23,5 +26,6 @@
 //	Custom headers
 # include "structs.h"
 # include "utils.h"
+# include "lexing.h"
 
 #endif

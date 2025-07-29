@@ -2,13 +2,12 @@
 
 static void	run_shell(t_shell *mshell, t_token **token)
 {
-	(void)token;
 	while (true)
 	{
 		mshell->rd_l = readline("42minishell>> ");
 		if (mshell->rd_l)
 			add_history(mshell->rd_l);
-		split_rdline(mshell);
+		split_rdline(mshell, token);
 		if (ft_strcmp(mshell->rd_l, "exit") == 0)
 		{
 			free(mshell->rd_l);
@@ -28,6 +27,7 @@ int	main(int ac, char **av, char **envp)
 	t_shell	mshell;
 	t_token *token;
 
+	token = NULL;
 	ft_memset(&mshell, 0, sizeof(t_shell));
 	run_shell(&mshell, &token);
 	return (0);
