@@ -10,9 +10,11 @@ static void	run_shell(t_shell *mshell, t_token **token)
 		split_rdline(mshell, token);
 		if (ft_strcmp(mshell->rd_l, "exit") == 0)
 		{
+			free_list(token);
 			free(mshell->rd_l);
 			break ;
 		}
+		free_list(token);
 		free(mshell->rd_l);
 	}
 }

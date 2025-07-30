@@ -13,7 +13,7 @@ void	ft_first_token(t_token **token, char *line, int size)
 		str[i] = line[i];
 		i++;
 	}
-	token_addback(token, ft_newtoken(str))
+	token_addback(token, ft_newtoken(str));
 	free(str);
 }
 
@@ -28,7 +28,7 @@ void	tokenize(char *rd_l, t_token **token)
 		while (ft_iswhite_space(rd_l[i]))
 			i++;
 		j = 0;
-		while (rd_l[i + j] && !ft_iswhite_space(rd_l[i]) && !is_meta_char(rd_l[i]))
+		while (rd_l[i + j] && !ft_iswhite_space(rd_l[i + j]) && !is_meta_char(rd_l[i + j]))
 			j++;
 		ft_first_token(token, rd_l + i, j);
 		i += j;
@@ -36,7 +36,7 @@ void	tokenize(char *rd_l, t_token **token)
 		while (is_meta_char(rd_l[i + j]))
 			j++;
 		if (is_meta_char(rd_l[i + j - 1]))
-			ft_first_token(token, rd_l + i, j)
+			ft_first_token(token, rd_l + i, j);
 		i += j;
 	}
 }
@@ -45,7 +45,7 @@ void	split_rdline(t_shell *mshell, t_token **token)
 {
 //	mshell->tokens_size = count_tokens(mshell->rd_l);
 //	mshell->cmd_line = safe_calloc(mshell->tokens_size, sizeof(char *));
-	mshell->cmd_line = tokenize(mshell->rd_l, token);
+	tokenize(mshell->rd_l, token);
 	ft_printf("%i\n", mshell->tokens_size);
 }
 

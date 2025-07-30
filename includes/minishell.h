@@ -27,5 +27,6 @@
 # include "structs.h"
 # include "utils.h"
 # include "lexing.h"
+# include "free.h"
 
 #endif

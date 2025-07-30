@@ -26,7 +26,8 @@ READLINE_PATH	= vendor/readline/
 FILES			=	main.c \
 					lexing/lexing.c \
 					lexing/utils_lex.c \
-					handle/handler_funcs.c
+					handle/handler_funcs.c \
+					free_data/free_data.c
 
 SRC				= $(addprefix $(SRC_PATH)/, $(FILES))
 OBJS			= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)

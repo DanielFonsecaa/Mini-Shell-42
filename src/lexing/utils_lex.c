@@ -5,9 +5,23 @@ int	is_meta_char(char c)
 	return (c == '<' || c == '>' || c == '|');
 }
 
-int	increment_token(char line)
+/*int	increment_token(char line)
 {
 	return ((ft_iswhite_space(line) || is_meta_char(line)));
+}*/
+
+int	has_quote(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 t_token	*ft_newtoken(char *content)
@@ -16,7 +30,7 @@ t_token	*ft_newtoken(char *content)
 
 	token = safe_calloc(1, sizeof(t_token));
 	token->name = ft_strdup(content);
-	if (ft_has_quote(token->name)
+	if (has_quote(token->name))
 		token->has_quote = true;
 	else
 		token->has_quote = false;
@@ -24,7 +38,7 @@ t_token	*ft_newtoken(char *content)
 	return (token);
 }
 
-void	token_addback(t_token **token, t_token new_token)
+void	token_addback(t_token **token, t_token *new_token)
 {
 	t_token *last;
 

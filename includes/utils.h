@@ -8,5 +8,6 @@ void	set_bool(bool *val, bool change);
 //lex utils
 int 	increment_token(char line);
 int 	is_meta_char(char c);
+int		has_quote(char *str);
 
 #endif
