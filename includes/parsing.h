@@ -1,0 +1,6 @@
+#ifndef PARSING_H
+#define PARSING_H
+
+void	pipe_count(t_shell *mshell, t_token **token);
+
+#endif

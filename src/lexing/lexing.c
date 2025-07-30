@@ -28,9 +28,10 @@ void	tokenize(char *rd_l, t_token **token)
 		while (ft_iswhite_space(rd_l[i]))
 			i++;
 		j = 0;
-		while (rd_l[i + j] && !ft_iswhite_space(rd_l[i + j]) && !is_meta_char(rd_l[i + j]))
+		while (rd_l[i + j] && !ft_iswhite_space(rd_l[i + j])
+			&& !is_meta_char(rd_l[i + j]))
 			j++;
-		if (rd_l[i] && rd_l[i + j])
+		if ((rd_l[i] || rd_l[i + j]) && !is_meta_char(rd_l[i]))
 			ft_first_token(token, rd_l + i, j);
 		i += j;
 		j = 0;
@@ -42,33 +43,57 @@ void	tokenize(char *rd_l, t_token **token)
 	}
 }
 
-void	split_rdline(t_shell *mshell, t_token **token)
+static void	set_t_type(t_token **token)
 {
-//	mshell->tokens_size = count_tokens(mshell->rd_l);
-//	mshell->cmd_line = safe_calloc(mshell->tokens_size, sizeof(char *));
-	tokenize(mshell->rd_l, token);
-	mshell->tokens_size = token_list_size(*token);
-	ft_printf("%i\n", mshell->tokens_size);
+	t_token	*temp;
+
+	temp = *token;
+	while (temp)
+	{
+		ft_printf("value %s\n", temp->name);
+		if (ft_strcmp(temp->name, "<<") == 0)
+				temp->type = HERE;
+		else if (ft_strcmp(">>", temp->name) == 0)
+			temp->type = APPEND;
+		else if (ft_strcmp(">", temp->name) == 0)
+			temp->type = OUTFILE;
+		else if (ft_strcmp("<", temp->name) == 0)
+			temp->type = INFILE;
+		else if (temp->prev == NULL || (temp->prev->type == PIPE
+				&& ft_strcmp(temp->name, "|") != 0))
+			temp->type = CMD;
+		else if (ft_strcmp("|", temp->name) == 0)
+			temp->type = PIPE;
+		else
+			temp->type = ARG;
+		temp = temp->next;
+	}
 }
 
-/*static int	count_tokens(char *rd_l)
+static void	type_file(t_token **token)
 {
-	int	count;
-	int	i;
-	count = 0;
-	i = -1;
-	while (rd_l[++i])
+	t_token	*temp;
+
+	temp = *token;
+	while (temp)
 	{
-			if(!increment_token(rd_l[i - 1]) && increment_token(rd_l[i]))
-			{
-				count++;
-			}
-			while (ft_isspace(rd_l[i]))
-				i++;
-			if (is_meta_char(*rd_l))
-				count++;
+		if (temp->prev)
+		{
+			if ((temp->prev->type == APPEND || temp->prev->type == INFILE
+					|| temp->prev->type == OUTFILE) && temp->type == ARG)
+				temp->type = TFILE;
+		}
+		temp = temp->next;
 	}
-	if (!ft_isspace(rd_l[i - 1]))
-		count++;
-	return (count);
-}*/
+}
+
+void	split_rdline(t_shell *mshell, t_token **token)
+{
+	tokenize(mshell->rd_l, token);
+	mshell->tokens_size = token_list_size(*token);
+	set_t_type(token);
+	type_file(token);
+	print_list(token);
+	pipe_count(mshell, token);
+	ft_printf("token size --%i\n num pipes --%i\n", mshell->tokens_size, mshell->num_pipes);
+}

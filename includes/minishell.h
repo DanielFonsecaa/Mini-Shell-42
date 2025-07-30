@@ -11,6 +11,7 @@
 # define FLAG 7
 # define TFILE 8
 # define APPEND 9
+# define PATH_MAX 4096
 
 //	C libraries
 # include <stdio.h>
@@ -20,6 +21,8 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <stddef.h>
+# include <unistd.h>
+
 //	Custom libs
 # include "../lib/libft/libft/libft.h"
 
@@ -28,5 +31,7 @@
 # include "utils.h"
 # include "lexing.h"
 # include "free.h"
+# include "inits.h"
+# include "parsing.h"
 
 #endif

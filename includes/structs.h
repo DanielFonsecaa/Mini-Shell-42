@@ -21,7 +21,12 @@ typedef struct s_shell
 {
 	char	*rd_l;
 	char	**cmd_line;
+	char	**env_var;
+	char	curr_wd[PATH_MAX];
+	char	*fake_cwd;
 	int		tokens_size;
+	int		num_pipes;
+	bool	has_pipes;
 	bool	is_running;
 }		t_shell;
 
