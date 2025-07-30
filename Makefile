@@ -26,6 +26,7 @@ READLINE_PATH	= vendor/readline/
 FILES			=	main.c \
 					lexing/lexing.c \
 					lexing/utils_lex.c \
+					lexing/utils2_lex.c \
 					handle/handler_funcs.c \
 					free_data/free_data.c
 

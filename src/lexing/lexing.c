@@ -30,7 +30,8 @@ void	tokenize(char *rd_l, t_token **token)
 		j = 0;
 		while (rd_l[i + j] && !ft_iswhite_space(rd_l[i + j]) && !is_meta_char(rd_l[i + j]))
 			j++;
-		ft_first_token(token, rd_l + i, j);
+		if (rd_l[i] && rd_l[i + j])
+			ft_first_token(token, rd_l + i, j);
 		i += j;
 		j = 0;
 		while (is_meta_char(rd_l[i + j]))
@@ -46,6 +47,7 @@ void	split_rdline(t_shell *mshell, t_token **token)
 //	mshell->tokens_size = count_tokens(mshell->rd_l);
 //	mshell->cmd_line = safe_calloc(mshell->tokens_size, sizeof(char *));
 	tokenize(mshell->rd_l, token);
+	mshell->tokens_size = token_list_size(*token);
 	ft_printf("%i\n", mshell->tokens_size);
 }
 
