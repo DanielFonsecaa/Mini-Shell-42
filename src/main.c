@@ -21,11 +21,9 @@ static void	run_shell(t_shell *mshell, t_token **token)
 
 int	main(int ac, char **av, char **envp)
 {
-	int	i;
 	(void)ac;
 	(void)av;
 	(void)envp;
-	i = 0;
 	t_shell	mshell;
 	t_token *token;
 

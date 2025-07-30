@@ -114,6 +114,7 @@ fclean: clean			## Remove executable
 	@echo "  $(B)$(GOLD)Cleaning executables $(D)"
 	@$(RM) $(NAME);
 	@$(RM) tester
+	@$(RM) readline.supp
 	@echo "  $(B)$(GOLD)Removing $(SILV)$(NAME)$(GOLD) file: $(D) $(_SUCCESS) 🧹"; \
 
 libclean: fclean	## Remove libs
@@ -126,14 +127,10 @@ re: libclean all	## Purge & Recompile
 nn:	## Check Norminette
 					norminette -R CheckForbiddenSourceHeader
 
-val:	## Run Valgrind
-					clear
-						valgrind --leak-check=full \
-						--show-leak-kinds=all \
-						--track-origins=yes \
-						./$(NAME)
-## --suppressions=readline_supressor   ##put this before ./$(NAME) 
-
+val: 
+	@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp
+	@valgrind --suppressions=readline.supp --leak-check=full -s --show-leak-kinds=all ./$(NAME)
+	
 forbidden:	## Show forbidden functions
 	nm -g ./$(NAME) | grep "U"
 
