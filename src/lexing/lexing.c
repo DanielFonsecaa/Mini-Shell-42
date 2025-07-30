@@ -1,5 +1,12 @@
 #include "../../includes/minishell.h"
 
+/**
+ * @brief Creates and adds the first token to the token list from a given line
+ * 
+ * @param token Double pointer to the token list where the new token will be added
+ * @param line Source string from which to extract the token content
+ * @param size Number of characters to extract from the beginning of line
+ */
 void	ft_first_token(t_token **token, char *line, int size)
 {
 	char	*str;
@@ -17,6 +24,18 @@ void	ft_first_token(t_token **token, char *line, int size)
 	free(str);
 }
 
+/**
+ * @brief Tokenizes a command line string into a linked list of tokens
+ * 
+ * @param rd_l The input command line string to tokenize
+ * @param token Pointer to the token list where new tokens will be added
+ * 
+ * The function performs the following operations:
+ * 1. Skips whitespace characters
+ * 2. Identifies word tokens (non-whitespace, non-metacharacter sequences)
+ * 3. Identifies metacharacter token sequences
+ * 4. Creates tokens for both words and metacharacter groups
+ */
 void	tokenize(char *rd_l, t_token **token)
 {
 	int	i;
@@ -42,8 +61,13 @@ void	tokenize(char *rd_l, t_token **token)
 		i += j;
 	}
 }
+/**
+ * @brief Sets the token type for each token in a linked list based on token content and position
+ * 
+ * @param token Double pointer to the first token in the linked list
+ */
 
-static void	set_t_type(t_token **token)
+void	set_t_type(t_token **token)
 {
 	t_token	*temp;
 
@@ -52,7 +76,7 @@ static void	set_t_type(t_token **token)
 	{
 		ft_printf("value %s\n", temp->name);
 		if (ft_strcmp(temp->name, "<<") == 0)
-				temp->type = HERE;
+			temp->type = HERE;
 		else if (ft_strcmp(">>", temp->name) == 0)
 			temp->type = APPEND;
 		else if (ft_strcmp(">", temp->name) == 0)
@@ -70,7 +94,12 @@ static void	set_t_type(t_token **token)
 	}
 }
 
-static void	type_file(t_token **token)
+/**
+ * @brief Updates token types to identify file arguments following redirection operators
+ * 
+ * @param token Double pointer to the head of the token linked list
+ */
+void	type_file(t_token **token)
 {
 	t_token	*temp;
 
@@ -85,15 +114,4 @@ static void	type_file(t_token **token)
 		}
 		temp = temp->next;
 	}
-}
-
-void	split_rdline(t_shell *mshell, t_token **token)
-{
-	tokenize(mshell->rd_l, token);
-	mshell->tokens_size = token_list_size(*token);
-	set_t_type(token);
-	type_file(token);
-	print_list(token);
-	pipe_count(mshell, token);
-	ft_printf("token size --%i\n num pipes --%i\n", mshell->tokens_size, mshell->num_pipes);
 }

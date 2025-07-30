@@ -1,19 +1,12 @@
 #include "../../includes/minishell.h"
-// free all function
-/*void	free_shell()
-{
 
-}*/
-
+/**
+ * @brief Free allocated memory associated with the shell structure
+ * 
+ * @param mshell Pointer to the main shell structure containing allocated resources
+ * @param token Double pointer to the token list to be freed
+ */
 void	handle_error_shell(t_shell *mshell, t_token **token)
-{
-	free_list(token);
-	free_envp(mshell->env_var);
-	free(mshell->fake_cwd);
-	free(mshell->rd_l);
-}	
-
-void	free_loop(t_shell *mshell, t_token **token)
 {
 	free_list(token);
 	free_envp(mshell->env_var);
@@ -21,6 +14,27 @@ void	free_loop(t_shell *mshell, t_token **token)
 	free(mshell->rd_l);
 }
 
+/**
+ * @brief Free allocated memory associated with the shell structure
+ * 
+ * @param mshell Pointer to the main shell structure containing allocated resources
+ * @param token Double pointer to the token list to be freed
+ */
+void	free_all(t_shell *mshell, t_token **token)
+{
+	free_list(token);
+	free_envp(mshell->env_var);
+	free(mshell->fake_cwd);
+	free(mshell->rd_l);
+}
+
+/**
+ * @brief Frees a linked list of tokens and all associated memory.
+ * 
+ * @param token Double pointer to the head of the token linked list.
+ *              Can be NULL or point to NULL without causing errors.
+ *              After execution, *token will be set to NULL.
+ */
 void	free_list(t_token **token)
 {
 	t_token	*temp;
@@ -41,6 +55,14 @@ void	free_list(t_token **token)
 	}
 }
 
+/**
+ * @brief Frees a null-terminated array of strings (environment variables)
+ * 
+ * @param arr Pointer to a null-terminated array of strings to be freed
+ * 
+ * @note The array must be null-terminated for proper iteration
+ * @note After calling this function, the pointer becomes invalid
+ */
 void	free_envp(char **arr)
 {
 	int	i;

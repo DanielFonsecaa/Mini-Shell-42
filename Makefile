@@ -128,7 +128,7 @@ libclean: fclean	## Remove libs
 re: libclean all	## Purge & Recompile
 
 nn:	## Check Norminette
-					norminette -R CheckForbiddenSourceHeader
+	norminette -R CheckForbiddenSourceHeader
 
 val: 
 	@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp
@@ -138,7 +138,7 @@ forbidden:	## Show forbidden functions
 	nm -g ./$(NAME) | grep "U"
 
 
-.PHONY: all deps clean fclean libclean re get_libft forbidden animate nn val
+.PHONY: all deps clean fclean libclean re get_libft forbidden start nn val
 
 #==============================================================================#
 #                                  UTILS                                       #
@@ -191,7 +191,7 @@ D       = $(shell tput sgr0)
 BEL     = $(shell tput bel)
 CLR     = $(shell tput el 1)
 
-animate:
+start:
 	@# Frame 1 - gold
 	@clear
 	@printf "\n"

@@ -1,10 +1,23 @@
 #include "../../includes/minishell.h"
 
+/**
+ * @brief Checks if a character is a shell metacharacter
+ * 
+ * @param c The character to check
+ * @return int Returns 1 if the character is a metacharacter ('<', '>', '|'),
+ *             0 otherwise
+ */
 int	is_meta_char(char c)
 {
 	return (c == '<' || c == '>' || c == '|');
 }
 
+/**
+ * @brief Checks if a string contains any quote characters (single or double).
+ * 
+ * @param str The null-terminated string to check for quotes
+ * @return int Returns 1 if at least one quote character is found, 0 otherwise
+ */
 int	has_quote(char *str)
 {
 	int	i;
@@ -19,6 +32,11 @@ int	has_quote(char *str)
 	return (0);
 }
 
+/**
+ * @brief Prints the types of all tokens in a linked list
+ * 
+ * @param token Double pointer to the head of the token linked list
+ */
 void	print_list(t_token **token)
 {
 	t_token	*current;

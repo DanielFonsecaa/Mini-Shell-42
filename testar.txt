@@ -3,3 +3,13 @@ Tips to work on
 usar strcmp(ja temos implementado);
 usar um strjoin_free em que mandamos um int para determinar de libermos str1 ou str2 ou ambas str;
 implementar um fd_printf em que mandamos o fd;
+
+ao exandir as variaveis de ambientes com aspas nao divide em tokens, e sem aspas nao divide em tokens
+ex: export VAR="hello        world"
+echo $VAR  -------- hello world
+echo "$VAR" --------- hello      world
+mkdir $VAR -------- cria 2 pastas uma hello outra world
+mkdir "VAR" -------- cria so uma 'hello       world'
+
+
+se apagarem o diretorio, o que acontece o prompt.

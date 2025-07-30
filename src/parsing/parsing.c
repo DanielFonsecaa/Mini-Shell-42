@@ -1,9 +1,17 @@
 #include "../../includes/minishell.h"
 
+/**
+ * @brief Counts the number of pipe tokens in the token list and sets pipe flags
+ * 
+ * @param mshell Pointer to the shell structure to update with pipe information
+ * @param token Pointer to pointer to the first token in the linked list
+ */
 void	pipe_count(t_shell *mshell, t_token **token)
 {
-	t_token *temp;
+	t_token	*temp;
 
+	mshell->num_pipes = 0;
+	mshell->has_pipes = false;
 	temp = *token;
 	while (temp)
 	{
@@ -13,4 +21,22 @@ void	pipe_count(t_shell *mshell, t_token **token)
 	}
 	if (mshell->num_pipes > 0)
 		mshell->has_pipes = true;
+}
+
+/**
+ * @brief Parses the command line input and processes tokens for the minishell
+ * 
+ * @param mshell Pointer to the main shell structure containing shell state
+ * @param token Double pointer to the token list that will be populated
+ */
+void	parsing(t_shell *mshell, t_token **token)
+{
+	tokenize(mshell->rd_l, token);
+	mshell->tokens_size = token_list_size(*token);
+	set_t_type(token);
+	type_file(token);
+	print_list(token);
+	pipe_count(mshell, token);
+	ft_printf("token size --%i\n num pipes --%i\n", mshell->tokens_size,
+		mshell->num_pipes);
 }
