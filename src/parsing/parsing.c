@@ -12,11 +12,14 @@ void	pipe_count(t_shell *mshell, t_token **token)
 
 	mshell->num_pipes = 0;
 	mshell->has_pipes = false;
+	mshell->closed_pipe = true;
 	temp = *token;
 	while (temp)
 	{
 		if (temp->type == PIPE)
 			mshell->num_pipes++;
+		if (temp->type == PIPE && temp->next == NULL)
+			mshell->closed_pipe = false;
 		temp = temp->next;
 	}
 	if (mshell->num_pipes > 0)

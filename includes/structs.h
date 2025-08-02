@@ -27,6 +27,7 @@ typedef struct s_shell
 	int				tokens_size;
 	int				num_pipes;
 	bool			has_pipes;
+	bool			closed_pipe;
 	bool			is_running;
 }		t_shell;
 
