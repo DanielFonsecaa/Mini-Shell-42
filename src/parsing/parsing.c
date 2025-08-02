@@ -9,6 +9,7 @@
 void	pipe_count(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
+	t_token	*pipe;
 
 	mshell->num_pipes = 0;
 	mshell->has_pipes = false;
@@ -17,13 +18,23 @@ void	pipe_count(t_shell *mshell, t_token **token)
 	while (temp)
 	{
 		if (temp->type == PIPE)
+		{
 			mshell->num_pipes++;
+			temp->is_pipe = true;
+			temp->last_pipe = false;
+		}
+		else
+		{
+			temp->is_pipe = false;
+			temp->last_pipe = false;
+		}
 		if (temp->type == PIPE && temp->next == NULL)
 			mshell->closed_pipe = false;
 		temp = temp->next;
 	}
 	if (mshell->num_pipes > 0)
 		mshell->has_pipes = true;
+	pipe->last_pipe = true;
 }
 
 /**
