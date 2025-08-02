@@ -6,6 +6,8 @@ typedef struct s_token
 	char			*name;
 	int				type;
 	bool			has_quote;
+	bool			is_pipe;
+	bool			last_pipe;
 	struct s_token	*next;
 	struct s_token	*prev;
 }		t_token;
