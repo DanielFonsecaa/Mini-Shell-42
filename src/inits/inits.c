@@ -1,5 +1,12 @@
 #include "../../includes/minishell.h"
 
+/**
+ * @brief Creates a deep copy of an environment variables array
+ * 
+ * @param envp Array of environment variable strings to copy (NULL-terminated)
+ * @return char** Pointer to the newly allocated copy of the environment array,
+ *                or NULL if memory allocation fails
+ */
 char	**ft_copy_envp(char **envp)
 {
 	int		i;
@@ -14,11 +21,11 @@ char	**ft_copy_envp(char **envp)
 	while (i < size && envp[i])
 	{
 		ret[i] = ft_strdup(envp[i]);
-			if (!ret[i])
-			{
-				free_envp(ret);
-				return (NULL);
-			}
+		if (!ret[i])
+		{
+			free_envp(ret);
+			return (NULL);
+		}
 		i++;
 	}
 	return (ret);
