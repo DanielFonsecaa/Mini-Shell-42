@@ -6,7 +6,6 @@ int	quote_checker(char *rd_l)
 	int	single_quotes;
 	int	i;
 
-
 	double_quotes = 0;
 	single_quotes = 0;
 	i = 0;
@@ -50,19 +49,18 @@ int	syntax_error(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	if (!quote_checker(mshell->rd_l))
-//		print_some_error here, Need to define error types
-		return (0);
+		return (ft_printf_fd(2, "%s\n", ERR_QUOTE), 0);
 	if (!check_pipeline(token))
-//		print_some_error here, Need to define error types
-		return (0);
+		return (ft_printf_fd(2, "%s\n", ERR_PIPELINE), 0);
 	while (temp)
 	{
 		if (temp->type == OUTFILE || temp->type == INFILE || temp->type == HERE
 			|| temp->type ==  APPEND)
 		{
-				if (temp->next && check_rid_type(temp->next)
-//					print_some_error here, Need to define error types
+				if (temp->next && check_rid_type(temp->next))
+					return (ft_printf_fd(2, "%s\n", ERR_FILE), 0);
 		}
+		temp = temp->next;
 	}
 
 }

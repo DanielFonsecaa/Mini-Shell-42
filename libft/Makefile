@@ -83,7 +83,7 @@ bonus: $(BUILD_PATH) $(OBJS) $(BONUS_OBJS)	## Compile libft with bonus
 	@echo " $(_NAME) archived w/ bonus: $(_SUCCESS) $(GOLD)🖔$(D)"
 
 extra: $(BUILD_PATH) $(OBJS) $(BONUS_OBJS) $(EXTRA_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(PRINTFD_OBJS)## Compile libft with extra
-	@$(AR) $(NAME) $(OBJS) $(BONUS_OBJS) $(EXTRA_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
+	@$(AR) $(NAME) $(OBJS) $(BONUS_OBJS) $(EXTRA_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(PRINTFD_OBJS)
 	@echo " $(B)$(AQUA)libft archived : $(_SUCCESS) ✔︎ 💾$(D)"
 
 
