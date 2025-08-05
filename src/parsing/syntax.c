@@ -2,25 +2,24 @@
 
 int	quote_checker(char *rd_l)
 {
-	int	double_quotes;
-	int	single_quotes;
 	int	i;
 
-	double_quotes = 0;
-	single_quotes = 0;
 	i = 0;
 	while (rd_l[i] != '\0')
 	{
 		if (rd_l[i] == '"')
-			double_quotes++;
+		{
+			if(!count_quote_content(rd_l, &i, rd_l[i]))
+					return (0);
+		}
 		else if (rd_l[i] == '\'')
-			single_quotes++;
-		i++;
+		{
+			if(!count_quote_content(rd_l, &i, rd_l[i]))
+					return (0);
+		}
+		else
+			i++;
 	}
-	if (double_quotes % 2 != 0)
-		return (0);
-	if (single_quotes % 2 != 0)
-		return (0);
 	return (1);
 } 
 
@@ -35,9 +34,10 @@ int	check_pipeline(t_token **token)
 			return (0);
 		temp = temp->next;
 	}
+	return (1);
 }
 // Eventualmente mudar esta funcao de sitio para algo de utils related
-int	check_rid_type(t_token *temp)
+int	check_redir_type(t_token *temp)
 {
 	return (temp->type == INFILE || temp->type == OUTFILE
 		|| temp->type == HERE || temp->type == APPEND);
@@ -45,22 +45,20 @@ int	check_rid_type(t_token *temp)
 
 int	syntax_error(t_shell *mshell, t_token **token)
 {
+	(void)mshell;
 	t_token *temp;
 
 	temp = *token;
-	if (!quote_checker(mshell->rd_l))
-		return (ft_printf_fd(2, "%s\n", ERR_QUOTE), 0);
 	if (!check_pipeline(token))
 		return (ft_printf_fd(2, "%s\n", ERR_PIPELINE), 0);
 	while (temp)
 	{
-		if (temp->type == OUTFILE || temp->type == INFILE || temp->type == HERE
-			|| temp->type ==  APPEND)
+		if (check_redir_type(*token))
 		{
-				if (temp->next && check_rid_type(temp->next))
+				if (temp->next && check_redir_type(temp->next))
 					return (ft_printf_fd(2, "%s\n", ERR_FILE), 0);
 		}
 		temp = temp->next;
 	}
-
+	return (1);
 }

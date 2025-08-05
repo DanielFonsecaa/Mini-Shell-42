@@ -43,8 +43,10 @@ void	pipe_count(t_shell *mshell, t_token **token)
  * @param mshell Pointer to the main shell structure containing shell state
  * @param token Double pointer to the token list that will be populated
  */
-void	parsing(t_shell *mshell, t_token **token)
+int	parsing(t_shell *mshell, t_token **token)
 {
+	if (!quote_checker(mshell->rd_l))
+		return (ft_printf_fd(2, "%s\n", ERR_QUOTE), 0);
 	tokenize(mshell->rd_l, token);
 	mshell->tokens_size = token_list_size(*token);
 	set_t_type(token);
@@ -53,4 +55,5 @@ void	parsing(t_shell *mshell, t_token **token)
 	pipe_count(mshell, token);
 	ft_printf_fd(1,"token size --%i\n num pipes --%i\n", mshell->tokens_size,
 		mshell->num_pipes);
+	return (1);
 }

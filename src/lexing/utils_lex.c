@@ -49,3 +49,16 @@ void	print_list(t_token **token)
 	}
 	ft_printf_fd(1,"\n");
 }
+
+int	count_quote_content(char *rd_l, int *j, char c)
+{
+	int i = *j;
+	i++;
+	while (rd_l[i] && rd_l[i] != c)
+			i++;
+	if (!rd_l[i])
+		return (0);
+	i++;
+	*j = i;
+	return (1);
+}

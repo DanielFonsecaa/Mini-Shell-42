@@ -17,5 +17,6 @@ int		token_list_size(t_token *token);
 int		is_meta_char(char c);
 int		has_quote(char *str);
 void	print_list(t_token **token);
+int		count_quote_content(char *rd_l, int *j, char c);
 
 #endif

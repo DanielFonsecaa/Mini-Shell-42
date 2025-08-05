@@ -47,9 +47,14 @@ void	tokenize(char *rd_l, t_token **token)
 		while (ft_iswhite_space(rd_l[i]))
 			i++;
 		j = 0;
-		while (rd_l[i + j] && !ft_iswhite_space(rd_l[i + j])
-			&& !is_meta_char(rd_l[i + j]))
-			j++;
+		if (rd_l[i] == '\'' || rd_l[i] == '"')
+				count_quote_content(rd_l + i, &j, rd_l[i]);
+		else
+		{
+			while (rd_l[i + j] && !ft_iswhite_space(rd_l[i + j])
+				&& !is_meta_char(rd_l[i + j]) && (rd_l[i + j] != '\'' && rd_l[i + j] != '"'))
+				j++;
+		}
 		if ((rd_l[i] || rd_l[i + j]) && !is_meta_char(rd_l[i]))
 			ft_first_token(token, rd_l + i, j);
 		i += j;

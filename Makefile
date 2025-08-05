@@ -26,6 +26,7 @@ FILES			=	main.c \
 					handle/handler_funcs.c \
 					free_data/free_data.c \
 					parsing/parsing.c \
+					parsing/syntax.c \
 					inits/inits.c
 
 SRC				= $(addprefix $(SRC_PATH)/, $(FILES))
