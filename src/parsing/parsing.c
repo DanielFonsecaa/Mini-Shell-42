@@ -46,8 +46,9 @@ void	pipe_count(t_shell *mshell, t_token **token)
 int	parsing(t_shell *mshell, t_token **token)
 {
 	if (!quote_checker(mshell->rd_l))
-		return (ft_printf_fd(2, "%s\n", ERR_QUOTE), 0);
-	tokenize(mshell->rd_l, token);
+		return (ft_printf_fd(2, ERR_QUOTE), 0);
+	if(!tokenize(mshell->rd_l, token))
+				return (0);
 	mshell->tokens_size = token_list_size(*token);
 	set_t_type(token);
 	type_file(token);

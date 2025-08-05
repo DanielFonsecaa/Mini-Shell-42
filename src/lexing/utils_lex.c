@@ -13,6 +13,20 @@ int	is_meta_char(char c)
 }
 
 /**
+ * @brief Checks if a character is a shell metacharacter
+ * 
+ * @param c The character to check
+ * @return int Returns 1 if the character is a metacharacter ('<', '>', '|'),
+ *             0 otherwise
+ */
+int	is_here_or_app(char c, char c2)
+{
+	return ((c == '<' && c2 == '<') || (c == '>' && c2 == '>'));
+}
+
+
+
+/**
  * @brief Checks if a string contains any quote characters (single or double).
  * 
  * @param str The null-terminated string to check for quotes

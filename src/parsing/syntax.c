@@ -28,9 +28,9 @@ int	check_pipeline(t_token **token)
 	t_token *temp;
 
 	temp = *token;
-	while (temp->next)
+	while (temp)
 	{
-		if (temp->type == PIPE && temp->next->type == PIPE)
+		if (temp->next && temp->type == PIPE && temp->next->type == PIPE)
 			return (0);
 		if (temp->type == PIPE && !temp->next)
 			return (0);
@@ -52,15 +52,15 @@ int	syntax_error(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	if (!check_pipeline(token))
-		return (ft_printf_fd(2, "%s\n", ERR_PIPELINE), 0);
+		return (ft_printf_fd(2, ERR_PIPELINE), 0);
 	while (temp)
 	{
-		if (check_redir_type(*token))
+		if (check_redir_type(temp))
 		{
-				if (temp->next && check_redir_type(temp->next))
-					return (ft_printf_fd(2, "%s\n", ERR_REDIRECT), 0);
-				if (!temp->next)
-					return (ft_printf_fd(2, "%s\n", ERR_SYNTAX), 0);
+			if (temp->next && check_redir_type(temp->next))
+				return (ft_printf_fd(2, ERR_REDIRECT), 0);
+			if (!temp->next)
+				return (ft_printf_fd(2, ERR_SYNTAX), 0);
 		}
 		temp = temp->next;
 	}

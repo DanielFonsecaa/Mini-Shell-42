@@ -14,18 +14,18 @@
 # define PATH_MAX 4096
 
 // Error Texts
-# define ERR_MALLOC "Error: Memory allocation failed"
-# define ERR_QUOTE "Error: Unmatched quotes in input"
-# define ERR_SYNTAX "Error: Syntax error in command line input"
-# define ERR_FILE "Error: File not found or inaccessible"
-# define ERR_CMD "Error: Command not found"
-# define ERR_REDIRECT "Error: Invalid redirection syntax"
-# define ERR_PIPELINE "Error: Invalid pipeline syntax"
-# define ERR_UNEXPECTED "Error: Unexpected token in command line input"
-# define ERR_INVALID "Error: Invalid command or argument"
-# define ERR_SIGNAL "Error: Interrupted by signal"
-# define ERR_EXEC "Error: Execution failed"
-# define ERR_ENV "Error: Environment variable not found"
+# define ERR_MALLOC "Error: Memory allocation failed\n"
+# define ERR_QUOTE "Error: Unmatched quotes in input\n"
+# define ERR_SYNTAX "Error: Syntax error in command line input\n"
+# define ERR_FILE "Error: File not found or inaccessible\n"
+# define ERR_CMD "Error: Command not found\n"
+# define ERR_REDIRECT "Error: Invalid redirection syntax\n"
+# define ERR_PIPELINE "Error: Invalid pipeline syntax\n"
+# define ERR_UNEXPECTED "Error: Unexpected token in command line input\n"
+# define ERR_INVALID "Error: Invalid command or argument\n"
+# define ERR_SIGNAL "Error: Interrupted by signal\n"
+# define ERR_EXEC "Error: Execution failed\n"
+# define ERR_ENV "Error: Environment variable not found\n"
 
 //	C libraries
 # include <stdio.h>

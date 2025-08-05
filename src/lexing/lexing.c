@@ -36,7 +36,7 @@ void	ft_first_token(t_token **token, char *line, int size)
  * 3. Identifies metacharacter token sequences
  * 4. Creates tokens for both words and metacharacter groups
  */
-void	tokenize(char *rd_l, t_token **token)
+int	tokenize(char *rd_l, t_token **token)
 {
 	int	i;
 	int	j;
@@ -59,12 +59,15 @@ void	tokenize(char *rd_l, t_token **token)
 			ft_first_token(token, rd_l + i, j);
 		i += j;
 		j = 0;
+		if ((rd_l[i + j] == '|' && rd_l[i + j + 1] == '|'))
+			return (ft_printf_fd(2, ERR_PIPELINE), 0);
 		while (is_meta_char(rd_l[i + j]))
 			j++;
 		if (is_meta_char(rd_l[i + j - 1]))
 			ft_first_token(token, rd_l + i, j);
 		i += j;
 	}
+	return (1);
 }
 /**
  * @brief Sets the token type for each token in a linked list based on token content and position
