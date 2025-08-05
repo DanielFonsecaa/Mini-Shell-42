@@ -1,10 +1,20 @@
 #include "../../includes/minishell.h"
 
+/**
+ * @brief Executes built-in shell commands
+ * 
+ * @param mshell Pointer to the shell structure containing shell
+ * 				state and environment
+ * @param token Double pointer to the token structure containing
+ * 				the command to execute
+ * @return int Returns 1 if a built-in command was recognized and executed,
+ *             0 if the command is not a built-in command
+ */
 int	execute_built_in(t_shell *mshell, t_token **token)
 {
-	(void)mshell;
 	t_token	*temp;
 
+	(void)mshell;
 	temp = *token;
 	if (ft_strcmp(temp->name, "echo") == 0)
 		return (1);

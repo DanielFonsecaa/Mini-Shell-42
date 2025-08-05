@@ -4,7 +4,8 @@
  * @brief Creates a new token structure with the given content.
  *
  * @param content The string content to be stored in the token
- * @return A pointer to the newly created token structure, or NULL if allocation fails
+ * @return A pointer to the newly created token structure,
+ * 			or NULL if allocation fails
  */
 t_token	*ft_newtoken(char *content)
 {
@@ -50,7 +51,8 @@ void	token_addback(t_token **token, t_token *new_token)
  * @brief Finds and returns the last token in a linked list of tokens.
  *
  * @param token Pointer to the first token in the linked list
- * @return t_token* Pointer to the last token in the list, or NULL if the input is NULL
+ * @return t_token* Pointer to the last token in the list,
+ * 			or NULL if the input is NULL
  */
 t_token	*token_lst_last(t_token *token)
 {

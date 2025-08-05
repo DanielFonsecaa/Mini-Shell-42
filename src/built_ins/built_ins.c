@@ -1,5 +1,11 @@
 #include "../../includes/minishell.h"
 
+/**
+ * @brief Checks if a token represents a built-in command.
+ *
+ * @param token Double pointer to a t_token structure containing the command name
+ * @return int Returns 1 if the token is a built-in command, 0 if not.
+ */
 int	is_built_in(t_token **token)
 {
 	t_token	*temp;

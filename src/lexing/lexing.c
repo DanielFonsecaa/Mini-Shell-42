@@ -3,7 +3,7 @@
 /**
  * @brief Creates and adds the first token to the token list from a given line
  * 
- * @param token Double pointer to the token list where the new token will be added
+ * @param token Double pointer to the list where the new token will be added
  * @param line Source string from which to extract the token content
  * @param size Number of characters to extract from the beginning of line
  */
@@ -48,7 +48,7 @@ int	tokenize(char *rd_l, t_token **token)
 			i++;
 		j = 0;
 		if (rd_l[i] == '\'' || rd_l[i] == '"')
-				count_quote_content(rd_l + i, &j, rd_l[i]);
+			skip_inside_quotes(rd_l + i, &j, rd_l[i]);
 		else
 		{
 			while (rd_l[i + j] && !ft_iswhite_space(rd_l[i + j])
@@ -70,7 +70,8 @@ int	tokenize(char *rd_l, t_token **token)
 	return (1);
 }
 /**
- * @brief Sets the token type for each token in a linked list based on token content and position
+ * @brief Sets the token type for each token in a linked list
+ * 			based on token content and position
  * 
  * @param token Double pointer to the first token in the linked list
  */
@@ -103,7 +104,8 @@ void	set_t_type(t_token **token)
 }
 
 /**
- * @brief Updates token types to identify file arguments following redirection operators
+ * @brief Updates token types to identify file arguments
+ * 			following redirection operators
  * 
  * @param token Double pointer to the head of the token linked list
  */

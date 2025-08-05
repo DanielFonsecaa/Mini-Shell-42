@@ -15,9 +15,8 @@ int		token_list_size(t_token *token);
 
 // lex utils
 int		is_meta_char(char c);
-int		is_here_or_app(char c, char c2);
 int		has_quote(char *str);
 void	print_list(t_token **token);
-int		count_quote_content(char *rd_l, int *j, char c);
+int		skip_inside_quotes(char *rd_l, int *j, char c);
 
 #endif

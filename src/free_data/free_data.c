@@ -3,7 +3,8 @@
 /**
  * @brief Free allocated memory associated with the shell structure
  * 
- * @param mshell Pointer to the main shell structure containing allocated resources
+ * @param mshell Pointer to the main shell structure containing
+ * 				allocated resources
  * @param token Double pointer to the token list to be freed
  */
 void	handle_error_shell(t_shell *mshell, t_token **token)
@@ -17,7 +18,8 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
 /**
  * @brief Free allocated memory associated with the shell structure
  * 
- * @param mshell Pointer to the main shell structure containing allocated resources
+ * @param mshell Pointer to the main shell structure containing
+ * 				allocated resources
  * @param token Double pointer to the token list to be freed
  */
 void	free_all(t_shell *mshell, t_token **token)

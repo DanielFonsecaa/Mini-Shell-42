@@ -30,7 +30,7 @@ FILES			=	main.c \
 					built_ins/built_ins.c \
 					built_ins/pwd.c \
 					built_ins/env.c \
-					executor/execute.c \
+					execute/execute.c \
 					inits/inits.c
 
 SRC				= $(addprefix $(SRC_PATH)/, $(FILES))
