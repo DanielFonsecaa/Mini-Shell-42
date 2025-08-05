@@ -47,5 +47,7 @@
 # include "free.h"
 # include "inits.h"
 # include "parsing.h"
+# include "built_ins.h"
+# include "execute.h"
 
 #endif

@@ -17,7 +17,12 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 		mshell->rd_l = readline(mshell->fake_cwd);
 		if (mshell->rd_l)
 			add_history(mshell->rd_l);
-		parsing(mshell, token);
+		if (!parsing(mshell, token))
+		{
+			free_all(mshell, token);
+			continue ;
+		}
+		execute(mshell, token);
 		if (ft_strcmp(mshell->rd_l, "exit") == 0)
 		{
 			free_all(mshell, token);
