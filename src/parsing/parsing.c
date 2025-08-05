@@ -53,6 +53,8 @@ int	parsing(t_shell *mshell, t_token **token)
 	type_file(token);
 	print_list(token);
 	pipe_count(mshell, token);
+	if (!syntax_error(mshell, token))
+		return (0);
 	ft_printf_fd(1,"token size --%i\n num pipes --%i\n", mshell->tokens_size,
 		mshell->num_pipes);
 	return (1);
