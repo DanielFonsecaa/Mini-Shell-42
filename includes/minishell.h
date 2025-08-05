@@ -24,7 +24,7 @@
 # include <unistd.h>
 
 //	Custom libs
-# include "../lib/libft/libft/libft.h"
+# include "../libft/libft/libft.h"
 
 //	Custom headers
 # include "structs.h"

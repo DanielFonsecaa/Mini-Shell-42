@@ -14,7 +14,7 @@ int	quote_checker(char *rd_l)
 	{
 		if (rd_l[i] == '"')
 			double_quotes++;
-		else if (rd_l[i] == ''')
+		else if (rd_l[i] == '\'')
 			single_quotes++;
 		i++;
 	}
@@ -57,7 +57,7 @@ int	syntax_error(t_shell *mshell, t_token **token)
 		return (0);
 	while (temp)
 	{
-		if (temp->type == OUTFILE || temp->type == OUTFILE || temp->type == HERE
+		if (temp->type == OUTFILE || temp->type == INFILE || temp->type == HERE
 			|| temp->type ==  APPEND)
 		{
 				if (temp->next && check_rid_type(temp->next)

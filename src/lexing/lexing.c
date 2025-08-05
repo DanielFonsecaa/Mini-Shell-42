@@ -74,7 +74,7 @@ void	set_t_type(t_token **token)
 	temp = *token;
 	while (temp)
 	{
-		ft_printf("value %s\n", temp->name);
+		ft_printf_fd(1, "value %s\n", temp->name);
 		if (ft_strcmp(temp->name, "<<") == 0)
 			temp->type = HERE;
 		else if (ft_strcmp(">>", temp->name) == 0)

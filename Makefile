@@ -1,10 +1,4 @@
 #==============================================================================#
-#                                RESOURCES URLS                                #
-#==============================================================================#
-
-LIBFT_URL 		= git@github.com:DanielFonsecaa/libft_gnl_printf.git
-
-#==============================================================================#
 #                                     NAMES                                    #
 #==============================================================================#
 
@@ -35,12 +29,9 @@ FILES			=	main.c \
 SRC				= $(addprefix $(SRC_PATH)/, $(FILES))
 OBJS			= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
 
-$(info SRC = $(SRC))
-$(info OBJS = $(OBJS))
-
 HEADERS			= $(INC_PATH)/minishell.h
 
-LIBFT_PATH		= $(LIBS_PATH)/libft
+LIBFT_PATH		= libft
 LIBFT_ARC		= $(LIBFT_PATH)/libft.a
 
 #==============================================================================#
@@ -66,7 +57,7 @@ MKDIR_P			= mkdir -p
 #==============================================================================#
 
 
-all: deps $(BUILD_PATH) $(NAME)	## Compile
+all: $(BUILD_PATH) $(NAME)	## Compile
 
 $(NAME): $(BUILD_PATH) $(LIBFT_ARC) $(OBJS)	## Compile
 	@echo "  $(B)$(GOLD)Compiling$(SILV)$(NAME)$(D)"
@@ -84,12 +75,6 @@ $(NAME): $(BUILD_PATH) $(LIBFT_ARC) $(OBJS)	## Compile
 	@printf "$(B)$(SILV)                           Made by dda-fons & Michel-kun $(D)\n"
 	@printf "\n"
 
-deps:		## Download/Update deps
-	@if test -d "$(LIBFT_PATH)"; then \
-		echo "   $(B)$(RED)$(D) [$(GRN)Nothing to be done!$(D)]"; fi
-	@if test ! -d "$(LIBFT_PATH)"; then make get_libft; \
-		else echo "   $(B)$(GOLD)[libft]$(D) folder found ✔︎ 📂"; fi
-
 $(BUILD_PATH):
 	@$(MKDIR_P) $(BUILD_PATH)
 	@echo "  $(B)$(GOLD)Creating$(SILV)$(BUILD_PATH)$(GOLD)folder :$(D)$(_SUCCESS) ✔︎ 📂"
@@ -99,18 +84,13 @@ $(BUILD_PATH)/%.o: $(SRC_PATH)/%.c $(HEADERS)
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(LIBFT_ARC):
-	@$(MAKE) $(LIBFT_PATH) extra
-
-get_libft:
-	@echo " $(B)$(AQUA)Getting Libft$(D)"
-	@$(MKDIR_P) $(LIBS_PATH)
-	@git clone $(LIBFT_URL) $(LIBFT_PATH);
-	@echo "    $(B)$(GRN)Libft submodule download$(D): $(_SUCCESS) ✔︎ 💾"
+	@$(MAKE) $(LIBFT_PATH) extra >/dev/null
 
 clean:				## Remove object files
 	@echo "  $(B)$(GOLD)Cleaning object files $(D)"
 	@$(RM) $(BUILD_PATH); 
-	@$(RM) $(BONUS_BUILD_PATH); 
+	@$(RM) $(BONUS_BUILD_PATH);
+	@$(MAKE) $(LIBFT_PATH) clean >/dev/null
 	@echo "  $(B)$(GOLD)Removing $(SILV)$(BUILD_PATH)$(GOLD) folder & files$(D): $(_SUCCESS) 🧹"; \
 
 fclean: clean			## Remove executable
@@ -118,14 +98,10 @@ fclean: clean			## Remove executable
 	@$(RM) $(NAME);
 	@$(RM) tester
 	@$(RM) readline.supp
+	@$(MAKE) $(LIBFT_PATH) fclean >/dev/null
 	@echo "  $(B)$(GOLD)Removing $(SILV)$(NAME)$(GOLD) file: $(D) $(_SUCCESS) 🧹"; \
 
-libclean: fclean	## Remove libs
-	@echo "  $(B)$(GOLD)Cleaning libraries $(D)"
-	@$(RM) $(LIBS_PATH)
-	@echo "  $(B)$(GOLD)Removing $(SILV)lib & checker$(D) : $(_SUCCESS) 🧹"
-
-re: libclean all	## Purge & Recompile
+re: fclean all	## Purge & Recompile
 
 nn:	## Check Norminette
 	norminette -R CheckForbiddenSourceHeader

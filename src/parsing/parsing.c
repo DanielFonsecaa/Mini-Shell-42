@@ -9,7 +9,7 @@
 void	pipe_count(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
-	t_token	*pipe;
+//	t_token	*pipe;
 
 	mshell->num_pipes = 0;
 	mshell->has_pipes = false;
@@ -34,7 +34,7 @@ void	pipe_count(t_shell *mshell, t_token **token)
 	}
 	if (mshell->num_pipes > 0)
 		mshell->has_pipes = true;
-	pipe->last_pipe = true;
+//	pipe->last_pipe = true;
 }
 
 /**
@@ -51,6 +51,6 @@ void	parsing(t_shell *mshell, t_token **token)
 	type_file(token);
 	print_list(token);
 	pipe_count(mshell, token);
-	ft_printf("token size --%i\n num pipes --%i\n", mshell->tokens_size,
+	ft_printf_fd(1,"token size --%i\n num pipes --%i\n", mshell->tokens_size,
 		mshell->num_pipes);
 }

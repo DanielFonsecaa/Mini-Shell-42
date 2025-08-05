@@ -44,8 +44,8 @@ void	print_list(t_token **token)
 	current = *token;
 	while (current)
 	{
-		ft_printf("%d$", current->type);
+		ft_printf_fd(1,"%d$", current->type);
 		current = current->next;
 	}
-	ft_printf("\n");
+	ft_printf_fd(1,"\n");
 }
