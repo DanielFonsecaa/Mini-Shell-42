@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 t_envp	*create_node(char *name, char *content)
 {
@@ -9,6 +9,7 @@ t_envp	*create_node(char *name, char *content)
 	{
 		node->name = ft_strdup(name);
 		node->content = ft_strdup(content);
+		node->exported = true;
 	}
 	node->next = NULL;
 	return (node);
@@ -60,50 +61,23 @@ void	create_envp_list(t_envp **env_list, char **env)
 		while (env[i][k + j])
 			j++;
 		content = ft_substr(env[i], k + 1, j);
+		if (!content)
+			content = '';
 		envp_list_addback(env_list, create_node(name, content));
 		i++;
 		free_envp_content(name, content);
 	}
 }
 
-void	free_envp_content(char *name, char *content)
-{
-	free(name);
-	name = NULL;
-	free(content);
-	content = NULL;
-}
-
-void	free_envp_list(t_envp *node)
-{
-	t_envp	*temp;
-
-	if (!node)
-		return ;
-	while (node)
-	{
-		temp = node->next;
-		free(node->name);
-		free(node->content);
-		free(node);
-		node = temp;
-	}
-	node = NULL;
-}
-
-void	print_list2(t_envp *node)
+void	print_export(t_envp *node)
 {
 	t_envp *temp;
 
 	temp = node;
 	while (temp)
 	{
-		ft_printf_fd(1, "%s=%s\n", temp->name, temp->content);
+		ft_printf_fd(1, "declare -x %s=\"%s\"\n", temp->name, temp->content);
 		temp = temp->next;
 	}
 }
-/*
-void	handle_export(t_shell *shell, t_token **token)
-{
-	create_envp_list(mshell->env_list, mshell->env_var)
-}*/
+

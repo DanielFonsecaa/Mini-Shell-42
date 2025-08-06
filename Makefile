@@ -31,9 +31,10 @@ FILES			=	main.c \
 					built_ins/built_ins.c \
 					built_ins/pwd.c \
 					built_ins/cd.c \
-					built_ins/export.c \
 					built_ins/exit.c \
 					built_ins/env.c \
+					built_ins/export/export.c \
+					built_ins/export/utils_list_export.c \
 					execute/execute.c \
 					inits/inits.c
 

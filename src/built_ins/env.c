@@ -9,25 +9,26 @@
  */
 void	handle_env(t_shell *mshell)
 {
-	int	i;
+	t_envp	*node;
 
-	i = 0;
 	if (!mshell)
 	{
 		mshell->exit_code = 1;
 		ft_printf_fd(2, "Error: Computer error"); 
 		return ;
 	}
-	if (!mshell->env_var)
+	if (!mshell->env_list)
 	{
 		mshell->exit_code = 1;
 		ft_printf_fd(2, "Error: No environment variables");
 		return ;
 	}
-	while (mshell->env_var[i])
+	node = mshell->env_list;
+	while (node->next)
 	{
-		ft_printf("%s\n", mshell->env_var[i]);
-		i++;
+		if (node->exported)
+			ft_printf("%s=%s\n", node->name, node->content);
+		node = node->next;
 	}
 	mshell->exit_code = 0;
 }

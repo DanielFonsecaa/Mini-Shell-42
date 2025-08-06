@@ -11,10 +11,9 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 {
 	mshell->is_running = true;
 	create_envp_list(&(mshell->env_list), envp);
-	print_list2(mshell->env_list);
 	while (mshell->is_running)
 	{
-		mshell->env_var = ft_copy_envp(envp);
+		//mshell->env_var = ft_copy_envp(envp);
 		getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
 		mshell->fake_cwd = ft_strjoin(mshell->curr_wd, " 👉 ");
 		mshell->rd_l = readline(mshell->fake_cwd);
