@@ -10,10 +10,14 @@ void	handle_export(t_shell *mshell, t_token **token);
 // Utils
 int		is_built_in(t_token **token);
 int		verify_num(char *value);
+//	Export Utils
 void	envp_list_addback(t_envp **list, t_envp *new_node);
 void	create_envp_list(t_envp **env_list, char **env);
 void	print_list2(t_envp *node);
 t_envp	*envp_get_last(t_envp *node);
 t_envp	*create_node(char *name, char *content);
+int		envp_list_size(t_envp *node);
+void	bubble_sort(t_envp **arr, int list_size);
+void	show_export(t_envp *node);
 
 #endif

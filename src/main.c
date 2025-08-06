@@ -29,6 +29,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 			mshell->is_running = false;*/
 		free_all(mshell, token);
 	}
+	free_envp_list(mshell->env_list);
 }
 
 /**

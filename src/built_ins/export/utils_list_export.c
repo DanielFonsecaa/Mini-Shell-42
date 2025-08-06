@@ -37,6 +37,8 @@ t_envp	*envp_get_last(t_envp *node)
 	return (node);
 }
 
+
+
 void	create_envp_list(t_envp **env_list, char **env)
 {
 	int		i;
@@ -45,11 +47,8 @@ void	create_envp_list(t_envp **env_list, char **env)
 	char	*name;
 	char	*content;
 
-	i = 0;
-	while (env[i])
-			i++;
-	i = 0;
-	while (env[i])
+	i = -1;
+	while (env[++i])
 	{
 		k = 0;
 		j = 0;
@@ -62,11 +61,25 @@ void	create_envp_list(t_envp **env_list, char **env)
 			j++;
 		content = ft_substr(env[i], k + 1, j);
 		if (!content)
-			content = '';
+			content = "";
 		envp_list_addback(env_list, create_node(name, content));
-		i++;
 		free_envp_content(name, content);
 	}
+}
+
+int	envp_list_size(t_envp *node)
+{
+	int		i;
+	t_envp	*temp;
+
+	i = 0;
+	temp = node;
+	while (temp->next)
+	{
+		i++;
+		temp = temp->next;
+	}
+	return (i);
 }
 
 void	print_export(t_envp *node)

@@ -1,10 +1,5 @@
 #include "../../../includes/minishell.h"
 
-void	show_export(t_shell *mshell)
-{
-	
-}
-
 void	handle_export(t_shell *mshell, t_token **token)
 {
 		t_token	*temp;
@@ -12,7 +7,7 @@ void	handle_export(t_shell *mshell, t_token **token)
 		temp = *token;
 		if (!temp->next)
 			show_export(mshell->env_list); //show all
-		else
-			update_export(); // show only exported ones
+/*		else
+			update_export(); // show only exported ones*/
 		mshell->exit_code = 0; 
 }
