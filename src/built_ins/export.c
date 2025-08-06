@@ -14,17 +14,17 @@ t_envp	*create_node(char *name, char *content)
 	return (node);
 }
 
-void	envp_list_addback(t_envp *node, t_envp *new_node)
+void	envp_list_addback(t_envp **node, t_envp *new_node)
 {
 	t_envp	*last;
 
-	if (node)
+	if (*node)
 	{
-		last = envp_get_last(node);
+		last = envp_get_last(*node);
 		last->next = new_node;
 	}
 	else
-		node = new_node;
+		*node = new_node;
 }
 
 t_envp	*envp_get_last(t_envp *node)
@@ -36,7 +36,7 @@ t_envp	*envp_get_last(t_envp *node)
 	return (node);
 }
 
-void	create_envp_list(t_envp *env_list, char **env)
+void	create_envp_list(t_envp **env_list, char **env)
 {
 	int		i;
 	int		j;
