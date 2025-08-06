@@ -31,6 +31,7 @@ FILES			=	main.c \
 					built_ins/built_ins.c \
 					built_ins/pwd.c \
 					built_ins/cd.c \
+					built_ins/export.c \
 					built_ins/exit.c \
 					built_ins/env.c \
 					execute/execute.c \

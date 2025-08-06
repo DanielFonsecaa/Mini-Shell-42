@@ -19,11 +19,20 @@ typedef struct s_cmd
 	char			*args;
 }		t_cmd;
 
+typedef struct s_envp
+{
+	char			*name;
+	char			*content;
+	bool			exported;
+	struct s_envp	*next;
+}		t_envp;
+
 typedef struct s_shell
 {
 	char			*rd_l;
 	char			**cmd_line;
 	char			**env_var;
+	t_envp			*env_list;
 	char			curr_wd[PATH_MAX];
 	char			*fake_cwd;
 	int				tokens_size;

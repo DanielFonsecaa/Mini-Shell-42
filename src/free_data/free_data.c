@@ -24,6 +24,7 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
  */
 void	free_all(t_shell *mshell, t_token **token)
 {
+	free_envp_list(mshell->env_list);
 	free_list(token);
 	free_envp(mshell->env_var);
 	free(mshell->fake_cwd);
