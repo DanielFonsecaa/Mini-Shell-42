@@ -1,5 +1,11 @@
 #include "../../../includes/minishell.h"
 
+/**
+ * @brief Handles the export command.
+ * 
+ * @param mshell Pointer to the shell structure.
+ * @param token Pointer to the token list.
+ */
 void	handle_export(t_shell *mshell, t_token **token)
 {
 		t_token	*temp;

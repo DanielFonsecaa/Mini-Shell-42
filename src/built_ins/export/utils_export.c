@@ -1,5 +1,10 @@
 #include "../../../includes/minishell.h"
 
+/**
+ * @brief Displays the exported environment variables.
+ * 
+ * @param node Pointer to the head of the environment variable list.
+ */
 void	show_export(t_envp *node)
 {
 	t_envp	**arr;
@@ -27,7 +32,12 @@ void	show_export(t_envp *node)
 	}
 	free(arr);
 }
-
+/**
+ * @brief Sorts an array of environment variables in alphabetical order
+ * 
+ * @param arr Pointer to the array of environment variables
+ * @param list_size Size of the array
+ */
 void	bubble_sort(t_envp **arr, int list_size)
 {
 	int		i;

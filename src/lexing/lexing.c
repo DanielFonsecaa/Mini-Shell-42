@@ -29,12 +29,6 @@ void	ft_first_token(t_token **token, char *line, int size)
  * 
  * @param rd_l The input command line string to tokenize
  * @param token Pointer to the token list where new tokens will be added
- * 
- * The function performs the following operations:
- * 1. Skips whitespace characters
- * 2. Identifies word tokens (non-whitespace, non-metacharacter sequences)
- * 3. Identifies metacharacter token sequences
- * 4. Creates tokens for both words and metacharacter groups
  */
 int	tokenize(char *rd_l, t_token **token)
 {

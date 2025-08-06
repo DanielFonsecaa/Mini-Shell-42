@@ -23,7 +23,7 @@ FILES			=	main.c \
 					lexing/lexing.c \
 					lexing/utils_lex.c \
 					lexing/utils_list_lex.c \
-					handle/handler_funcs.c \
+					safe/safe_functions.c \
 					free_data/free_data.c \
 					parsing/parsing.c \
 					parsing/utils_parse.c \

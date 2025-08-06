@@ -82,7 +82,12 @@ void	free_envp(char **arr)
 	return ;
 }
 */
-
+/**
+ * @brief Frees the content of an environment variable.
+ * 
+ * @param name The name of the environment variable.
+ * @param content The content of the environment variable.
+ */
 void	free_envp_content(char *name, char *content)
 {
 	free(name);
@@ -90,7 +95,11 @@ void	free_envp_content(char *name, char *content)
 	free(content);
 	content = NULL;
 }
-
+/**
+ * @brief Frees the entire environment variable list.
+ * 
+ * @param node Pointer to the head of the environment variable list.
+ */
 void	free_envp_list(t_envp *node)
 {
 	t_envp	*temp;

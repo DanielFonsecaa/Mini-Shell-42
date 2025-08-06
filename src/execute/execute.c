@@ -30,7 +30,13 @@ void	execute_built_in(t_shell *mshell, t_token **token)
 	else if (ft_strcmp(temp->name, "unset") == 0)
 		return ;
 }
-
+/**
+ * @brief Executes a command, either built-in or external
+ * @param mshell Pointer to the shell structure containing shell
+ * 				state and environment
+ * @param token Double pointer to the token structure containing
+ * 				the command to execute
+ */
 void	execute(t_shell *mshell, t_token **token)
 {
 	(void)mshell;

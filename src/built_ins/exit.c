@@ -1,5 +1,10 @@
 #include "../../includes/minishell.h"
-
+/**
+ * @brief Verifies if the given string is a valid number.
+ * 
+ * @param value The string to be checked.
+ * @return int Returns 1 if the string is a valid number, 0 otherwise.
+ */
 int	verify_num(char *value)
 {
 	int	i;
@@ -15,7 +20,12 @@ int	verify_num(char *value)
 	}
 	return (1);
 }
-
+/**
+ * @brief Handles the exit command in the shell
+ * 
+ * @param mshell Pointer to the shell structure containing shell state
+ * @param token Double pointer to the token structure containing the command
+ */
 void	handle_exit(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;

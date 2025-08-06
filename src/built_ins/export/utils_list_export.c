@@ -1,5 +1,12 @@
 #include "../../../includes/minishell.h"
 
+/**
+ * @brief Creates a new environment variable node.
+ * 
+ * @param name The name of the environment variable.
+ * @param content The content of the environment variable.
+ * @return t_envp* Pointer to the newly created node.
+ */
 t_envp	*create_node(char *name, char *content)
 {
 	t_envp	*node;
@@ -14,7 +21,12 @@ t_envp	*create_node(char *name, char *content)
 	node->next = NULL;
 	return (node);
 }
-
+/**
+ * @brief Adds a new node to the end of the environment variable list.
+ * 
+ * @param node Pointer to the head of the environment variable list.
+ * @param new_node Pointer to the new node to be added.
+ */
 void	envp_list_addback(t_envp **node, t_envp *new_node)
 {
 	t_envp	*last;
@@ -27,7 +39,12 @@ void	envp_list_addback(t_envp **node, t_envp *new_node)
 	else
 		*node = new_node;
 }
-
+/**
+ * @brief Gets the last node in the environment variable list.
+ * 
+ * @param node Pointer to the head of the environment variable list.
+ * @return t_envp* Pointer to the last node in the list.
+ */
 t_envp	*envp_get_last(t_envp *node)
 {
 	if (!node)
@@ -36,9 +53,12 @@ t_envp	*envp_get_last(t_envp *node)
 		node = node->next;
 	return (node);
 }
-
-
-
+/**
+ * @brief Creates an environment variable list from an array of strings.
+ * 
+ * @param env_list Pointer to the head of the environment variable list.
+ * @param env Array of strings for environment variables.
+ */
 void	create_envp_list(t_envp **env_list, char **env)
 {
 	int		i;
@@ -66,7 +86,12 @@ void	create_envp_list(t_envp **env_list, char **env)
 		free_envp_content(name, content);
 	}
 }
-
+/**
+ * @brief Counts the number of nodes in the environment list
+ * 
+ * @param node Pointer to the head of the environment variable list.
+ * @return int The number of nodes in the list.
+ */
 int	envp_list_size(t_envp *node)
 {
 	int		i;
@@ -81,16 +106,3 @@ int	envp_list_size(t_envp *node)
 	}
 	return (i);
 }
-
-void	print_export(t_envp *node)
-{
-	t_envp *temp;
-
-	temp = node;
-	while (temp)
-	{
-		ft_printf_fd(1, "declare -x %s=\"%s\"\n", temp->name, temp->content);
-		temp = temp->next;
-	}
-}
-
