@@ -49,7 +49,7 @@ int	quote_checker(char *rd_l)
 	{
 		if (rd_l[i] == '"' || rd_l[i] == '\'')
 		{
-			if (!count_quote_content(rd_l, &i, rd_l[i]))
+			if (!skip_inside_quotes(rd_l, &i, rd_l[i]))
 				return (0);
 		}
 		else

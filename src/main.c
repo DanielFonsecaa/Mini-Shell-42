@@ -9,7 +9,8 @@
  */
 static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 {
-	while (true)
+	mshell->is_running = true;
+	while (mshell->is_running)
 	{
 		mshell->env_var = ft_copy_envp(envp);
 		getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
@@ -23,11 +24,8 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 			continue ;
 		}
 		execute(mshell, token);
-		if (ft_strcmp(mshell->rd_l, "exit") == 0)
-		{
-			free_all(mshell, token);
-			break ;
-		}
+/*		if (ft_strcmp(mshell->rd_l, "exit") == 0)
+			mshell->is_running = false;*/
 		free_all(mshell, token);
 	}
 }
@@ -50,5 +48,5 @@ int	main(int ac, char **av, char **envp)
 	token = NULL;
 	ft_memset(&mshell, 0, sizeof(t_shell));
 	run_shell(&mshell, &token, envp);
-	return (0);
+	return (mshell.exit_code);
 }

@@ -28,6 +28,7 @@ typedef struct s_shell
 	char			*fake_cwd;
 	int				tokens_size;
 	int				num_pipes;
+	int				exit_code;
 	bool			has_pipes;
 	bool			closed_pipe;
 	bool			is_running;

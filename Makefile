@@ -26,9 +26,12 @@ FILES			=	main.c \
 					handle/handler_funcs.c \
 					free_data/free_data.c \
 					parsing/parsing.c \
+					parsing/utils_parse.c \
 					parsing/syntax.c \
 					built_ins/built_ins.c \
 					built_ins/pwd.c \
+					built_ins/cd.c \
+					built_ins/exit.c \
 					built_ins/env.c \
 					execute/execute.c \
 					inits/inits.c
