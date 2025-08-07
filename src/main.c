@@ -11,6 +11,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 {
 	mshell->is_running = true;
 	create_envp_list(&(mshell->env_list), envp);
+	modify_shell_level(mshell->env_list, + 1);
 	while (mshell->is_running)
 	{
 		//mshell->env_var = ft_copy_envp(envp);
@@ -29,6 +30,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 			mshell->is_running = false;*/
 		free_all(mshell, token);
 	}
+	modify_shell_level(mshell->env_list, - 1); //still not tested
 	free_envp_list(mshell->env_list);
 }
 

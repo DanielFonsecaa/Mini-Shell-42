@@ -23,6 +23,6 @@ int		validade_export_name(char *name);
 int		has_content(char *name);
 t_envp	*find_envp(t_envp *node, char *name);
 void	update_export(t_shell *mshell, t_token **token);
-void	update_envp_var(t_token **token, t_envp *node);
+void	update_envp_var(char *name, t_envp *node);
 
 #endif

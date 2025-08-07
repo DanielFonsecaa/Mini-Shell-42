@@ -77,7 +77,7 @@ void	update_export(t_shell *mshell, t_token **token)
 	existing_node = find_envp(mshell->env_list, name);
 	if (existing_node)
 	{
-		update_envp_var(token, existing_node);
+		update_envp_var(temp->name, existing_node);
 		return ;
 	}
 	else
@@ -90,27 +90,25 @@ void	update_export(t_shell *mshell, t_token **token)
 		mshell->exit_code = 0;
 		if (has_content(name))
 		{
-			create_envp_var(mshell, token, true);
+			create_envp_var(mshell, &temp, true);
 			print_full_variables_of_list(mshell->env_list); //remove this shitty function latter
 			return ;
 		}
-		create_envp_var(mshell, token, false);
+		create_envp_var(mshell, &temp, false);
 		print_full_variables_of_list(mshell->env_list);  //remove this shitty function latter
 	}
 }
 
-void	update_envp_var(t_token **token, t_envp *node)
+void	update_envp_var(char *name, t_envp *node)
 {
-	t_token	*temp;
 	char	*new;
 	char	*old;
 	int		i;
 
 	i = 0;
-	temp = (*token)->next;
-	while (temp->name[i] && temp->name[i] != '=')
+	while (name[i] && name[i] != '=')
 		i++;
-	new = ft_strdup(temp->name + i + 1);
+	new = ft_strdup(name + i + 1);
 	old = node->content;
 	node->content = new;
 	node->exported = true;

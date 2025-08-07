@@ -30,3 +30,23 @@ char	**ft_copy_envp(char **envp)
 	}
 	return (ret);
 }
+
+void	modify_shell_level(t_envp *node, int value)
+{
+	t_envp	*existing_node;
+	char	*str_level;
+	char	*old_level;
+	int		new_level;
+
+	existing_node = find_envp(node, "SHLVL");
+	if (!existing_node)
+	{
+		ft_printf_fd(2, "shell level not found");
+		return ;
+	}
+	old_level = existing_node->content;
+	new_level = ft_atoi(old_level);
+	str_level = ft_itoa(new_level + value);
+	existing_node->content = str_level;
+	free(old_level);
+}

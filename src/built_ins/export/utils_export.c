@@ -38,7 +38,7 @@ void	create_envp_var(t_shell *mshell, t_token **token, bool exported)
 	char	*name;
 	char	*content;
 	
-	temp = (*token)->next;
+	temp = *token;
 	end = 0;
 	start = 0;
 	while(temp->name[end] && temp->name[end] != '=')
