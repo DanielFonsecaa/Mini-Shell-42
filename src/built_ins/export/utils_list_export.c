@@ -97,7 +97,7 @@ int	envp_list_size(t_envp *node)
 
 	i = 0;
 	temp = node;
-	while (temp->next)
+	while (temp)
 	{
 		i++;
 		temp = temp->next;

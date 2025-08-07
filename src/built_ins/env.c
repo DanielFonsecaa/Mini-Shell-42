@@ -24,7 +24,7 @@ void	handle_env(t_shell *mshell)
 		return ;
 	}
 	node = mshell->env_list;
-	while (node->next)
+	while (node)
 	{
 		if (node->exported)
 			ft_printf("%s=%s\n", node->name, node->content);

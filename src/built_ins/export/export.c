@@ -1,5 +1,20 @@
 #include "../../../includes/minishell.h"
 
+//remove later, just for debbug
+static void	print_full_variables_of_list(t_envp *head)
+{
+	t_envp	*node;
+	
+	node = head;
+	while(node)
+	{
+		ft_printf_fd(1, "name -> %s\n", node->name);
+		ft_printf_fd(1, "content -> %s  %s\n", node->content ? "true" : "false", node->content);
+		ft_printf_fd(1, "exported -> %s\n", node->exported ? "true" : "false");
+		node = node->next;
+	}
+}
+
 /**
  * @brief Handles the export command.
  * 
@@ -72,10 +87,15 @@ void	update_export(t_shell *mshell, t_token **token)
 			mshell->exit_code = 1;
 			return ;
 		}
-		if (has_content(name))
-			create_envp_var(mshell, token, true);
-		create_envp_var(mshell, token, false);
 		mshell->exit_code = 0;
+		if (has_content(name))
+		{
+			create_envp_var(mshell, token, true);
+			print_full_variables_of_list(mshell->env_list); //remove this shitty function latter
+			return ;
+		}
+		create_envp_var(mshell, token, false);
+		print_full_variables_of_list(mshell->env_list);  //remove this shitty function latter
 	}
 }
 
@@ -88,10 +108,11 @@ void	update_envp_var(t_token **token, t_envp *node)
 
 	i = 0;
 	temp = (*token)->next;
-	while (temp->name[i] != '=')
+	while (temp->name[i] && temp->name[i] != '=')
 		i++;
 	new = ft_strdup(temp->name + i + 1);
 	old = node->content;
 	node->content = new;
+	node->exported = true;
 	free(old);
 }

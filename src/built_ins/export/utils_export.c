@@ -13,10 +13,10 @@ void	bubble_sort(t_envp **arr, int list_size)
 	t_envp	*temp;
 
 	i = 0;
-	while (i < list_size)
+	while (i < list_size - 1)
 	{
 		j = i + 1;
-		while (j < list_size)
+		while (j < list_size - 1)
 		{
 			if (ft_strcmp(arr[i]->name, arr[j]->name) > 0)
 			{
@@ -86,15 +86,24 @@ int	has_content(char *name)
 t_envp	*find_envp(t_envp *env_list, char *name)
 {
 	t_envp	*current;
+	int		i;
 
 	if (!name)
 		return (NULL);
 	current = env_list;
+	i = 0;
+	while (name[i] && name[i] != '=')
+		i++;
+	name = ft_substr(name, 0, i);
 	while (current)
 	{
 		if (ft_strcmp(current->name, name) == 0)
+		{
+			free(name);
 			return (current);
+		}
 		current = current->next;
 	}
+	free(name);
 	return (NULL);
 }
