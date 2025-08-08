@@ -32,7 +32,6 @@ typedef struct s_shell
 	char			*rd_l;
 	char			**cmd_line;
 	char			**env_var;
-	t_envp			*env_list;
 	char			curr_wd[PATH_MAX];
 	char			*fake_cwd;
 	int				tokens_size;
@@ -41,6 +40,7 @@ typedef struct s_shell
 	bool			has_pipes;
 	bool			closed_pipe;
 	bool			is_running;
+	t_envp			*env_list;
 }		t_shell;
 
 #endif

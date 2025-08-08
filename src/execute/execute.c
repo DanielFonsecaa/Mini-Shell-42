@@ -3,12 +3,10 @@
 /**
  * @brief Executes built-in shell commands
  * 
- * @param mshell Pointer to the shell structure containing shell
- * 				state and environment
- * @param token Double pointer to the token structure containing
- * 				the command to execute
- * @return int Returns 1 if a built-in command was recognized and executed,
- *             0 if the command is not a built-in command
+ * @param mshell Pointer to the shell structure
+ * @param token Double pointer to the token structure
+ * @return int Returns 1 if a built-in was recognized and executed,
+ *             0 if is not a built-in
  */
 void	execute_built_in(t_shell *mshell, t_token **token)
 {
@@ -32,10 +30,9 @@ void	execute_built_in(t_shell *mshell, t_token **token)
 }
 /**
  * @brief Executes a command, either built-in or external
- * @param mshell Pointer to the shell structure containing shell
- * 				state and environment
- * @param token Double pointer to the token structure containing
- * 				the command to execute
+ * 
+ * @param mshell Pointer to the shell structure
+ * @param token Double pointer to the token structure
  */
 void	execute(t_shell *mshell, t_token **token)
 {

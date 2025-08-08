@@ -1,7 +1,7 @@
 #include "../../../includes/minishell.h"
 
 /**
- * @brief Sorts an array of environment variables in alphabetical order
+ * @brief Sorts an array of environment variables
  * 
  * @param arr Pointer to the array of environment variables
  * @param list_size Size of the array
@@ -30,6 +30,13 @@ void	bubble_sort(t_envp **arr, int list_size)
 	}
 }
 
+/**
+ * @brief Creates a new environment variable and add to the list
+ * 
+ * @param mshell Pointer to the shell structure
+ * @param token Pointer to the token
+ * @param exported Boolean flag whether the variable should be exported
+ */
 void	create_envp_var(t_shell *mshell, t_token **token, bool exported)
 {
 	int		end;
@@ -55,6 +62,12 @@ void	create_envp_var(t_shell *mshell, t_token **token, bool exported)
 	free_envp_content(name, content);
 }
 
+/**
+ * @brief Validates an environment variable name
+ *
+ * @param name The variable name string to validate
+ * @return 1 if the name is valid, 0 if invalid
+ */
 int	validade_export_name(char *name)
 {
 	int	i;
@@ -71,6 +84,12 @@ int	validade_export_name(char *name)
 	return (1);
 }
 
+/**
+ * @brief Checks if a variable string contains a value.
+ *
+ * @param name The variable assignment string to check
+ * @return 1 if the string contains an '=', 0 if no '=' is found
+ */
 int	has_content(char *name)
 {
 	int	i;
@@ -83,6 +102,13 @@ int	has_content(char *name)
 	return (0);
 }
 
+/**
+ * @brief Finds an environment variable node by name
+ * 
+ * @param env_list Pointer to the head of the environment variables list
+ * @param name The name of the environment variable to search
+ * @return Pointer to the t_envp node if found, NULL if not found
+ */
 t_envp	*find_envp(t_envp *env_list, char *name)
 {
 	t_envp	*current;

@@ -31,6 +31,12 @@ char	**ft_copy_envp(char **envp)
 	return (ret);
 }
 
+/**
+ * @brief Modifies the shell level environment variable by a specified value
+ * 
+ * @param node Pointer to the environment variable linked list to search in
+ * @param value Integer value to add to the current shell level
+ */
 void	modify_shell_level(t_envp *node, int value)
 {
 	t_envp	*existing_node;

@@ -3,8 +3,7 @@
 /**
  * @brief Free allocated memory associated with the shell structure
  * 
- * @param mshell Pointer to the main shell structure containing
- * 				allocated resources
+ * @param mshell Pointer to the main shell structure
  * @param token Double pointer to the token list to be freed
  */
 void	handle_error_shell(t_shell *mshell, t_token **token)
@@ -19,8 +18,7 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
 /**
  * @brief Free allocated memory associated with the shell structure
  * 
- * @param mshell Pointer to the main shell structure containing
- * 				allocated resources
+ * @param mshell Pointer to the main shell structure
  * @param token Double pointer to the token list to be freed
  */
 void	free_all(t_shell *mshell, t_token **token)
@@ -36,8 +34,6 @@ void	free_all(t_shell *mshell, t_token **token)
  * @brief Frees a linked list of tokens and all associated memory.
  * 
  * @param token Double pointer to the head of the token linked list.
- *              Can be NULL or point to NULL without causing errors.
- *              After execution, *token will be set to NULL.
  */
 void	free_list(t_token **token)
 {
@@ -63,9 +59,6 @@ void	free_list(t_token **token)
  * @brief Frees a null-terminated array of strings (environment variables)
  * 
  * @param arr Pointer to a null-terminated array of strings to be freed
- * 
- * @note The array must be null-terminated for proper iteration
- * @note After calling this function, the pointer becomes invalid
  */
 /*
 void	free_envp(char **arr)

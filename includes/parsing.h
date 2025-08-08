@@ -3,9 +3,9 @@
 
 //		Utils
 int		quote_checker(char *rd_l);
-void	pipe_count(t_shell *mshell, t_token **token);
 int		check_pipeline(t_token **token);
 int		check_redir_type(t_token *temp);
+void	pipe_count(t_shell *mshell, t_token **token);
 
 //		Parsing
 int		parsing(t_shell *mshell, t_token **token);

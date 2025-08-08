@@ -3,7 +3,7 @@
 /**
  * @brief Creates and adds the first token to the token list from a given line
  * 
- * @param token Double pointer to the list where the new token will be added
+ * @param token Double pointer to the list where the new token
  * @param line Source string from which to extract the token content
  * @param size Number of characters to extract from the beginning of line
  */

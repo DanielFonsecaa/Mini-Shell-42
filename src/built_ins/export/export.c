@@ -66,6 +66,12 @@ void	show_export(t_envp *node)
 	free(arr);
 }
 
+/**
+ * @brief Updates or creates an environment variable
+ * 
+ * @param mshell Pointer to the main shell structure
+ * @param token Pointer to pointer of the current token
+ */
 void	update_export(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
@@ -99,6 +105,12 @@ void	update_export(t_shell *mshell, t_token **token)
 	}
 }
 
+/**
+ * @brief Updates an environment variable node
+ * 
+ * @param name The name=value string containing the new variable
+ * @param node Pointer to the variable node to be updated
+ */
 void	update_envp_var(char *name, t_envp *node)
 {
 	char	*new;

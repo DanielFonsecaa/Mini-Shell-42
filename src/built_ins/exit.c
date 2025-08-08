@@ -3,7 +3,7 @@
  * @brief Verifies if the given string is a valid number.
  * 
  * @param value The string to be checked.
- * @return int Returns 1 if the string is a valid number, 0 otherwise.
+ * @return int Returns 1 if is a valid number, 0 otherwise.
  */
 int	verify_num(char *value)
 {
@@ -23,8 +23,8 @@ int	verify_num(char *value)
 /**
  * @brief Handles the exit command in the shell
  * 
- * @param mshell Pointer to the shell structure containing shell state
- * @param token Double pointer to the token structure containing the command
+ * @param mshell Pointer to the shell structure
+ * @param token Double pointer to the token structure
  */
 void	handle_exit(t_shell *mshell, t_token **token)
 {
