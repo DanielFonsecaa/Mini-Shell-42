@@ -82,7 +82,7 @@ int	cd_syntax(t_shell *mshell, t_token **token)
 			return (0);
 		}
 	}
-	return (1);	
+	return (1);
 }
 
 void	update_envp_with_string(t_shell *mshell, char *key, char *cwd)

@@ -119,6 +119,10 @@ re: fclean all	## Purge & Recompile
 nn:	## Check Norminette
 	norminette -R CheckForbiddenSourceHeader
 
+run:
+	./$(NAME)
+	make val
+
 val: 
 	@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp
 	@valgrind --suppressions=readline.supp --leak-check=full -s --show-leak-kinds=all ./$(NAME)
