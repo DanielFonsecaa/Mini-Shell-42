@@ -73,12 +73,12 @@ int	validade_export_name(char *name)
 	int	i;
 
 	if (!(name[0] == '_' || ft_isalpha(*name)))
-		return (ft_printf_fd(2, "export: %s: not a valid identifier\n", name), 0);
+		return (ft_printf_fd(2, "minishell: export: %s: not a valid identifier\n", name), 0);
 	i = 1;
 	while (name[i] && name[i] != '=')
 	{
 		if (!(ft_isalnum(name[i]) || name[i] == '_'))
-			return (ft_printf_fd(2 ,"export: `%s': not a valid identifier\n", name), 0);
+			return (ft_printf_fd(2 ,"minishell: export: `%s': not a valid identifier\n", name), 0);
 		i++;
 	}
 	return (1);

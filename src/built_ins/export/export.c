@@ -25,11 +25,11 @@ void	handle_export(t_shell *mshell, t_token **token)
 {
 		t_token	*temp;
 
-		temp = *token;
-		if (!temp->next)
+		temp = (*token)->next;
+		if (!temp)
 			show_export(mshell->env_list);
 		else
-			update_export(mshell, token);
+			update_export(mshell, &temp);
 
 }
 
@@ -78,7 +78,7 @@ void	update_export(t_shell *mshell, t_token **token)
 	t_envp	*existing_node;
 	char	*name;
 
-	temp = (*token)->next;
+	temp = *token;
 	name = temp->name;
 	existing_node = find_envp(mshell->env_list, name);
 	if (existing_node)
