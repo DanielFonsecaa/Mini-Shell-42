@@ -22,7 +22,7 @@ void	execute_built_in(t_shell *mshell, t_token **token)
 	else if (ft_strcmp(temp->name, "exit") == 0)
 		handle_exit(mshell, token);
 	else if (ft_strcmp(temp->name, "cd") == 0)
-		return ;
+		handle_cd(mshell, token);
 	else if (ft_strcmp(temp->name, "export") == 0)
 		handle_export(mshell, token);
 	else if (ft_strcmp(temp->name, "unset") == 0)
