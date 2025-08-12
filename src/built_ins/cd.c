@@ -12,7 +12,7 @@ void	handle_cd(t_shell *mshell, t_token **token)
 	}
 	else if (token_list_size(temp) == 0 || ft_strcmp(temp->name, "--") == 0)
 		cd_no_args(mshell) // need to check
-	else if (!cd_syntax(mshell, token)) // to do
+	else if (!cd_syntax(mshell, temp)) // to do
 		mshell->exit_code = 2;
 	else if (ft_strcmp(temp->name, "-") == 0)
 		cd_old_dir("OLDPWD", mshell); //to do
@@ -21,7 +21,28 @@ void	handle_cd(t_shell *mshell, t_token **token)
 }
 
 int	cd_syntax(t_shell *mshell, t_token **token)
-{	
+{
+	char	*flag;
+
+	flag = (*token)->name;
+	if (flag[0] == '-')
+	{
+		if (flag[1] == '-')
+		{
+			if (flag[2] == '\0')
+				return (1);
+			else
+			{
+				ft_printf_fd(2, "minishell: cd: invalid option");
+				return (0);
+			}
+		}
+		if (flag[1] != '\0')
+		{
+				ft_printf_fd(2, "minishell: cd: invalid option");
+				return (0);
+		}
+	}
 	return (1);	
 }
 
