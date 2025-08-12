@@ -6,6 +6,7 @@ void	handle_pwd(t_shell *mshell, t_token **token);
 void	handle_env(t_shell *mshell);
 void	handle_exit(t_shell *mshell, t_token **token);
 void	handle_export(t_shell *mshell, t_token **token);
+void	handle_cd(t_shell *mshell, t_token **token);
 
 // Utils
 int		is_built_in(t_token **token);
@@ -25,5 +26,11 @@ int		envp_list_size(t_envp *node);
 t_envp	*create_node(char *name, char *content, bool exported);
 t_envp	*find_envp(t_envp *node, char *name);
 t_envp	*envp_get_last(t_envp *node);
+
+// CD Utils
+void	change_dir(t_shell *mshell, t_token **token);
+void	cd_to_key(t_shell *mshell, char *key);
+int		cd_syntax(t_shell *mshell, t_token **token);
+void	update_envp_with_string(t_shell *mshell, char *key, char *cwd);
 
 #endif
