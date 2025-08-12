@@ -13,3 +13,4 @@ mkdir "VAR" -------- cria so uma 'hello       world'
 
 
 se apagarem o diretorio, o que acontece o prompt.
+
