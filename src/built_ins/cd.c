@@ -1,5 +1,11 @@
 #include "../../includes/minishell.h"
 
+/**
+ * @brief Handles the cd command in the minishell
+ *
+ * @param mshell Pointer to the shell structure containing environment and state
+ * @param token Pointer to pointer of the token list starting with the cd command
+ */
 void	handle_cd(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
@@ -23,6 +29,12 @@ void	handle_cd(t_shell *mshell, t_token **token)
 		change_dir(mshell, &temp);
 }
 
+/**
+ * @brief Changes the current directory to the specified path.
+ *
+ * @param mshell Pointer to the shell structure containing environment and state.
+ * @param token Pointer to the token containing the target directory path.
+ */
 void	change_dir(t_shell *mshell, t_token **token)
 {
 	char	buffer[PATH_MAX];
@@ -40,6 +52,12 @@ void	change_dir(t_shell *mshell, t_token **token)
 	mshell->exit_code = 0;
 }
 
+/**
+ * @brief Changes the current directory to the path stored in the given environment variable key.
+ *
+ * @param mshell Pointer to the shell structure containing environment and state.
+ * @param key The environment variable key to use as the target directory.
+ */
 void	cd_to_key(t_shell *mshell, char *key)
 {
 	char	buffer[PATH_MAX];
@@ -61,6 +79,13 @@ void	cd_to_key(t_shell *mshell, char *key)
 	}
 }
 
+/**
+ * @brief Checks the syntax of the argument
+ *
+ * @param mshell Pointer to the shell structure (unused).
+ * @param token Pointer to the token containing the cd argument.
+ * @return int 1 if the syntax is valid, 0 otherwise.
+ */
 int	cd_syntax(t_shell *mshell, t_token **token)
 {
 	char	*flag;
@@ -85,6 +110,13 @@ int	cd_syntax(t_shell *mshell, t_token **token)
 	return (1);
 }
 
+/**
+ * @brief Updates the environment variable in the shell with a new value.
+ *
+ * @param mshell Pointer to the shell structure.
+ * @param key The environment variable key (e.g., "PWD" or "OLDPWD").
+ * @param cwd The value to set for the environment variable.
+ */
 void	update_envp_with_string(t_shell *mshell, char *key, char *cwd)
 {
 	char *content; 

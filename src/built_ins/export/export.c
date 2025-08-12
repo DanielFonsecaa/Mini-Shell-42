@@ -116,11 +116,15 @@ void	update_envp_var(char *name, t_envp *node)
 	char	*new;
 	char	*old;
 	int		i;
+	int		j;
 
 	i = 0;
 	while (name[i] && name[i] != '=')
 		i++;
-	new = ft_strdup(name + i + 1);
+	j = 0;
+	while (name[i + j])
+		j++;
+	new = ft_substr(name, i + 1, j);
 	old = node->content;
 	node->content = new;
 	node->exported = true;

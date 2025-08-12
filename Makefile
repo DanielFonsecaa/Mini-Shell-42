@@ -33,6 +33,7 @@ FILES			=	main.c \
 					built_ins/cd.c \
 					built_ins/exit.c \
 					built_ins/env.c \
+					built_ins/unset.c \
 					built_ins/export/export.c \
 					built_ins/export/utils_list_export.c \
 					built_ins/export/utils_export.c \
@@ -119,9 +120,8 @@ re: fclean all	## Purge & Recompile
 nn:	## Check Norminette
 	norminette -R CheckForbiddenSourceHeader
 
-run:
+run: re
 	./$(NAME)
-	make val
 
 val: 
 	@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp

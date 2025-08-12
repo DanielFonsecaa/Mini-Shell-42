@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-
+// need to fixxxxxxxx
 long long	ft_atoll(const char *nptr)
 {
 	int			i;

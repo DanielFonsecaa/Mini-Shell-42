@@ -36,6 +36,7 @@
 # include <stdbool.h>
 # include <stddef.h>
 # include <unistd.h>
+# include <limits.h>
 
 //	Custom libs
 # include "../libft/libft/libft.h"

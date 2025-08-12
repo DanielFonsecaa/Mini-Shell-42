@@ -26,7 +26,7 @@ void	execute_built_in(t_shell *mshell, t_token **token)
 	else if (ft_strcmp(temp->name, "export") == 0)
 		handle_export(mshell, token);
 	else if (ft_strcmp(temp->name, "unset") == 0)
-		return ;
+		handle_unset(mshell, token);
 }
 /**
  * @brief Executes a command, either built-in or external

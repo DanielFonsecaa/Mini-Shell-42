@@ -12,6 +12,8 @@ int	verify_num(char *value)
 	i = 0;
 	if (ft_strlen(value) > 20 || !value)
 			return (0);
+	if (value[i] == '-' || value[i] == '+')
+		i++;
 	while (value[i])
 	{
 		if (!ft_isdigit(value[i]))
@@ -34,7 +36,6 @@ void	handle_exit(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	status = 0;
-	mshell->is_running = false;
 	if (temp->next)
 	{
 		value = temp->next->name;
@@ -45,9 +46,15 @@ void	handle_exit(t_shell *mshell, t_token **token)
 				return ;
 		}
 		status = ft_atoll(value);
+		printf("%lld\n", status);
+		printf("LONG MAX --- %lld\n", LLONG_MAX);
+		printf("LONG MIN --- %lld\n", LLONG_MIN);
+		if (status > LLONG_MAX || status < LLONG_MIN)
+			return ;
 		if (status < 0 || status > 255)
 			status %= 256;
 		mshell->exit_code = status;
 	}
 	ft_printf_fd(mshell->exit_code, "exit\n");
+	mshell->is_running = false;
 }

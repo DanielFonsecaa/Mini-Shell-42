@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_ins.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/12 16:26:39 by dda-fons          #+#    #+#             */
+/*   Updated: 2025/08/12 18:23:10 by dda-fons         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef BUILT_INS_H
 # define BUILT_INS_H
 
@@ -7,6 +19,7 @@ void	handle_env(t_shell *mshell);
 void	handle_exit(t_shell *mshell, t_token **token);
 void	handle_export(t_shell *mshell, t_token **token);
 void	handle_cd(t_shell *mshell, t_token **token);
+void	handle_unset(t_shell *mshell, t_token **token);
 
 // Utils
 int		is_built_in(t_token **token);
@@ -32,5 +45,8 @@ void	change_dir(t_shell *mshell, t_token **token);
 void	cd_to_key(t_shell *mshell, char *key);
 int		cd_syntax(t_shell *mshell, t_token **token);
 void	update_envp_with_string(t_shell *mshell, char *key, char *cwd);
+
+// Unset UTils
+void	remove_envp_var(t_envp *head, t_envp *node);
 
 #endif
