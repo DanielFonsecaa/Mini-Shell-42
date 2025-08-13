@@ -16,7 +16,6 @@ typedef struct s_cmd
 {
 	char			*cmd_name;
 	char			*flags;
-	char			*args;
 }		t_cmd;
 
 typedef struct s_envp
@@ -34,13 +33,18 @@ typedef struct s_shell
 	char			**env_var;
 	char			curr_wd[PATH_MAX];
 	char			*fake_cwd;
+	char            **commands;
+	int             num_commands;
 	int				tokens_size;
 	int				num_pipes;
+	int             fd[2];
+	int             pipes;
 	int				exit_code;
 	bool			has_pipes;
 	bool			closed_pipe;
 	bool			is_running;
 	t_envp			*env_list;
+	pid_t           *pids;
 }		t_shell;
 
 #endif

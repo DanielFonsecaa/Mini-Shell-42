@@ -37,6 +37,8 @@
 # include <stddef.h>
 # include <unistd.h>
 # include <limits.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 //	Custom libs
 # include "../libft/libft/libft.h"

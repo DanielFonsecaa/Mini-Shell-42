@@ -1,6 +1,23 @@
 #include "../../includes/minishell.h"
 
 /**
+ * @brief Executes a command, either built-in or external
+ *
+ * @param mshell Pointer to the shell structure
+ * @param token Double pointer to the token structure
+ */
+void	execute(t_shell *mshell, t_token **token)
+{
+	if (is_built_in(token))
+		execute_built_in(mshell, token);
+    else
+		execute_pipeline(mshell, token);
+	//	ft_printf_fd(1, (*token)->name);
+}
+
+
+
+/**
  * @brief Executes built-in shell commands
  * 
  * @param mshell Pointer to the shell structure
@@ -29,18 +46,4 @@ void	execute_built_in(t_shell *mshell, t_token **token)
 		handle_unset(mshell, token);
 	else
 		return ;
-}
-/**
- * @brief Executes a command, either built-in or external
- * 
- * @param mshell Pointer to the shell structure
- * @param token Double pointer to the token structure
- */
-void	execute(t_shell *mshell, t_token **token)
-{
-	(void)mshell;
-	if (is_built_in(token))
-		execute_built_in(mshell, token);
-	else
-		ft_printf_fd(1, (*token)->name);
 }

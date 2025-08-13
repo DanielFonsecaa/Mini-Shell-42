@@ -60,7 +60,7 @@ void	free_list(t_token **token)
  * 
  * @param arr Pointer to a null-terminated array of strings to be freed
  */
-/*
+
 void	free_envp(char **arr)
 {
 	int	i;
@@ -74,7 +74,7 @@ void	free_envp(char **arr)
 	free(arr);
 	return ;
 }
-*/
+
 /**
  * @brief Frees the content of an environment variable.
  * 

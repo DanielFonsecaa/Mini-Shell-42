@@ -14,7 +14,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 	modify_shell_level(mshell->env_list, + 1);
 	while (mshell->is_running)
 	{
-		//mshell->env_var = ft_copy_envp(envp);
+		mshell->env_var = ft_copy_envp(envp);
 		getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
 		mshell->fake_cwd = ft_strjoin(mshell->curr_wd, " 👉 ");
 		mshell->rd_l = readline(mshell->fake_cwd);
@@ -25,6 +25,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 			free_all(mshell, token);
 			continue ;
 		}
+		set_mshell_commands(mshell, token);
 		execute(mshell, token);
 /*		if (ft_strcmp(mshell->rd_l, "exit") == 0)
 			mshell->is_running = false;*/
