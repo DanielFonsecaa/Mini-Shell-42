@@ -51,13 +51,12 @@ void	handle_exit(t_shell *mshell, t_token **token)
 				ft_printf_fd(2, "Error exit: %s : numeric argument required\n", value);
 				return ;
 		}
-		if (ft_strcmp(temp->next->name, ""))
-		printf("%lld\n", status);
-		printf("LONG MAX --- %lld\n", LLONG_MAX);
-		printf("LONG MIN --- %lld\n", LLONG_MIN);
+		//printf("%lld\n", status);
+		//printf("LONG MAX --- %lld\n", LLONG_MAX);
+		//printf("LONG MIN --- %lld\n", LLONG_MIN);
 		if (status < 0 || status > 255)
 			status %= 256;
 		mshell->exit_code = status;
 	}
-	ft_printf_fd(mshell->exit_code, "exit\n");
+	ft_printf_fd(1, "exit\n");
 }

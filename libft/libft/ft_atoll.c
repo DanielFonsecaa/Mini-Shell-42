@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 12:04:38 by mipinhei          #+#    #+#             */
-/*   Updated: 2025/08/13 12:24:21 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/08/13 13:07:12 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,18 @@
 
 static	int	verify_overflow(int sign, int digit, long long *result)
 {
-	if (sign == 1 && (*result > (LLONG_MAX - digit) / 10))
-		return (0);
-	if (sign == -1 && (*result < (LLONG_MIN + digit) / 10))
-		return (0);
+	if (sign == 1)
+	{
+		if (*result > (LLONG_MAX - digit) / 10)
+			return (0);
+	}
+	else
+	{
+		if (*result > 922337203685477580)
+			return (0);
+		if (*result == 922337203685477580 && digit > 8)
+			return (0);
+	}
 	*result = *result * 10 + digit;
 	return (1);
 }
