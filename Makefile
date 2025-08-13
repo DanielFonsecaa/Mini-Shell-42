@@ -39,7 +39,10 @@ FILES			=	main.c \
 					built_ins/export/utils_list_export.c \
 					built_ins/export/utils_export.c \
 					execute/execute.c \
-					inits/inits.c
+					execute/path.c \
+					execute/regular.c \
+					inits/inits.c \
+					utils/comand_utils.c
 
 SRC				= $(addprefix $(SRC_PATH)/, $(FILES))
 OBJS			= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)
