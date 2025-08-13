@@ -6,15 +6,26 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 12:04:38 by mipinhei          #+#    #+#             */
-/*   Updated: 2025/08/13 11:37:10 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:24:21 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-// need to fixxxxxxxx
-long long	ft_atoll(const char *nptr)
+
+static	int	verify_overflow(int sign, int digit, long long *result)
+{
+	if (sign == 1 && (*result > (LLONG_MAX - digit) / 10))
+		return (0);
+	if (sign == -1 && (*result < (LLONG_MIN + digit) / 10))
+		return (0);
+	*result = *result * 10 + digit;
+	return (1);
+}
+
+int	ft_atoll(const char *nptr, long long *value)
 {
 	int			i;
+	int			digit;
 	int			sign;
 	long long	result;
 
@@ -31,8 +42,11 @@ long long	ft_atoll(const char *nptr)
 	}
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		result = result * 10 + (nptr[i] - '0');
+		digit = nptr[i] - '0';
+		if (!verify_overflow(sign, digit, &result))
+			return (0);
 		i++;
 	}
-	return (result * sign);
+	*value = result * sign;
+	return (1);
 }

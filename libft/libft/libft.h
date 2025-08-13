@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:08:11 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/08/13 11:28:39 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:12:51 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int			ft_memcmp(const void *s1, const void *s2, size_t n);
 char		*ft_strnstr(const char *big, const char *little, size_t len);
 int			ft_atoi(const char *nptr);
 long		ft_atol(const char *nptr);
-long long	ft_atoll(const char *nptr);
+int			ft_atoll(const char *nptr, long long *value);
 void		*ft_calloc(size_t nmemb, size_t size);
 char		*ft_strdup(const char *s);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
