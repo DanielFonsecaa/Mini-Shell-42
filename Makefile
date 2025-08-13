@@ -29,10 +29,11 @@ FILES			=	main.c \
 					parsing/utils_parse.c \
 					parsing/syntax.c \
 					built_ins/built_ins.c \
-					built_ins/pwd.c \
 					built_ins/cd.c \
-					built_ins/exit.c \
+					built_ins/echo.c \
 					built_ins/env.c \
+					built_ins/exit.c \
+					built_ins/pwd.c \
 					built_ins/unset.c \
 					built_ins/export/export.c \
 					built_ins/export/utils_list_export.c \
@@ -123,6 +124,9 @@ nn:	## Check Norminette
 run: re
 	./$(NAME)
 
+gdb: re
+	gdb --tui ./minishell
+
 val: 
 	@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp
 	@valgrind --suppressions=readline.supp --leak-check=full -s --show-leak-kinds=all ./$(NAME)
@@ -131,7 +135,7 @@ forbidden:	## Show forbidden functions
 	nm -g ./$(NAME) | grep "U"
 
 
-.PHONY: all deps clean fclean libclean re get_libft forbidden start nn val
+.PHONY: all deps clean fclean libclean re get_libft forbidden start nn val gdb run
 
 #==============================================================================#
 #                                  UTILS                                       #

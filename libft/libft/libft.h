@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:08:11 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/08/06 12:08:19 by mipinhei         ###   ########.fr       */
+/*   Updated: 2025/08/13 11:28:39 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <limits.h>
 # include "../gnl/get_next_line.h"
 # include "../printf/ft_printf.h"
 # include "../gnl/get_next_line_bonus.h"

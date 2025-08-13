@@ -1,4 +1,7 @@
 #include "../../includes/minishell.h"
+
+//-9223372036854775808
+//9223372036854775807
 /**
  * @brief Verifies if the given string is a valid number.
  * 

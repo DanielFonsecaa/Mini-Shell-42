@@ -14,7 +14,7 @@ void	execute_built_in(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	if (ft_strcmp(temp->name, "echo") == 0)
-		return ;
+		handle_echo(mshell, token);
 	else if (ft_strcmp(temp->name, "env") == 0)
 		handle_env(mshell);
 	else if (ft_strcmp(temp->name, "pwd") == 0)
@@ -27,6 +27,8 @@ void	execute_built_in(t_shell *mshell, t_token **token)
 		handle_export(mshell, token);
 	else if (ft_strcmp(temp->name, "unset") == 0)
 		handle_unset(mshell, token);
+	else
+		return ;
 }
 /**
  * @brief Executes a command, either built-in or external
