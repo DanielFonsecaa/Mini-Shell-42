@@ -1,7 +1,5 @@
 #include "../../includes/minishell.h"
 
-//-9223372036854775808
-//9223372036854775807
 /**
  * @brief Verifies if the given string is a valid number.
  * 
@@ -51,9 +49,6 @@ void	handle_exit(t_shell *mshell, t_token **token)
 				ft_printf_fd(2, "Error exit: %s : numeric argument required\n", value);
 				return ;
 		}
-		//printf("%lld\n", status);
-		//printf("LONG MAX --- %lld\n", LLONG_MAX);
-		//printf("LONG MIN --- %lld\n", LLONG_MIN);
 		if (status < 0 || status > 255)
 			status %= 256;
 		mshell->exit_code = status;

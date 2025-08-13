@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 16:26:39 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/08/13 10:57:09 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/08/13 15:50:53 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	bubble_sort(t_envp **arr, int list_size);
 void	show_export(t_envp *node);
 void	update_export(t_shell *mshell, t_token **token);
 void	update_envp_var(char *name, t_envp *node);
+void	append_envp_var(char *name, t_envp *node);
 void	create_envp_list(t_envp **env_list, char **env);
 void	create_envp_var(t_shell *mshell, t_token **token, bool exported);
 void	envp_list_addback(t_envp **list, t_envp *new_node);
@@ -52,5 +53,9 @@ void	remove_envp_var(t_envp *head, t_envp *node);
 
 // Echo Utils
 t_token	**get_args(t_token **token);
+void	print_echo(t_token **arr, bool flag, int i);
+int		valid_n(char *str);
+int		handle_n(t_token **token, int *i);
+char	which_quote(char *str);
 
 #endif

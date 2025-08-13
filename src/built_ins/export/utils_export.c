@@ -75,7 +75,7 @@ int	validade_export_name(char *name)
 	if (!(name[0] == '_' || ft_isalpha(*name)))
 		return (ft_printf_fd(2, "minishell: export: %s: not a valid identifier\n", name), 0);
 	i = 1;
-	while (name[i] && name[i] != '=')
+	while (name[i] && (name[i] != '=' && name[i] != '+'))
 	{
 		if (!(ft_isalnum(name[i]) || name[i] == '_'))
 			return (ft_printf_fd(2 ,"minishell: export: `%s': not a valid identifier\n", name), 0);
@@ -118,7 +118,7 @@ t_envp	*find_envp(t_envp *env_list, char *name)
 		return (NULL);
 	current = env_list;
 	i = 0;
-	while (name[i] && name[i] != '=')
+	while (name[i] && (name[i] != '=' && name[i] != '+'))
 		i++;
 	name = ft_substr(name, 0, i);
 	while (current)
