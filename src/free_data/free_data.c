@@ -10,7 +10,8 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
 {
 	free_list(token);
 	free_envp_list(mshell->env_list);
-//	free_envp(mshell->env_var);
+	free_cmd_struct(mshell);
+	free_arr(mshell->env_var);
 	free(mshell->fake_cwd);
 	free(mshell->rd_l);
 }
@@ -24,8 +25,9 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
 void	free_all(t_shell *mshell, t_token **token)
 {
 	free_list(token);
+	free_cmd_struct(mshell);
 //	free_envp_list(mshell->env_list);
-//	free_envp(mshell->env_var);
+	free_arr(mshell->env_var);
 	free(mshell->fake_cwd);
 	free(mshell->rd_l);
 }
@@ -61,7 +63,7 @@ void	free_list(t_token **token)
  * @param arr Pointer to a null-terminated array of strings to be freed
  */
 
-void	free_envp(char **arr)
+void	free_arr(char **arr)
 {
 	int	i;
 
@@ -108,4 +110,27 @@ void	free_envp_list(t_envp *node)
 		node = temp;
 	}
 	node = NULL;
+}
+
+void    free_cmd_struct(t_shell *mshell)
+{
+	int i;
+
+	i = 0;
+	if (mshell->command[i])
+	{
+		while (mshell->command[i])
+		{
+			free(mshell->command[i]->name);
+			if (mshell->command[i]->flags)
+				free_arr(mshell->command[i]->flags);
+			if (mshell->command[i]->args)
+				free_arr(mshell->command[i]->args);
+			if (mshell->command[i])
+				free(mshell->command[i]);
+			i++;
+		}
+		free(mshell->command);
+		mshell->command = NULL;
+	}
 }

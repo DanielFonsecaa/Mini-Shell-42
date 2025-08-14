@@ -6,6 +6,7 @@ void	error_shell(t_shell *mshell, t_token **token);
 void	free_all(t_shell *mshell, t_token **token);
 void	free_envp_list(t_envp *list);
 void	free_envp_content(char *name, char *content);
-void	free_envp(char **arr);
+void	free_arr(char **arr);
+void    free_cmd_struct(t_shell *mshell);
 
 #endif
