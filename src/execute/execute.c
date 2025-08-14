@@ -11,8 +11,8 @@ void	execute(t_shell *mshell, t_token **token)
 	if (is_built_in(token))
 		execute_built_in(mshell, token);
     else
-		execute_pipeline(mshell, token);
-	//	ft_printf_fd(1, (*token)->name);
+		//execute_pipeline(mshell, token);
+		ft_printf_fd(1, (*token)->name);
 }
 
 

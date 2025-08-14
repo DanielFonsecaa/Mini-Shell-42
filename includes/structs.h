@@ -14,8 +14,9 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	char			*cmd_name;
-	char			*flags;
+	char			*name;
+	char			**flags;
+	char            **args;
 }		t_cmd;
 
 typedef struct s_envp
@@ -44,6 +45,7 @@ typedef struct s_shell
 	bool			closed_pipe;
 	bool			is_running;
 	t_envp			*env_list;
+	t_cmd           **command;
 	pid_t           *pids;
 }		t_shell;
 

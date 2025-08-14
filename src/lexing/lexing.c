@@ -92,7 +92,11 @@ void	set_t_type(t_token **token)
 		else if (ft_strcmp("|", temp->name) == 0)
 			temp->type = PIPE;
 		else
+		{
 			temp->type = ARG;
+			if (temp->name[0] == '-')
+				temp->type = FLAG;
+		}
 		temp = temp->next;
 	}
 }

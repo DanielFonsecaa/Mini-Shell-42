@@ -25,7 +25,6 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 			free_all(mshell, token);
 			continue ;
 		}
-		set_mshell_commands(mshell, token);
 		execute(mshell, token);
 /*		if (ft_strcmp(mshell->rd_l, "exit") == 0)
 			mshell->is_running = false;*/
