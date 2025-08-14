@@ -23,7 +23,22 @@ void    pipes(t_shell *mshell, t_token **token)
 		execute_pipeline(mshell, token);
 	}
 	else
-		execute_pipeline(mshell, token);
+	{
+		mshell->pids = safe_malloc(sizeof(pid_t));
+		mshell->pids[0] = fork();
+		if (mshell->pids[0] == -1)
+		{
+			perror("fork");
+			return;
+		}
+		if (mshell->pids[0] == 0)
+		{
+			execute_final(mshell, token, mshell->command[0]);
+			exit(127);
+		}
+		wait_and_get_exit_status(mshell);
+		free(mshell->pids);
+	}
 
 //	else
 		//execute no pipes
