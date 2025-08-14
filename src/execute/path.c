@@ -39,16 +39,19 @@ void execute_final(t_shell *mshell, t_token **token, t_cmd *command)
 	path = ft_get_path(mshell->env_var, command->name);
 	if (!path)
 	{
-		handle_error_shell(mshell , token);
-		ft_printf_fd(2, "command not found\n", 2);
+		handle_error_shell(mshell, token);
+		ft_printf_fd(2, "command not found\n");
 		exit(127);
 	}
 
 	exec_command = mshell->exec_command;
 	if (execve(path, exec_command, mshell->env_var) == -1)
 	{
-		handle_error_shell(mshell , token);
-		exit(1);
+		if (path != command->name)
+			free(path);
+		handle_error_shell(mshell, token);
+		perror("execve");
+		exit(126);
 	}
 }
 
@@ -78,30 +81,36 @@ void    format_cmd(t_shell *mshell, t_cmd *command)
 		mshell->exec_command[i++] = command->args[size++];
 }
 
-void	setup_child(int index, int num_cmds, int **pipes, int *fd)
+void setup_child(int index, int num_cmds, int **pipes, int *fd)
 {
+	// First set up input redirection
 	if (index == 0)
 	{
 		if (fd[0] != -1)
-		{
 			dup2(fd[0], STDIN_FILENO);
-			if (fd[0] > 2)
-				close(fd[0]);
-		}
-		else
-			close(STDIN_FILENO);
 	}
 	else
-		dup2(pipes[index - 1][0], STDIN_FILENO);
-	if (index == num_cmds - 1 && fd[1] != -1)
 	{
-		dup2(fd[1], STDOUT_FILENO);
-		if (fd[1] > 2)
-			close(fd[1]);
+		dup2(pipes[index - 1][0], STDIN_FILENO);
 	}
-	else if (index != num_cmds - 1)
+
+	// Then set up output redirection
+	if (index == num_cmds - 1)
+	{
+		if (fd[1] != -1)
+			dup2(fd[1], STDOUT_FILENO);
+	}
+	else
+	{
 		dup2(pipes[index][1], STDOUT_FILENO);
-	close_fds(pipes, num_cmds - 1, -1, -1);
+	}
+
+	// Close all remaining pipe fds
+	for (int i = 0; i < num_cmds - 1; i++)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+	}
 }
 
 /*

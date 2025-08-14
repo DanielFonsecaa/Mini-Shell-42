@@ -2,7 +2,6 @@
 
 void	execute_pipeline(t_shell *mshell, t_token **token)
 {
-	(void)token;
 	int	i;
 
 	i = 0;
@@ -10,21 +9,26 @@ void	execute_pipeline(t_shell *mshell, t_token **token)
 	{
 		mshell->pids[i] = fork();
 		if (mshell->pids[i] == -1)
+		{
 			perror("fork");
-			//	ft_fork_error(mshell);
-		else if (mshell->pids[i] == 0)
+			return ;
+		}
+		if (mshell->pids[i] == 0)
 		{
 			setup_child(i, mshell->num_commands, mshell->pipes, mshell->fd);
-			cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
-//			if (h_d)
-//				execute_final(argv[i + 3], envp, NULL);
 			execute_final(mshell, token, mshell->command[i]);
 			exit(127);
 		}
 		i++;
 	}
+	for (int j = 0; j < mshell->num_commands - 1; j++)
+	{
+		close(mshell->pipes[j][0]);
+		close(mshell->pipes[j][1]);
+	}
+
 	wait_and_get_exit_status(mshell);
-	//free(mshell->pids);
+	cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
 }
 
 void wait_and_get_exit_status(t_shell *mshell)
