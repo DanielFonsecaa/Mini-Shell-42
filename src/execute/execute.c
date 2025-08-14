@@ -12,10 +12,9 @@ void	execute(t_shell *mshell, t_token **token)
 		execute_built_in(mshell, token);
 	else
 		pipes(mshell, token);
-		//ft_printf_fd(1, (*token)->name);
 }
 
-void    pipes(t_shell *mshell, t_token **token)
+void	pipes(t_shell *mshell, t_token **token)
 {
 	if (mshell->has_pipes)
 	{
@@ -39,9 +38,6 @@ void    pipes(t_shell *mshell, t_token **token)
 		wait_and_get_exit_status(mshell);
 		free(mshell->pids);
 	}
-
-//	else
-		//execute no pipes
 }
 
 /**

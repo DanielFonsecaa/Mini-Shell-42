@@ -26,14 +26,13 @@ char	*ft_get_path(char **envp, char *cmd)
 		free(path);
 		i++;
 	}
-	free_arr(full_path);
-	return (NULL);
+	return (free_arr(full_path), NULL);
 }
 
 void execute_final(t_shell *mshell, t_token **token, t_cmd *command)
 {
-	char    *path;
-	char    **exec_command;
+	char	*path;
+	char	**exec_command;
 
 	format_cmd(mshell, command);
 	path = ft_get_path(mshell->env_var, command->name);
@@ -55,10 +54,32 @@ void execute_final(t_shell *mshell, t_token **token, t_cmd *command)
 	}
 }
 
-void    format_cmd(t_shell *mshell, t_cmd *command)
+void setup_child(int index, int num_cmds, int **pipes, int *fd)
 {
-	int i;
-	int size;
+	if (index == 0)
+	{
+		if (fd && fd[0] > 2)
+			dup2(fd[0], STDIN_FILENO);
+	}
+	else
+		dup2(pipes[index - 1][0], STDIN_FILENO);
+	if (index == num_cmds - 1)
+	{
+		if (fd && fd[1] > 2)
+			dup2(fd[1], STDOUT_FILENO);
+	}
+	else
+		dup2(pipes[index][1], STDOUT_FILENO);
+	if (fd)
+		close_fds(pipes, num_cmds, fd[0], fd[1]);
+	else
+		close_fds(pipes, num_cmds, -1, -1);
+}
+
+void	format_cmd(t_shell *mshell, t_cmd *command)
+{
+	int	i;
+	int	size;
 
 	i = 0;
 	size = 0;
@@ -81,50 +102,7 @@ void    format_cmd(t_shell *mshell, t_cmd *command)
 		mshell->exec_command[i++] = command->args[size++];
 }
 
-void setup_child(int index, int num_cmds, int **pipes, int *fd)
-{
-	// First set up input redirection
-	if (index == 0)
-	{
-		if (fd[0] != -1)
-			dup2(fd[0], STDIN_FILENO);
-	}
-	else
-	{
-		dup2(pipes[index - 1][0], STDIN_FILENO);
-	}
-
-	// Then set up output redirection
-	if (index == num_cmds - 1)
-	{
-		if (fd[1] != -1)
-			dup2(fd[1], STDOUT_FILENO);
-	}
-	else
-	{
-		dup2(pipes[index][1], STDOUT_FILENO);
-	}
-
-	// Close all remaining pipe fds
-	for (int i = 0; i < num_cmds - 1; i++)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-	}
-}
-
-/*
-int	**create_single_pipe(int *pipes)
-{
-	pipes = safe_calloc(2, sizeof(int));
-	pipe(pipes) == -1)
-	{
-		perror("pipe");
-		return (0);
-	}
-	return (1);
-}*/
-
+//falta lidar com erros caso falhe
 void	create_pipes(int num_pipes, t_shell *mshell)
 {
 	int	i;
@@ -146,7 +124,7 @@ void	create_pipes(int num_pipes, t_shell *mshell)
 		i++;
 	}
 }
-
+// falta lidar com erros no create pipes caso falhe
 void	init_pipeline(t_shell *mshell)
 {
 	create_pipes(mshell->num_commands - 1, mshell);

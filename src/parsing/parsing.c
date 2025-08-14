@@ -46,6 +46,8 @@ int	parsing(t_shell *mshell, t_token **token)
 		return (0);
 	count_num_commands(mshell, token);
 	mshell->command = set_cmd_arr(mshell, token);
+	mshell->fd[0] = -1;
+	mshell->fd[1] = -1;
 	print_cmd_arr(mshell);
 	//return (0); //debug process
 	ft_printf_fd(1, "token size --%i\n num pipes --%i\n", mshell->tokens_size,
