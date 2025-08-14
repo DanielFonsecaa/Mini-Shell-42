@@ -128,4 +128,5 @@ void	append_envp_var(char *name, t_envp *node)
 	node->content = ft_strjoin(old, new);
 	node->exported = true;
 	free(old);
+	free(new);
 }

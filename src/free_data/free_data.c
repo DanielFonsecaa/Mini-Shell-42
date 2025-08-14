@@ -12,8 +12,10 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
 	free_envp_list(mshell->env_list);
 	free_cmd_struct(mshell);
 	free_arr(mshell->env_var);
+	free(mshell->exec_command); //////////////
 	free(mshell->fake_cwd);
 	free(mshell->rd_l);
+
 }
 
 /**
@@ -28,6 +30,7 @@ void	free_all(t_shell *mshell, t_token **token)
 	free_cmd_struct(mshell);
 //	free_envp_list(mshell->env_list);
 	free_arr(mshell->env_var);
+	free(mshell->exec_command); ////////////
 	free(mshell->fake_cwd);
 	free(mshell->rd_l);
 }
@@ -74,7 +77,6 @@ void	free_arr(char **arr)
 		i++;
 	}
 	free(arr);
-	return ;
 }
 
 /**
@@ -133,4 +135,37 @@ void    free_cmd_struct(t_shell *mshell)
 		free(mshell->command);
 		mshell->command = NULL;
 	}
+}
+
+void	close_fds(int **pipes, int num_pipes, int fd_in, int fd_out)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_pipes)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
+	}
+	if (fd_in != -1)
+		close(fd_in);
+	if (fd_out != -1)
+		close(fd_out);
+}
+
+void	cleanup_pipes(int **pipes, int num_pipes, t_shell *mshell)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_pipes)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		free(pipes[i]);
+		i++;
+	}
+	free(pipes);
+	free(mshell->pids);
 }

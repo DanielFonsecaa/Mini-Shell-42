@@ -34,12 +34,12 @@ typedef struct s_shell
 	char			**env_var;
 	char			curr_wd[PATH_MAX];
 	char			*fake_cwd;
-	char            **commands;
+	char            **exec_command;
 	int             num_commands;
 	int				tokens_size;
 	int				num_pipes;
 	int             fd[2];
-	int             pipes;
+	int             **pipes;
 	int				exit_code;
 	bool			has_pipes;
 	bool			closed_pipe;

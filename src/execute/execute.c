@@ -8,14 +8,26 @@
  */
 void	execute(t_shell *mshell, t_token **token)
 {
-	if (is_built_in(token))
+	if (is_built_in(token) && !mshell->has_pipes)
 		execute_built_in(mshell, token);
-    else
-		//execute_pipeline(mshell, token);
-		ft_printf_fd(1, (*token)->name);
+	else
+		pipes(mshell, token);
+		//ft_printf_fd(1, (*token)->name);
 }
 
+void    pipes(t_shell *mshell, t_token **token)
+{
+	if (mshell->has_pipes)
+	{
+		init_pipeline(mshell);
+		execute_pipeline(mshell, token);
+	}
+	else
+		execute_pipeline(mshell, token);
 
+//	else
+		//execute no pipes
+}
 
 /**
  * @brief Executes built-in shell commands
