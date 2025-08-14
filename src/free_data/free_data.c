@@ -114,7 +114,7 @@ void	free_envp_list(t_envp *node)
 	node = NULL;
 }
 
-void    free_cmd_struct(t_shell *mshell)
+void	free_cmd_struct(t_shell *mshell)
 {
 	int i;
 
@@ -142,15 +142,15 @@ void	close_fds(int **pipes, int num_pipes, int fd_in, int fd_out)
 	int	i;
 
 	i = 0;
-	while (i < num_pipes)
+	while (i < num_pipes - 1)
 	{
 		close(pipes[i][0]);
 		close(pipes[i][1]);
 		i++;
 	}
-	if (fd_in != -1)
+	if (fd_in > 2)
 		close(fd_in);
-	if (fd_out != -1)
+	if (fd_out > 2)
 		close(fd_out);
 }
 
