@@ -67,6 +67,8 @@ void setup_child(int index, int num_cmds, int **pipes, int *fd)
 	{
 		if (fd && fd[1] > 2)
 			dup2(fd[1], STDOUT_FILENO);
+		else if (pipes[index])  // If no redirection but has pipe
+			dup2(pipes[index][1], STDOUT_FILENO);
 	}
 	else
 		dup2(pipes[index][1], STDOUT_FILENO);
@@ -124,10 +126,14 @@ void	create_pipes(int num_pipes, t_shell *mshell)
 		i++;
 	}
 }
+
 // falta lidar com erros no create pipes caso falhe
 void	init_pipeline(t_shell *mshell)
 {
-	create_pipes(mshell->num_commands - 1, mshell);
+	int num_pipes;
+
+	num_pipes = mshell->num_commands + mshell->num_redirecs - 1;
+	create_pipes(num_pipes, mshell);
 	mshell->pids = safe_malloc(sizeof(pid_t) * mshell->num_commands);
 	if (!mshell->pids)
 	{

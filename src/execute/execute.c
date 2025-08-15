@@ -8,7 +8,7 @@
  */
 void	execute(t_shell *mshell, t_token **token)
 {
-	if (is_built_in(token) && !mshell->has_pipes)
+	if (is_built_in(token) && !mshell->has_pipes && !mshell->has_redirect)
 		execute_built_in(mshell, token);
 	else
 		pipes(mshell, token);
@@ -16,10 +16,10 @@ void	execute(t_shell *mshell, t_token **token)
 
 void	pipes(t_shell *mshell, t_token **token)
 {
-	if (mshell->has_pipes)
+	if (mshell->has_pipes || mshell->has_redirect)
 	{
 		init_pipeline(mshell);
-		execute_pipeline(mshell, token);
+		execute_pipe_redirect(mshell, token);
 	}
 	else
 	{
