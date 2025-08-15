@@ -9,6 +9,7 @@
  */
 static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 {
+	handle_signal();
 	mshell->is_running = true;
 	create_envp_list(&(mshell->env_list), envp);
 	modify_shell_level(mshell->env_list, 1);
