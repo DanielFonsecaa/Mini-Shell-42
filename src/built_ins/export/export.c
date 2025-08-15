@@ -14,7 +14,13 @@ void	handle_export(t_shell *mshell, t_token **token)
 		if (!temp)
 			show_export(mshell->env_list);
 		else
-			update_export(mshell, &temp);
+		{
+			while (temp)
+			{
+				update_export(mshell, &temp);
+				temp = temp->next;
+			}
+		}
 
 }
 

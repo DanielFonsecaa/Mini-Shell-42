@@ -11,7 +11,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 {
 	mshell->is_running = true;
 	create_envp_list(&(mshell->env_list), envp);
-	modify_shell_level(mshell->env_list, + 1);
+	modify_shell_level(mshell->env_list, 1);
 	while (mshell->is_running)
 	{
 		mshell->env_var = ft_copy_envp(envp);
@@ -20,7 +20,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 		mshell->rd_l = readline(mshell->fake_cwd);
 		if (mshell->rd_l)
 			add_history(mshell->rd_l);
-		if (!parsing(mshell, token))
+		if (!mshell->rd_l[0] || !parsing(mshell, token))
 		{
 			free_all(mshell, token);
 			continue ;

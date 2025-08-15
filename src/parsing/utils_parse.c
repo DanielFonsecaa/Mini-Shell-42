@@ -71,14 +71,21 @@ void	pipe_count(t_shell *mshell, t_token **token)
 	t_token	*temp;
 
 	mshell->num_pipes = 0;
+	mshell->num_redirecs = 0;
 	mshell->has_pipes = false;
+	mshell->has_redirect = false;
 	temp = *token;
 	while (temp)
 	{
 		if (temp->type == PIPE)
 			mshell->num_pipes++;
+		if (temp->type == APPEND || temp->type == INFILE
+			|| temp->type == OUTFILE || temp->type == HERE)
+			mshell->num_redirecs++;
 		temp = temp->next;
 	}
 	if (mshell->num_pipes > 0)
 		mshell->has_pipes = true;
+	if (mshell->num_redirecs > 0)
+		mshell->has_redirect = true;
 }

@@ -14,11 +14,15 @@ void	handle_unset(t_shell *mshell, t_token **token)
 	if (!token || !*token || !(*token)->next)
 		return ;
 	temp = (*token)->next;
-	node = find_envp(mshell->env_list, temp->name);
-	if (!node)
-		return ;
-	remove_envp_var(mshell->env_list, node);
+	while (temp)
+	{
+		node = find_envp(mshell->env_list, temp->name);
+		if (node)
+			remove_envp_var(mshell->env_list, node);
+		temp = temp->next;
+	}
 	mshell->exit_code = 0;
+
 }
 
 /**

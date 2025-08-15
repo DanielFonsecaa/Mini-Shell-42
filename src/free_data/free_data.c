@@ -8,14 +8,21 @@
  */
 void	handle_error_shell(t_shell *mshell, t_token **token)
 {
-	free_list(token);
-	free_envp_list(mshell->env_list);
-	free_cmd_struct(mshell);
-	free_arr(mshell->env_var);
-	free(mshell->exec_command); //////////////
-	free(mshell->fake_cwd);
-	free(mshell->rd_l);
 
+	if (token)
+		free_list(token);
+	if (mshell->command)
+		free_cmd_struct(mshell->command);
+	if (mshell->env_list)
+		free_envp_list(mshell->env_list);
+	if (mshell->env_var)
+		free_arr(mshell->env_var);
+	if (mshell->exec_command)
+		free(mshell->exec_command); ////////////
+	if (mshell->fake_cwd)
+		free(mshell->fake_cwd);
+	if (mshell->rd_l)
+		free(mshell->rd_l);
 }
 
 /**
@@ -26,13 +33,19 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
  */
 void	free_all(t_shell *mshell, t_token **token)
 {
-	free_list(token);
-	free_cmd_struct(mshell);
+	if (token)
+		free_list(token);
+	if (mshell->command)
+	free_cmd_struct(mshell->command);
 //	free_envp_list(mshell->env_list);
-	free_arr(mshell->env_var);
-	free(mshell->exec_command); ////////////
-	free(mshell->fake_cwd);
-	free(mshell->rd_l);
+	if (mshell->env_var)
+		free_arr(mshell->env_var);
+	if (mshell->exec_command)
+		free(mshell->exec_command); ////////////
+	if (mshell->fake_cwd)
+		free(mshell->fake_cwd);
+	if (mshell->rd_l)
+		free(mshell->rd_l);
 }
 
 /**
@@ -114,26 +127,26 @@ void	free_envp_list(t_envp *node)
 	node = NULL;
 }
 
-void	free_cmd_struct(t_shell *mshell)
+void	free_cmd_struct(t_cmd **commands)
 {
 	int i;
 
 	i = 0;
-	if (mshell->command[i])
+	if (commands[i])
 	{
-		while (mshell->command[i])
+		while (commands[i])
 		{
-			free(mshell->command[i]->name);
-			if (mshell->command[i]->flags)
-				free_arr(mshell->command[i]->flags);
-			if (mshell->command[i]->args)
-				free_arr(mshell->command[i]->args);
-			if (mshell->command[i])
-				free(mshell->command[i]);
+			free(commands[i]->name);
+			if (commands[i]->flags)
+				free_arr(commands[i]->flags);
+			if (commands[i]->args)
+				free_arr(commands[i]->args);
+			if (commands[i])
+				free(commands[i]);
 			i++;
 		}
-		free(mshell->command);
-		mshell->command = NULL;
+		free(commands);
+		commands = NULL;
 	}
 }
 

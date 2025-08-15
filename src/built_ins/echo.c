@@ -11,6 +11,7 @@ void	handle_echo(t_shell *mshell, t_token **token)
 	temp = *token;
 	flag = false;
 	//get printable args
+
 	args_arr = get_args(&temp);
 	if (handle_n(args_arr, &i) > 0)
 		flag = true;

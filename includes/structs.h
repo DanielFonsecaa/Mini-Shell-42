@@ -38,10 +38,12 @@ typedef struct s_shell
 	int             num_commands;
 	int				tokens_size;
 	int				num_pipes;
+	int				num_redirecs;
 	int             fd[2];
 	int             **pipes;
 	int				exit_code;
 	bool			has_pipes;
+	bool			has_redirect;
 	bool			closed_pipe;
 	bool			is_running;
 	t_envp			*env_list;
