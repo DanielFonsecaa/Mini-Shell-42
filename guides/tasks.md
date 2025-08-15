@@ -11,7 +11,7 @@ minishell/
 │       ├── echo.c
 │       ├── cd.c
 │       └── ...               # Other builtins (export, unset, etc.)
-├── include/
+├── includes/
 │   └── minishell.h           # Project-wide header and structure definitions
 ├── libft/                    # Your custom libft library
 ├── Makefile                  # Build script with required rules
@@ -22,19 +22,19 @@ minishell/
 
 ### 🔹Task	Done
 
-- [ ] All source files are .c, .h, and a Makefile only
-- [ ] The program is named minishell
-- [ ] The Makefile has these rules: NAME, all, clean, fclean, re
-- [ ] Uses only authorized functions from the subject	
-- [ ] Uses only one global variable for signal handling	
+- [x] All source files are .c, .h, and a Makefile only
+- [x] The program is named minishell
+- [x] The Makefile has these rules: NAME, all, clean, fclean, re
+- [x] Uses only authorized functions from the subject	
+- [x] Uses only one global variable for signal handling	
 
 ## 🛠️ Core Features
 
 ### 🔹 Basic Shell Loop
 
-* [ ] Displays a prompt
-* [ ] Reads input using `readline()`
-* [ ] Adds command line to history with `add_history()`
+* [x] Displays a prompt
+* [x] Reads input using `readline()`
+* [x] Adds command line to history with `add_history()`
 * [ ] Handles `Ctrl-C`, `Ctrl-D`, `Ctrl-\` like bash
 
 ### 🔹 Parsing
@@ -42,44 +42,44 @@ minishell/
 * [ ] Handles unquoted and quoted words correctly
 * [ ] Supports `'` (single quotes, no expansion inside)
 * [ ] Supports `"` (double quotes, with `$` expansion inside)
-* [ ] Detects and reports unclosed quotes
-* [ ] Tokenizes metacharacters: `<`, `>`, `<<`, `>>`, `|`
+* [x] Detects and reports unclosed quotes
+* [x] Tokenizes metacharacters: `<`, `>`, `<<`, `>>`, `|`
 * [ ] Expands environment variables (`$VAR`)
 * [ ] Expands `$?` with last exit status
 
 ### 🔹 Execution
 
 * [ ] Resolves executables using `$PATH`
-* [ ] Executes relative or absolute paths
-* [ ] Supports command chaining with pipes (`|`)
+* [x] Executes relative or absolute paths
+* [x] Supports command chaining with pipes (`|`)
 * [ ] Supports redirections: `<`, `>`, `>>`, `<<`
 * [ ] Implements heredoc with custom delimiter (no history)
-* [ ] Forks properly and waits for all children
+* [x] Forks properly and waits for all children
 
 
 ## 🔁 Built-in Commands
 
 ### Each built-in: implementation and edge-case testing
 
-* [ ] `echo [-n]` – implemented
+* [x] `echo [-n]` – implemented
 * [ ] `echo [-n]` – edge cases tested
-* [ ] `cd [path]` – implemented
+* [x] `cd [path]` – implemented
 * [ ] `cd [path]` – edge cases tested
-* [ ] `pwd` – implemented
+* [x] `pwd` – implemented
 * [ ] `pwd` – edge cases tested
-* [ ] `export` – implemented
+* [x] `export` – implemented
 * [ ] `export` – edge cases tested
-* [ ] `unset` – implemented
+* [x] `unset` – implemented
 * [ ] `unset` – edge cases tested
-* [ ] `env` – implemented
+* [x] `env` – implemented
 * [ ] `env` – edge cases tested
-* [ ] `exit` – implemented
+* [x] `exit` – implemented
 * [ ] `exit` – edge cases tested
 
 
 ## 🧠 Signal Handling
 
-* [ ] `SIGINT` (`Ctrl-C`) displays new prompt (interactive)
+* [x] `SIGINT` (`Ctrl-C`) displays new prompt (interactive)
 * [ ] `SIGQUIT` (`Ctrl-\`) does nothing
 * [ ] `Ctrl-D` exits the shell
 * [ ] Signal behavior matches bash closely
@@ -100,9 +100,9 @@ minishell/
 
 ## 🧹 Code Quality & Project Hygiene
 
-* [ ] Modular code structure
-* [ ] Functions are short and well-named
-* [ ] No memory leaks (`valgrind ./minishell`)
-* [ ] No file descriptor leaks
-* [ ] Proper error handling and return values
-* [ ] No use of forbidden features (like semicolons or backslashes)
+* [x] Modular code structure
+* [x] Functions are short and well-named
+* [x] No memory leaks (`valgrind ./minishell`)
+* [x] No file descriptor leaks
+* [x] Proper error handling and return values
+* [x] No use of forbidden features (like semicolons or backslashes)

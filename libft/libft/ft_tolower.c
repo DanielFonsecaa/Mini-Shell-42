@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/27 16:05:16 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/07/27 16:31:15 by dda-fons         ###   ########.fr       */
+/*   Created: 2025/04/05 17:32:42 by dda-fons          #+#    #+#             */
+/*   Updated: 2025/04/05 17:35:22 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "../lib/libft/libft/libft.h"
-
-#endif
+int	ft_tolower(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+		c += 32;
+	return (c);
+}
+/*
+#include <stdio.h>
+#include <ctype.h>
+int	main()
+{
+	printf("%d\n", ft_tolower(67));
+	printf("%d\n", tolower(67));
+}
+*/

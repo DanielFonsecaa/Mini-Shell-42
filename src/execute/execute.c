@@ -1,0 +1,73 @@
+#include "../../includes/minishell.h"
+
+/**
+ * @brief Executes a command, either built-in or external
+ *
+ * @param mshell Pointer to the shell structure
+ * @param token Double pointer to the token structure
+ */
+void	execute(t_shell *mshell, t_token **token)
+{
+	if (is_built_in(token) && !mshell->has_pipes)
+		execute_built_in(mshell, token);
+	else
+		pipes(mshell, token);
+}
+
+void	pipes(t_shell *mshell, t_token **token)
+{
+	if (mshell->has_pipes)
+	{
+		init_pipeline(mshell);
+		execute_pipeline(mshell, token);
+	}
+	else
+	{
+		mshell->pids = safe_malloc(sizeof(pid_t));
+		mshell->pids[0] = fork();
+		signal(SIGINT, handle_ctrl_c_child);
+		if (mshell->pids[0] == -1)
+		{
+			perror("fork");
+			return;
+		}
+		if (mshell->pids[0] == 0)
+		{
+			execute_final(mshell, token, mshell->command[0]);
+			exit(127);
+		}
+		wait_and_get_exit_status(mshell);
+		free(mshell->pids);
+	}
+}
+
+/**
+ * @brief Executes built-in shell commands
+ * 
+ * @param mshell Pointer to the shell structure
+ * @param token Double pointer to the token structure
+ * @return int Returns 1 if a built-in was recognized and executed,
+ *             0 if is not a built-in
+ */
+void	execute_built_in(t_shell *mshell, t_token **token)
+{
+	t_token	*temp;
+
+	temp = *token;
+	if (ft_strcmp(temp->name, "echo") == 0)
+		handle_echo(mshell, token);
+	else if (ft_strcmp(temp->name, "env") == 0)
+		handle_env(mshell);
+	else if (ft_strcmp(temp->name, "pwd") == 0)
+		handle_pwd(mshell, token);
+	else if (ft_strcmp(temp->name, "exit") == 0)
+		handle_exit(mshell, token);
+	else if (ft_strcmp(temp->name, "cd") == 0)
+		handle_cd(mshell, token);
+	else if (ft_strcmp(temp->name, "export") == 0)
+		handle_export(mshell, token);
+	else if (ft_strcmp(temp->name, "unset") == 0)
+		handle_unset(mshell, token);
+	else
+		return ;
+}

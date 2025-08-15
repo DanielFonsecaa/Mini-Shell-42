@@ -1,0 +1,47 @@
+
+
+achivments for us: 
+
+YOLO -
+
+To get the YOLO achievement on GitHub, you need to merge a pull request (PR) that was assigned to someone else for review, without waiting for them to actually review it. This is considered a "bad practice" (hence the YOLO badge name), as it skips the intended code review process.
+
+How to get it:
+
+Create a repository with at least two collaborators.
+Have one collaborator open a pull request and assign it to another user for review (not yourself).
+Merge the pull request yourself before the reviewer has a chance to review or approve it.
+This action should trigger the YOLO achievement on your GitHub profile.
+
+
+PAIR Extraordinaire - 
+
+How to get the "Pair Extraordinaire" achievement:
+Make a commit with a co-author using the Co-authored-by trailer in your commit message.
+The commit message should look like this:
+Code
+Some commit message
+
+Co-authored-by: user1@example.com
+Co-authored-by: user2@example.com
+At least two different GitHub users must be listed (including yourself).
+Push the commit to a repository on GitHub.
+Both you and your co-author will get the badge on your profiles.
+
+//pra vc michael-kun
+
+🏅 Quickdraw
+How to get it:
+Merge a pull request within 5 minutes of it being opened.
+Steps:
+Open a pull request in any repository you have write access to (your own repo works fine).
+Merge the pull request within 5 minutes of its creation—no reviews or approvals needed.
+The badge should appear on your GitHub profile shortly after.
+🦈 Pull Shark
+How to get it:
+This badge is awarded for merging pull requests. You unlock the badge after merging a specific number of pull requests (usually 2 or more). There are also higher levels for merging hundreds or thousands over time.
+Steps:
+Merge pull requests in any repositories you have permissions for (your own, or where you’re a collaborator).
+After merging enough PRs, you’ll receive the Pull Shark badge on your profile.
+
+testing

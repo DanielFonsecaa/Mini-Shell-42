@@ -6,3 +6,5 @@ minishell
 lib/
 .DS_Store
 .git/
+readline.supp
+.idea/
