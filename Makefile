@@ -17,6 +17,7 @@ BUILD_PATH		= .build
 READLINE_PATH	= vendor/readline/
 
 FILES			=	main.c \
+					signals.c \
 					lexing/lexing.c \
 					lexing/utils_lex.c \
 					lexing/utils_list_lex.c \

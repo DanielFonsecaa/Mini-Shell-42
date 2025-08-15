@@ -32,7 +32,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
-# include <signal.h>
+# include <signals.h>
 # include <stdbool.h>
 # include <stddef.h>
 # include <unistd.h>
@@ -52,5 +52,6 @@
 # include "parsing.h"
 # include "built_ins.h"
 # include "execute.h"
+# include "signals.h"
 
 #endif
