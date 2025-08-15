@@ -1,5 +1,6 @@
 #include "../includes/minishell.h"
 
+int g_sig;
 /**
  * @brief Runs the main shell loop, handling user input and command execution
  *
@@ -9,12 +10,12 @@
  */
 static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 {
-	handle_signal();
 	mshell->is_running = true;
 	create_envp_list(&(mshell->env_list), envp);
 	modify_shell_level(mshell->env_list, 1);
 	while (mshell->is_running)
 	{
+		handle_signal();
 		mshell->env_var = ft_copy_envp(envp);
 		getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
 		mshell->fake_cwd = ft_strjoin(mshell->curr_wd, " 👉 ");

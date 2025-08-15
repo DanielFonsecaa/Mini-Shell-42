@@ -28,7 +28,12 @@ int	handle_n(t_token **token, int *i)
 
 	count = *i - 1;
 	while (token[++count])
-		*i += valid_n(token[count]->name);
+	{
+		if (valid_n(token[count]->name) == 0)
+			return (*i);
+		*i += 1;
+	}
+
 	return (*i);
 }
 
@@ -84,7 +89,7 @@ t_token	**get_args(t_token **token)
 	i = 0;
 	while (temp)
 	{
-		if (temp->type == ARG)
+		if (temp->type == ARG || temp->type == FLAG)
 			i++;
 		temp = temp->next;
 	}
@@ -93,7 +98,7 @@ t_token	**get_args(t_token **token)
 	i = 0;
 	while (temp)
 	{
-		if (temp->type == ARG)
+		if (temp->type == ARG || temp->type == FLAG)
 			args_arr[i++] = temp;
 		temp = temp->next;
 	}

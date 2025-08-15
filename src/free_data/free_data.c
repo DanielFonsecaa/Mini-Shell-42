@@ -36,7 +36,10 @@ void	free_all(t_shell *mshell, t_token **token)
 	if (token)
 		free_list(token);
 	if (mshell->command)
-	free_cmd_struct(mshell->command);
+	{
+		free_cmd_struct(mshell->command);
+		mshell->command = NULL;
+	}
 //	free_envp_list(mshell->env_list);
 	if (mshell->env_var)
 		free_arr(mshell->env_var);
@@ -90,6 +93,7 @@ void	free_arr(char **arr)
 		i++;
 	}
 	free(arr);
+	arr = NULL;
 }
 
 /**
@@ -132,22 +136,24 @@ void	free_cmd_struct(t_cmd **commands)
 	int i;
 
 	i = 0;
-	if (commands[i])
+	if (!commands)
+		return ;
+	while (commands[i])
 	{
-		while (commands[i])
+		if (commands[i]->name)
 		{
 			free(commands[i]->name);
-			if (commands[i]->flags)
-				free_arr(commands[i]->flags);
-			if (commands[i]->args)
-				free_arr(commands[i]->args);
-			if (commands[i])
-				free(commands[i]);
-			i++;
+			commands[i]->name = NULL;
 		}
-		free(commands);
-		commands = NULL;
+		if (commands[i]->flags)
+			free_arr(commands[i]->flags);
+		if (commands[i]->args)
+			free_arr(commands[i]->args);
+		if (commands[i])
+			free(commands[i]);
+		i++;
 	}
+	free(commands);
 }
 
 void	close_fds(int **pipes, int num_pipes, int fd_in, int fd_out)

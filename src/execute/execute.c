@@ -25,6 +25,7 @@ void	pipes(t_shell *mshell, t_token **token)
 	{
 		mshell->pids = safe_malloc(sizeof(pid_t));
 		mshell->pids[0] = fork();
+		signal(SIGINT, handle_ctrl_c_child);
 		if (mshell->pids[0] == -1)
 		{
 			perror("fork");

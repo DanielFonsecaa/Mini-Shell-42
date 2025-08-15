@@ -9,6 +9,7 @@ void	execute_pipeline(t_shell *mshell, t_token **token)
 	while (++i < mshell->num_commands)
 	{
 		mshell->pids[i] = fork();
+		signal(SIGINT, handle_ctrl_c_child);
 		if (mshell->pids[i] == -1)
 			return (perror("fork"));
 		if (mshell->pids[i] == 0)

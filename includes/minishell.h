@@ -27,6 +27,8 @@
 # define ERR_EXEC "Error: Execution failed\n"
 # define ERR_ENV "Error: Environment variable not found\n"
 
+extern int g_sig;
+
 //	C libraries
 # include <stdio.h>
 # include <readline/readline.h>
