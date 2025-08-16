@@ -17,3 +17,7 @@ se apagarem o diretorio, o que acontece o prompt.
 echo \n prints n
 echo \\n prints \n
 fix \ -- literal meaning
+
+
+fix double free, checks double functions an so on. Daniel screw everything up
+ -- ls > file

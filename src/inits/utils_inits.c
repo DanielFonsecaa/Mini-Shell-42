@@ -37,7 +37,7 @@ void	pipe_and_redirects_count(t_shell *mshell, t_token **token)
  * @param mshell Pointer to the main shell structure
  * @param token Double pointer to the first token in the linked list
  * 
- * @return t_cmd** Returns a array of pointers to command structures.
+ * @return t_cmd** Returns array of pointers to command structures.
  */
 t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
 {
@@ -95,8 +95,8 @@ void    add_flag_to_cmd(t_token **token, t_cmd **command)
 /**
  * @brief Adds a token's name as an argument to a command structure
  *
- * @param token Pointer to pointer to the token containing the name to add
- * @param command Pointer to pointer to the command structure to modify
+ * @param token Pointer to the token containing the name to add
+ * @param command Pointer the command structure to modify
  */
 void    add_arg_to_cmd(t_token **token, t_cmd **command)
 {
