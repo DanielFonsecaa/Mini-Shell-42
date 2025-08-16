@@ -36,6 +36,13 @@ void    execute_pipe_redirect(t_shell *mshell, t_token **token)
 	cleanup_and_wait(mshell);
 }
 
+/**
+ * @brief Handles input/output redirections for shell commands
+ *
+ * @param token Pointer to the first token in the token list to process
+ * @param fd Array of file descriptors [0] for input, [1] for output
+ */
+
 void handle_redirections(t_token *token, int fd[2])
 {
 	while (token && token->type != PIPE)
@@ -103,6 +110,11 @@ void	wait_and_get_exit_status(t_shell *mshell)
 	}
 }
 
+/**
+ * @brief Cleans up resources and waits for child processes to complete
+ *
+ * @param mshell Pointer to the shell structure
+ */
 void cleanup_and_wait(t_shell *mshell)
 {
 	if (mshell->num_commands > 1)
