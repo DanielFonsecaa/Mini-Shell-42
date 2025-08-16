@@ -3,8 +3,8 @@
 /**
  * @brief Handles the cd command in the minishell
  *
- * @param mshell Pointer to the shell structure containing environment and state
- * @param token Pointer to pointer of the token list starting with the cd command
+ * @param mshell Pointer to the shell structure
+ * @param token Pointer to pointer of the token list
  */
 void	handle_cd(t_shell *mshell, t_token **token)
 {
@@ -32,8 +32,8 @@ void	handle_cd(t_shell *mshell, t_token **token)
 /**
  * @brief Changes the current directory to the specified path.
  *
- * @param mshell Pointer to the shell structure containing environment and state.
- * @param token Pointer to the token containing the target directory path.
+ * @param mshell Pointer to the shell structure
+ * @param token Pointer to the token containing the target directory path
  */
 void	change_dir(t_shell *mshell, t_token **token)
 {
@@ -53,9 +53,9 @@ void	change_dir(t_shell *mshell, t_token **token)
 }
 
 /**
- * @brief Changes the current directory to the path stored in the given environment variable key.
+ * @brief Changes the current directory to the given environment variable key.
  *
- * @param mshell Pointer to the shell structure containing environment and state.
+ * @param mshell Pointer to the shell structure
  * @param key The environment variable key to use as the target directory.
  */
 void	cd_to_key(t_shell *mshell, char *key)

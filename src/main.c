@@ -1,6 +1,7 @@
 #include "../includes/minishell.h"
 
-int g_sig;
+int	g_sig;
+
 /**
  * @brief Runs the main shell loop, handling user input and command execution
  *
@@ -16,9 +17,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 	while (mshell->is_running)
 	{
 		handle_signal();
-		mshell->env_var = ft_copy_envp(envp);
-		getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
-		mshell->fake_cwd = ft_strjoin(mshell->curr_wd, " 👉 ");
+		init_shell_envp_cwd(mshell, envp);
 		mshell->rd_l = readline(mshell->fake_cwd);
 		if (mshell->rd_l)
 			add_history(mshell->rd_l);
@@ -27,9 +26,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 			free_all(mshell, token);
 			continue ;
 		}
-		execute(mshell, token);
-/*		if (ft_strcmp(mshell->rd_l, "exit") == 0)
-			mshell->is_running = false;*/
+		execute_cmd_line(mshell, token);
 		free_all(mshell, token);
 	}
 	modify_shell_level(mshell->env_list, - 1); //still not tested

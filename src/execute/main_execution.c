@@ -6,15 +6,21 @@
  * @param mshell Pointer to the shell structure
  * @param token Double pointer to the token structure
  */
-void	execute(t_shell *mshell, t_token **token)
+void	execute_cmd_line(t_shell *mshell, t_token **token)
 {
 	if (is_built_in(token) && !mshell->has_pipes && !mshell->has_redirect)
 		execute_built_in(mshell, token);
 	else
-		pipes(mshell, token);
+		execute_with_pipes_or_redirect(mshell, token);
 }
 
-void	pipes(t_shell *mshell, t_token **token)
+/**
+ * @brief Executes commands with pipes or redirections
+ *
+ * @param mshell Pointer to the shell structure
+ * @param token Double pointer to the token structure
+ */
+void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
 {
 	if (mshell->has_pipes || mshell->has_redirect)
 	{
@@ -23,6 +29,7 @@ void	pipes(t_shell *mshell, t_token **token)
 	}
 	else
 	{
+		//talvez aqui tenha que mudar quando so tem um comando por causa dos redirects
 		mshell->pids = safe_malloc(sizeof(pid_t));
 		mshell->pids[0] = fork();
 		signal(SIGINT, handle_ctrl_c_child);
@@ -33,7 +40,7 @@ void	pipes(t_shell *mshell, t_token **token)
 		}
 		if (mshell->pids[0] == 0)
 		{
-			execute_final(mshell, token, mshell->command[0]);
+			execute_child_command(mshell, token, mshell->command[0]);
 			exit(127);
 		}
 		wait_and_get_exit_status(mshell);
@@ -46,8 +53,6 @@ void	pipes(t_shell *mshell, t_token **token)
  * 
  * @param mshell Pointer to the shell structure
  * @param token Double pointer to the token structure
- * @return int Returns 1 if a built-in was recognized and executed,
- *             0 if is not a built-in
  */
 void	execute_built_in(t_shell *mshell, t_token **token)
 {
@@ -68,6 +73,35 @@ void	execute_built_in(t_shell *mshell, t_token **token)
 		handle_export(mshell, token);
 	else if (ft_strcmp(temp->name, "unset") == 0)
 		handle_unset(mshell, token);
-	else
-		return ;
 }
+
+/*
+void	ft_here(char **argv, int *fd)
+{
+	char	*limiter;
+	char	*line;
+	int		pipe_fd[2];
+
+	limiter = argv[2];
+	if (pipe(pipe_fd) == -1)
+		exit(EXIT_FAILURE);
+	while (1)
+	{
+		ft_putstr_fd("heredoc> ", 1);
+		line = get_next_line(0);
+		if (!line)
+			break ;
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
+			&& (line[ft_strlen(limiter)] == '\n'
+				|| line[ft_strlen(limiter) + 1] == '\0'))
+		{
+			free(line);
+			break ;
+		}
+		write(pipe_fd[1], line, ft_strlen(line));
+		free(line);
+	}
+	close(pipe_fd[1]);
+	fd[0] = pipe_fd[0];
+}
+*/

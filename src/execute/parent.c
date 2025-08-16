@@ -1,5 +1,6 @@
 #include "../../includes/minishell.h"
 
+<<<<<<< HEAD:src/execute/regular.c
 void    execute_pipe_redirect(t_shell *mshell, t_token **token)
 {
 	int i;
@@ -71,6 +72,14 @@ void handle_redirections(t_token *token, int fd[2])
 	}
 }
 
+=======
+/**
+ * @brief Executes a pipeline of commands
+ *
+ * @param mshell Pointer to the shell structure
+ * @param token Pointer to token array used for command execution
+ */
+>>>>>>> 5f99259 (Feature: Organized files, renamed funcitons and files, created init function):src/execute/parent.c
 void	execute_pipeline(t_shell *mshell, t_token **token)
 {
 	int	i;
@@ -89,7 +98,7 @@ void	execute_pipeline(t_shell *mshell, t_token **token)
 			if (mshell->fd[0] > 2 || mshell->fd[1] > 2)
 				fd_to_pass = mshell->fd;
 			setup_child(i, mshell->num_commands, mshell->pipes, fd_to_pass);
-			execute_final(mshell, token, mshell->command[i]);
+			execute_child_command(mshell, token, mshell->command[i]);
 			exit(127);
 		}
 		if (i > 0)
@@ -101,6 +110,12 @@ void	execute_pipeline(t_shell *mshell, t_token **token)
 	cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
 }
 
+/**
+ * @brief Waits for all child to complete and retrieves the exit status
+ *        of the last command in the pipeline.
+ *
+ * @param mshell Pointer to the shell structure
+ */
 void	wait_and_get_exit_status(t_shell *mshell)
 {
 	int	i;
@@ -119,6 +134,7 @@ void	wait_and_get_exit_status(t_shell *mshell)
 		}
 		i++;
 	}
+<<<<<<< HEAD:src/execute/regular.c
 }
 
 void cleanup_and_wait(t_shell *mshell)
@@ -128,3 +144,6 @@ void cleanup_and_wait(t_shell *mshell)
 	wait_and_get_exit_status(mshell);
 	cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
 }
+=======
+}
+>>>>>>> 5f99259 (Feature: Organized files, renamed funcitons and files, created init function):src/execute/parent.c

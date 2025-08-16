@@ -1,19 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   built_ins.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/12 16:26:39 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/08/13 15:50:53 by dda-fons         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef BUILT_INS_H
 # define BUILT_INS_H
 
-// Built ins handler
+// Built ins handlers
 void	handle_pwd(t_shell *mshell, t_token **token);
 void	handle_env(t_shell *mshell);
 void	handle_exit(t_shell *mshell, t_token **token);

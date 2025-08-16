@@ -1,32 +1,8 @@
 #include "../../includes/minishell.h"
 
 /**
- * @brief Creates and adds the first token to the token list from a given line
- * 
- * @param token Double pointer to the list where the new token
- * @param line Source string from which to extract the token content
- * @param size Number of characters to extract from the beginning of line
- */
-void	ft_first_token(t_token **token, char *line, int size)
-{
-	char	*str;
-	int		i;
-
-	str = safe_malloc(size + 1);
-	i = 0;
-	str[size] = '\0';
-	while (i < size)
-	{
-		str[i] = line[i];
-		i++;
-	}
-	token_addback(token, ft_newtoken(str));
-	free(str);
-}
-
-/**
  * @brief Tokenizes a command line string into a linked list of tokens
- * 
+ *
  * @param rd_l The input command line string to tokenize
  * @param token Pointer to the token list where new tokens will be added
  */
@@ -63,6 +39,31 @@ int	tokenize(char *rd_l, t_token **token)
 	}
 	return (1);
 }
+
+/**
+ * @brief Creates and adds the first token to the token list from a given line
+ * 
+ * @param token Double pointer to the list where the new token
+ * @param line Source string from which to extract the token content
+ * @param size Number of characters to extract from the beginning of line
+ */
+void	ft_first_token(t_token **token, char *line, int size)
+{
+	char	*str;
+	int		i;
+
+	str = safe_malloc(size + 1);
+	i = 0;
+	str[size] = '\0';
+	while (i < size)
+	{
+		str[i] = line[i];
+		i++;
+	}
+	token_addback(token, ft_newtoken(str));
+	free(str);
+}
+
 /**
  * @brief Sets the token type for each token in a linked list
  * 			based on token content and position

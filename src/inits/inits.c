@@ -1,58 +1,63 @@
 #include "../../includes/minishell.h"
 
 /**
- * @brief Creates a deep copy of an environment variables array
- *
- * @param envp Array of environment variable strings to copy (NULL-terminated)
- * @return char** Pointer to the newly allocated copy of the environment array,
- *                or NULL if memory allocation fails
+ * @brief Initializes shell environment variables and current working directory
+ * 
+ * @param mshell Pointer to the shell structure to initialize
+ * @param envp Array of environment variable strings to copy
  */
-char	**ft_copy_envp(char **envp)
+void	init_shell_envp_cwd(t_shell *mshell, char **envp)
 {
-	int		i;
-	int		size;
-	char	**ret;
-
-	size = 0;
-	i = 0;
-	while (envp[size])
-		size++;
-	ret = safe_calloc((size + 1), sizeof(char *));
-	while (i < size && envp[i])
-	{
-		ret[i] = ft_strdup(envp[i]);
-		if (!ret[i])
-		{
-			free_arr(ret);
-			return (NULL);
-		}
-		i++;
-	}
-	return (ret);
+	mshell->env_var = ft_copy_envp(envp);
+	getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
+	mshell->fake_cwd = ft_strjoin(mshell->curr_wd, " 👉 ");
 }
 
 /**
- * @brief Modifies the shell level environment variable by a specified value
+ * @brief Initializes shell data structure with parsed tokens
  * 
- * @param node Pointer to the environment variable linked list to search in
- * @param value Integer value to add to the current shell level
+ * @param mshell Pointer to the shell data structure to initialize
+ * @param token Pointer to pointer of the first token in the token list
+ * @return 1 on successful initialization, 0 if syntax error is detected
  */
-void	modify_shell_level(t_envp *node, int value)
+int	init_shell_data(t_shell *mshell, t_token **token)
 {
-	t_envp	*existing_node;
-	char	*str_level;
-	char	*old_level;
-	int		new_level;
+	mshell->tokens_size = token_list_size(*token);
+	pipe_and_redirects_count(mshell, token);
+	if (!syntax_error(mshell, token))
+		return (0);
+	mshell->num_commands = count_num_commands(token);
+	mshell->command = set_cmd_arr(mshell, token);
+	mshell->fd[0] = -1;
+	mshell->fd[1] = -1;
+	return (1);
+}
 
-	existing_node = find_envp(node, "SHLVL");
-	if (!existing_node)
+/**
+ * @brief Initializes token data by setting token types and file associations
+ *
+ * @param token Double pointer to the head of the token list to be initialized
+ */
+void	init_token_data(t_token **token)
+{
+	set_t_type(token);
+	type_file(token);
+	print_list(token);
+}
+
+/**
+ * @brief Initializes the pipeline for command execution in the minishell.
+ *
+ * @param mshell Pointer to the shell structure
+ */
+void	init_pipeline(t_shell *mshell)
+{
+	// falta lidar com erros no create pipes caso falhe
+	create_pipes(mshell->num_commands - 1, mshell);
+	mshell->pids = safe_malloc(sizeof(pid_t) * mshell->num_commands);
+	if (!mshell->pids)
 	{
-		ft_printf_fd(2, "shell level not found");
-		return ;
+		// ft_printf_fd(); display error
+		// mshell->exit_code = X; and return ;
 	}
-	old_level = existing_node->content;
-	new_level = ft_atoi(old_level);
-	str_level = ft_itoa(new_level + value);
-	existing_node->content = str_level;
-	free(old_level);
 }
