@@ -16,5 +16,6 @@ t_cmd    **set_cmd_arr(t_shell *mshell, t_token **token);
 
 //		Syntax Checks
 int		syntax_error(t_shell *mshell, t_token **token);
+int	    check_infile(t_token *token);
 
 #endif

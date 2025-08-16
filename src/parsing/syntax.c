@@ -23,8 +23,24 @@ int	syntax_error(t_shell *mshell, t_token **token)
 				return (ft_printf_fd(2, ERR_REDIRECT), 0);
 			if (!temp->next)
 				return (ft_printf_fd(2, ERR_SYNTAX), 0);
+			if (temp->type == INFILE)
+				if (!check_infile(temp));
+					return (ft_printf_fd(2, "minishell: file: no such file or directory"), 0);
 		}
 		temp = temp->next;
 	}
+	return (1);
+}
+
+int	check_infile(t_token *token)
+{
+	int fd;
+
+	fd = 0
+	fd = open(token->next->name, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	else
+		close(fd);
 	return (1);
 }
