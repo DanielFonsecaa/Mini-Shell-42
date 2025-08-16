@@ -18,14 +18,6 @@ READLINE_PATH	= vendor/readline/
 
 FILES			=	main.c \
 					signals.c \
-					lexing/lexing.c \
-					lexing/utils_lex.c \
-					lexing/utils_list_lex.c \
-					safe/safe_functions.c \
-					free_data/free_data.c \
-					parsing/parsing.c \
-					parsing/utils_parse.c \
-					parsing/syntax.c \
 					built_ins/built_ins.c \
 					built_ins/cd.c \
 					built_ins/echo.c \
@@ -36,11 +28,21 @@ FILES			=	main.c \
 					built_ins/export/export.c \
 					built_ins/export/utils_list_export.c \
 					built_ins/export/utils_export.c \
-					execute/execute.c \
-					execute/path.c \
-					execute/regular.c \
+					execute/child.c \
+					execute/main_execution.c \
+					execute/parent.c \
+					free_data/free_all.c \
+					free_data/free_data.c \
+					free_data/free_pipeline.c \
 					inits/inits.c \
-					utils/comand_utils.c
+					inits/utils_inits.c \
+					lexing/lexing.c \
+					lexing/utils_lex.c \
+					lexing/utils_list_lex.c \
+					parsing/parsing.c \
+					parsing/syntax.c \
+					safe/safe_functions.c \
+					utils/utils.c
 
 SRC				= $(addprefix $(SRC_PATH)/, $(FILES))
 OBJS			= $(SRC:$(SRC_PATH)/%.c=$(BUILD_PATH)/%.o)

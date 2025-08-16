@@ -1,57 +1,6 @@
 #include "../../includes/minishell.h"
 
 /**
- * @brief Free allocated memory associated with the shell structure
- * 
- * @param mshell Pointer to the main shell structure
- * @param token Double pointer to the token list to be freed
- */
-void	handle_error_shell(t_shell *mshell, t_token **token)
-{
-
-	if (token)
-		free_list(token);
-	if (mshell->command)
-		free_cmd_struct(mshell->command);
-	if (mshell->env_list)
-		free_envp_list(mshell->env_list);
-	if (mshell->env_var)
-		free_arr(mshell->env_var);
-	if (mshell->exec_command)
-		free(mshell->exec_command); ////////////
-	if (mshell->fake_cwd)
-		free(mshell->fake_cwd);
-	if (mshell->rd_l)
-		free(mshell->rd_l);
-}
-
-/**
- * @brief Free allocated memory associated with the shell structure
- * 
- * @param mshell Pointer to the main shell structure
- * @param token Double pointer to the token list to be freed
- */
-void	free_all(t_shell *mshell, t_token **token)
-{
-	if (token)
-		free_list(token);
-	if (mshell->command)
-	{
-		free_cmd_struct(mshell->command);
-		mshell->command = NULL;
-	}
-//	free_envp_list(mshell->env_list);
-	if (mshell->env_var)
-		free_arr(mshell->env_var);
-	if (mshell->exec_command)
-		free(mshell->exec_command); ////////////
-	if (mshell->fake_cwd)
-		free(mshell->fake_cwd);
-	if (mshell->rd_l)
-		free(mshell->rd_l);
-}
-
-/**
  * @brief Frees a linked list of tokens and all associated memory.
  * 
  * @param token Double pointer to the head of the token linked list.
@@ -77,7 +26,7 @@ void	free_list(t_token **token)
 }
 
 /**
- * @brief Frees a null-terminated array of strings (environment variables)
+ * @brief Frees a null-terminated array of strings 
  * 
  * @param arr Pointer to a null-terminated array of strings to be freed
  */
@@ -131,6 +80,11 @@ void	free_envp_list(t_envp *node)
 	node = NULL;
 }
 
+/**
+ * @brief Frees a allocated array of command structures and their contents
+ *
+ * @param commands A pointer to an array of t_cmd pointers to be freed.
+ */
 void	free_cmd_struct(t_cmd **commands)
 {
 	int i;
@@ -154,37 +108,4 @@ void	free_cmd_struct(t_cmd **commands)
 		i++;
 	}
 	free(commands);
-}
-
-void	close_fds(int **pipes, int num_pipes, int fd_in, int fd_out)
-{
-	int	i;
-
-	i = 0;
-	while (i < num_pipes - 1)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
-	}
-	if (fd_in > 2)
-		close(fd_in);
-	if (fd_out > 2)
-		close(fd_out);
-}
-
-void	cleanup_pipes(int **pipes, int num_pipes, t_shell *mshell)
-{
-	int	i;
-
-	i = 0;
-	while (i < num_pipes)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		free(pipes[i]);
-		i++;
-	}
-	free(pipes);
-	free(mshell->pids);
 }

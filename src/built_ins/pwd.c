@@ -1,12 +1,11 @@
 #include "../../includes/minishell.h"
 
+
 /**
- * @brief Handles the pwd built-in command to print the
- * 			current working directory
- *
- * @param token Double pointer to the token structure containing
- * 				the command and arguments
- * @return 0 on success, 1 on error
+ * @brief Handles the pwd built-in command
+ * 
+ * @param mshell Pointer to the shell structure containing exit code and state
+ * @param token Double pointer to the current token (pwd command token)
  */
 void	handle_pwd(t_shell *mshell, t_token **token)
 {

@@ -3,7 +3,7 @@
 /**
  * @brief Handles the unset command to remove an environment variable.
  *
- * @param mshell Pointer to the shell structure containing environment and state.
+ * @param mshell Pointer to the shell structure.
  * @param token Pointer to the token list, where the next token is the variable to unset.
  */
 void	handle_unset(t_shell *mshell, t_token **token)

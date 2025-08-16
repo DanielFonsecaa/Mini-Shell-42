@@ -34,7 +34,7 @@ extern int g_sig;
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
-# include <signals.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stddef.h>
 # include <unistd.h>
@@ -47,10 +47,11 @@ extern int g_sig;
 
 //	Custom headers
 # include "structs.h"
-# include "utils.h"
+# include "safe.h"
 # include "lexing.h"
 # include "free.h"
 # include "inits.h"
+# include "rename_later_utils.h"
 # include "parsing.h"
 # include "built_ins.h"
 # include "execute.h"

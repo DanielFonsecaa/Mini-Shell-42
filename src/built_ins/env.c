@@ -1,11 +1,9 @@
 #include "../../includes/minishell.h"
 
 /**
- * @brief Handles the 'env' built-in command by printing
- * 			all environment variables
+ * @brief Handles the 'env' command
  * 
- * @param mshell Pointer to the shell structure containing
- * 			environment variables
+ * @param mshell Pointer to the shell structure
  */
 void	handle_env(t_shell *mshell)
 {
