@@ -38,8 +38,9 @@ int	init_shell_data(t_shell *mshell, t_token **token)
  *
  * @param token Double pointer to the head of the token list to be initialized
  */
-void	init_token_data(t_token **token)
+void	init_token_data(t_shell *mshell, t_token **token)
 {
+	expansion(mshell->env_list, token); //test
 	set_t_type(token);
 	type_file(token);
 	print_list(token);
