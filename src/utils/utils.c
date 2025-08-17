@@ -22,6 +22,11 @@ void	modify_shell_level(t_envp *node, int value)
 	old_level = existing_node->content;
 	new_level = ft_atoi(old_level);
 	str_level = ft_itoa(new_level + value);
+	if (!str_level)
+	{
+		ft_printf_fd(2, "Memory allocation failed for new shell level");
+		return ;
+	}
 	existing_node->content = str_level;
 	free(old_level);
 }

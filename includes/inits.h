@@ -4,7 +4,7 @@
 //inits
 void    init_shell_envp_cwd(t_shell *mshell, char **envp);
 int     init_shell_data(t_shell *mshell, t_token **token);
-void    init_token_data(t_token **token);
+void    init_token_data(t_shell *mshell, t_token **token);
 void	init_pipeline(t_shell *mshell);
 
 //Command Utils

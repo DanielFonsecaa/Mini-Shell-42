@@ -55,10 +55,10 @@ void	expansion(t_envp *env_list, t_token **token)
 	temp = *token;
 	while (temp)
 	{
-		ft_printf_fd(1, "value %s\n", temp->name);
-		if (ft_strncmp(temp->name, "&", 1) == 0)
+		//ft_printf("node->content");
+		if (temp->name[0] == '$' && temp->type == ARG)
 		{
-			name = ft_strdup(temp->name, 1, ft_strlen(temp->name));
+			name = ft_substr(temp->name, 1, ft_strlen(temp->name));
 			node = find_envp(env_list, name);
 			free(name);
 			if (!node)
@@ -70,4 +70,5 @@ void	expansion(t_envp *env_list, t_token **token)
 			free(node);
 		}
 		temp = temp->next;
+	}
 }
