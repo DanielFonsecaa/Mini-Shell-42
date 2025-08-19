@@ -6,38 +6,33 @@
  * @param rd_l The input command line string to tokenize
  * @param token Pointer to the token list where new tokens will be added
  */
-int	tokenize(char *rd_l, t_token **token)
+int tokenize(char *rd_l, t_token **token)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
 
 	i = 0;
+	j = 0;
+	i = skip_whitespace(rd_l, i);
+	add_command_token(rd_l, token, &i);
 	while (rd_l[i])
 	{
-		while (ft_iswhite_space(rd_l[i]))
-			i++;
-		j = 0;
-		if (rd_l[i] == '\'' || rd_l[i] == '"')
-			skip_inside_quotes(rd_l + i, &j, rd_l[i]);
-		else
-		{
-			while (rd_l[i + j] && !ft_iswhite_space(rd_l[i + j])
-				&& !is_meta_char(rd_l[i + j]) && (rd_l[i + j] != '\'' && rd_l[i + j] != '"'))
-				j++;
-		}
+		i = skip_whitespace(rd_l, i);
+		tokenize_arg(rd_l, i, &j);
 		if ((rd_l[i] || rd_l[i + j]) && !is_meta_char(rd_l[i]))
 			ft_first_token(token, rd_l + i, j);
 		i += j;
 		j = 0;
-		if ((rd_l[i + j] == '|' && rd_l[i + j + 1] == '|'))
+		if (rd_l[i] == '|' && rd_l[i + 1] == '|')
 			return (ft_printf_fd(2, ERR_PIPELINE), 0);
-		while (is_meta_char(rd_l[i + j]))
-			j++;
-		if (is_meta_char(rd_l[i + j - 1]))
-			ft_first_token(token, rd_l + i, j);
-		i += j;
+		i = handle_meta(rd_l, token, i, &j);
+		if (i && rd_l[i - 1] == '|')
+		{
+			i = skip_whitespace(rd_l, i);
+			add_command_token(rd_l, token, &i);
+		}
 	}
-	return (1);
+	return 1;
 }
 
 /**
@@ -93,11 +88,7 @@ void	set_t_type(t_token **token)
 		else if (ft_strcmp("|", temp->name) == 0)
 			temp->type = PIPE;
 		else
-		{
-			temp->type = ARG;
-			if (temp->name[0] == '-')
-				temp->type = FLAG;
-		}
+			set_t_arg(&temp);
 		temp = temp->next;
 	}
 }

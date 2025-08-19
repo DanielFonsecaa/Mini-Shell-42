@@ -37,6 +37,7 @@ FILES			=	main.c \
 					inits/inits.c \
 					inits/utils_inits.c \
 					lexing/lexing.c \
+					lexing/tokenize_utils.c \
 					lexing/utils_lex.c \
 					lexing/utils_list_lex.c \
 					parsing/parsing.c \

@@ -8,20 +8,22 @@
  */
 void	handle_export(t_shell *mshell, t_token **token)
 {
-		t_token	*temp;
+	t_token	*temp;
 
-		temp = (*token)->next;
-		if (!temp)
-			show_export(mshell->env_list);
-		else
+	temp = (*token)->next;
+	mshell->exit_code = 1;
+	if (check_for_flags(mshell))
+		return ;
+	if (!temp)
+		show_export(mshell, mshell->env_list);
+	else
+	{
+		while (temp)
 		{
-			while (temp)
-			{
-				update_export(mshell, &temp);
-				temp = temp->next;
-			}
+			update_export(mshell, &temp);
+			temp = temp->next;
 		}
-
+	}
 }
 
 /**
@@ -29,7 +31,7 @@ void	handle_export(t_shell *mshell, t_token **token)
  * 
  * @param node Pointer to the head of the environment variable list.
  */
-void	show_export(t_envp *node)
+void show_export(t_shell *mshell, t_envp *node)
 {
 	t_envp	**arr;
 	t_envp	*temp;
@@ -41,6 +43,8 @@ void	show_export(t_envp *node)
 	list_size = envp_list_size(node);
 	temp = node;
 	arr = safe_calloc(list_size + 1, sizeof(t_envp *));
+	if (!arr)
+		return ;
 	i = 0;
 	while (temp)
 	{
@@ -55,6 +59,7 @@ void	show_export(t_envp *node)
 		i++;
 	}
 	free(arr);
+	mshell->exit_code = 0;
 }
 
 /**
@@ -71,6 +76,7 @@ void	update_export(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	name = temp->name;
+	mshell->exit_code = 0;
 	existing_node = find_envp(mshell->env_list, name);
 	if (existing_node)
 		return (update_envp_var(temp->name, existing_node));
@@ -81,7 +87,6 @@ void	update_export(t_shell *mshell, t_token **token)
 			mshell->exit_code = 1;
 			return ;
 		}
-		mshell->exit_code = 0;
 		if (has_content(name))
 			return (create_envp_var(mshell, &temp, true));
 		create_envp_var(mshell, &temp, false);

@@ -72,3 +72,13 @@ int	skip_inside_quotes(char *rd_l, int *j, char c)
 	*j = i + 1;
 	return (1);
 }
+
+void    set_t_arg(t_token **token)
+{
+	t_token	*temp;
+
+	temp = *token;
+	temp->type = ARG;
+	if (temp->name[0] == '-')
+		temp->type = FLAG;
+}

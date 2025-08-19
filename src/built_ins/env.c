@@ -21,6 +21,8 @@ void	handle_env(t_shell *mshell)
 		ft_printf_fd(2, "Error: No environment variables");
 		return ;
 	}
+	if (check_for_flags(mshell))
+		return ;
 	node = mshell->env_list;
 	while (node)
 	{

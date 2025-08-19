@@ -9,7 +9,7 @@
 void	handle_cd(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
-
+	
 	temp = (*token)->next;
 	if (token_list_size(temp) > 1)
 	{

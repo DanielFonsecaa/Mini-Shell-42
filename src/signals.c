@@ -35,4 +35,5 @@ void handle_ctrl_c_child(int sig)
 void    handle_signal(void)
 {
 	signal(SIGINT, handle_ctrl_c);
+	//signal(SIGQUIT, SIG_IGN);
 }

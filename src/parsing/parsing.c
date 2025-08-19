@@ -34,12 +34,21 @@ static void     print_cmd_arr(t_shell *mshell)
 int	parsing(t_shell *mshell, t_token **token)
 {
 	if (!quote_checker(mshell->rd_l))
+	{
+		mshell->exit_code = 2;
 		return (ft_printf_fd(2, ERR_QUOTE), 0);
+	}
 	if (!tokenize(mshell->rd_l, token))
+	{
+		mshell->exit_code = 2;
 		return (0);
+	}
 	init_token_data(mshell, token);
 	if (!init_shell_data(mshell, token))
+	{
+		mshell->exit_code = 2;
 		return (0);
+	}
 	print_cmd_arr(mshell);
 	//ft_printf_fd(1, "token size --%i\n num pipes --%i\n", mshell->tokens_size, mshell->num_pipes);
 	return (1);
@@ -62,12 +71,17 @@ void	expansion(t_envp *env_list, t_token **token)
 			node = find_envp(env_list, name);
 			free(name);
 			if (!node)
-				return ; // Error in here please
-			name = node->content;
-			old_token_name = temp->name;
-			temp->name = name;
+			{
+				old_token_name = temp->name;
+				temp->name = "";
+			}
+			else
+			{
+				name = node->content;
+				old_token_name = temp->name;
+				temp->name = name;
+			}
 			free(old_token_name);
-			free(node);
 		}
 		temp = temp->next;
 	}

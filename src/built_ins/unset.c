@@ -14,6 +14,8 @@ void	handle_unset(t_shell *mshell, t_token **token)
 	if (!token || !*token || !(*token)->next)
 		return ;
 	temp = (*token)->next;
+	if (check_for_flags(mshell))
+		return ;
 	while (temp)
 	{
 		node = find_envp(mshell->env_list, temp->name);

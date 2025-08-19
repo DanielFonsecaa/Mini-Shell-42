@@ -18,7 +18,7 @@ int		validade_export_name(char *name);
 
 //	Export Utils
 void	bubble_sort(t_envp **arr, int list_size);
-void	show_export(t_envp *node);
+void show_export(t_shell *mshell, t_envp *node);
 void	update_export(t_shell *mshell, t_token **token);
 void	update_envp_var(char *name, t_envp *node);
 void	append_envp_var(char *name, t_envp *node);
