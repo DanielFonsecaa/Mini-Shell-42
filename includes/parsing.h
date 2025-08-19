@@ -5,7 +5,7 @@
 int		parsing(t_shell *mshell, t_token **token);
 
 //      Expansion
-void	expansion(t_envp *env_list, t_token **token);
+void	expansion(t_shell *mshell, t_token **token);
 
 //		Syntax Checks
 int		syntax_error(t_shell *mshell, t_token **token);

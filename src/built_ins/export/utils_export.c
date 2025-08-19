@@ -13,10 +13,10 @@ void	bubble_sort(t_envp **arr, int list_size)
 	t_envp	*temp;
 
 	i = 0;
-	while (i < list_size - 1)
+	while (i < list_size)
 	{
 		j = i + 1;
-		while (j < list_size - 1)
+		while (j < list_size)
 		{
 			if (ft_strcmp(arr[i]->name, arr[j]->name) > 0)
 			{
@@ -48,6 +48,7 @@ void	create_envp_var(t_shell *mshell, t_token **token, bool exported)
 	temp = *token;
 	end = 0;
 	start = 0;
+
 	while(temp->name[end] && temp->name[end] != '=')
 		end++;
 	name = ft_substr(temp->name, start, end);

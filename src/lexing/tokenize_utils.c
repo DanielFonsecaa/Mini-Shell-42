@@ -4,19 +4,34 @@ int skip_whitespace(char *str, int i)
 {
 	while (ft_iswhite_space(str[i]))
 		i++;
-	return i;
+	return (i);
 }
 
-int tokenize_arg(char *rd_l, int i, int *j)
+int next_token_len(char *s)
 {
-	*j = 0;
-	if (rd_l[i] == '\'' || rd_l[i] == '"')
-		skip_inside_quotes(rd_l + i, j, rd_l[i]);
-	else
-		while (rd_l[i + *j] && !ft_iswhite_space(rd_l[i + *j])
-		       && !is_meta_char(rd_l[i + *j]) && (rd_l[i + *j] != '\'' && rd_l[i + *j] != '"'))
-			(*j)++;
-	return i + *j;
+	int i;
+	char quote;
+
+	i = 0;
+	quote = 0;
+	while (s[i])
+	{
+		if (!quote && (s[i] == '"' || s[i] == '\''))
+		{
+			quote = s[i];
+			i++;
+			while (s[i] && s[i] != quote)
+				i++;
+			if (s[i] == quote)
+				i++;
+			quote = 0;
+		}
+		else if (!quote && (ft_iswhite_space(s[i]) || is_meta_char(s[i])))
+			break;
+		else
+			i++;
+	}
+	return i;
 }
 
 void add_command_token(char *rd_l, t_token **token, int *i)
@@ -33,5 +48,5 @@ int handle_meta(char *rd_l, t_token **token, int i, int *j)
 		(*j)++;
 	if (*j && is_meta_char(rd_l[i + *j - 1]))
 		ft_first_token(token, rd_l + i, *j);
-	return i + *j;
+	return (i + *j);
 }

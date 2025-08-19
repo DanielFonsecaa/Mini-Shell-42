@@ -103,6 +103,7 @@ void	update_envp_var(char *name, t_envp *node)
 {
 	char	*new;
 	char	*old;
+	char    *new_content;
 	int		i;
 	int		j;
 
@@ -114,17 +115,23 @@ void	update_envp_var(char *name, t_envp *node)
 	j = 0;
 	while (name[i + j])
 		j++;
-	new = ft_substr(name, i + 1, j);
 	old = node->content;
-	node->content = new;
+	new = ft_substr(name, i + 1, j);
+	if (has_quote(new))
+		new_content = ft_strtrim_char(new, which_quote(new));
+	else
+		new_content = new;
+	node->content = new_content;
 	node->exported = true;
 	free(old);
+	free(new);
 }
 
 void	append_envp_var(char *name, t_envp *node)
 {
 	char	*new;
 	char	*old;
+	char    *new_content;
 	int		i;
 	int		j;
 
@@ -136,7 +143,11 @@ void	append_envp_var(char *name, t_envp *node)
 		j++;
 	new = ft_substr(name, i + 1, j);
 	old = node->content;
-	node->content = ft_strjoin(old, new);
+	if (has_quote(new))
+		new_content = ft_strtrim_char(new, which_quote(new));
+	else
+		new_content = new;
+	node->content = ft_strjoin(old, new_content);
 	node->exported = true;
 	free(old);
 	free(new);

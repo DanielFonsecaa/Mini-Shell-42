@@ -23,7 +23,7 @@ void	print_list(t_token **token);
 void    init_values(int *len, int *start, int *in_quote, int *i);
 void    set_t_arg(t_token **token);
 int     skip_whitespace(char *str, int i);
-int     tokenize_arg(char *rd_l, int i, int *j);
+int     next_token_len(char *s);
 void    add_command_token(char *rd_l, t_token **token, int *i);
 int     handle_meta(char *rd_l, t_token **token, int i, int *j);
 

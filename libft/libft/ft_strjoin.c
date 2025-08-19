@@ -27,6 +27,15 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_strlcat(ret, s2, size);
 	return (ret);
 }
+
+char *ft_strjoin_free(char *a, const char *b)
+{
+	char *res;
+	res = ft_strjoin(a, b);
+	free(a);
+	return res;
+}
+
 /*
 #include <stdio.h>
 int	main()

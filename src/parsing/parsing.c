@@ -54,35 +54,59 @@ int	parsing(t_shell *mshell, t_token **token)
 	return (1);
 }
 
-void	expansion(t_envp *env_list, t_token **token)
+void	expansion(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
+	char	*new_str;
+	int		i;
+	int		start;
+	int		len;
 	t_envp	*node;
-	char	*name;
-	char	*old_token_name;
+	char	*var;
+	char	*val;
 
 	temp = *token;
 	while (temp)
 	{
-		//ft_printf("node->content");
-		if (temp->name[0] == '$' && temp->type == ARG)
+		i = 0;
+		new_str = safe_calloc(ft_strlen(temp->name) + 1, sizeof(char));
+		while (temp->name[i])
 		{
-			name = ft_substr(temp->name, 1, ft_strlen(temp->name));
-			node = find_envp(env_list, name);
-			free(name);
-			if (!node)
+			if (temp->name[i] == '$' && temp->name[i + 1] == '?' && temp->type == ARG)
 			{
-				old_token_name = temp->name;
-				temp->name = "";
+				val = ft_itoa(mshell->exit_code);
+				new_str = ft_strjoin_free(new_str, val);
+				free(val);
+				i += 2;
+			}
+			else if (temp->name[i] == '$' && temp->type == ARG)
+			{
+				start = i + 1;
+				len = 0;
+				while (temp->name[start + len] && (ft_isalnum(temp->name[start + len]) || temp->name[start + len] == '_'))
+					len++;
+				var = ft_substr(temp->name, start, len);
+				node = find_envp(mshell->env_list, var);
+				if (node)
+					val = node->content;
+				else
+					val = "";
+				new_str = ft_strjoin_free(new_str, val);
+				free(var);
+				i = start + len;
 			}
 			else
 			{
-				name = node->content;
-				old_token_name = temp->name;
-				temp->name = name;
+				char tmp[2];
+				tmp[0] = temp->name[i];
+				tmp[1] = 0;
+				new_str = ft_strjoin_free(new_str, tmp);
+				i++;
 			}
-			free(old_token_name);
 		}
+		free(temp->name);
+		temp->name = ft_strdup(new_str);
+		free(new_str);
 		temp = temp->next;
 	}
 }

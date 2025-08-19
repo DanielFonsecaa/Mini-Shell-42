@@ -16,7 +16,8 @@ void	free_list(t_token **token)
 			while (*token)
 			{
 				temp = (*token)->next;
-				free((*token)->name);
+				if ((*token)->name && (*token)->name[0])
+					free((*token)->name);
 				free(*token);
 				*token = temp;
 			}

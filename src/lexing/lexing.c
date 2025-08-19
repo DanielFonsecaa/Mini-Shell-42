@@ -18,8 +18,8 @@ int tokenize(char *rd_l, t_token **token)
 	while (rd_l[i])
 	{
 		i = skip_whitespace(rd_l, i);
-		tokenize_arg(rd_l, i, &j);
-		if ((rd_l[i] || rd_l[i + j]) && !is_meta_char(rd_l[i]))
+		j = next_token_len(rd_l + i);
+		if (j > 0 && !is_meta_char(rd_l[i]))
 			ft_first_token(token, rd_l + i, j);
 		i += j;
 		j = 0;
