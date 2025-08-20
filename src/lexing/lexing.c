@@ -6,10 +6,10 @@
  * @param rd_l The input command line string to tokenize
  * @param token Pointer to the token list where new tokens will be added
  */
-int tokenize(char *rd_l, t_token **token)
+int	tokenize(char *rd_l, t_token **token)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -32,7 +32,7 @@ int tokenize(char *rd_l, t_token **token)
 			add_command_token(rd_l, token, &i);
 		}
 	}
-	return 1;
+	return (1);
 }
 
 /**

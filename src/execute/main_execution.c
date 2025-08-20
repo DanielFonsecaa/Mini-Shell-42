@@ -29,14 +29,14 @@ void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
 	}
 	else
 	{
-		//talvez aqui tenha que mudar quando so tem um comando por causa dos redirects
+		//talvez aqui tenha que mudar quando so tem um comando com redirects
 		mshell->pids = safe_malloc(sizeof(pid_t));
 		mshell->pids[0] = fork();
 		signal(SIGINT, handle_ctrl_c_child);
 		if (mshell->pids[0] == -1)
 		{
 			perror("fork");
-			return;
+			return ;
 		}
 		if (mshell->pids[0] == 0)
 		{

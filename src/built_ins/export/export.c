@@ -31,7 +31,7 @@ void	handle_export(t_shell *mshell, t_token **token)
  * 
  * @param node Pointer to the head of the environment variable list.
  */
-void show_export(t_shell *mshell, t_envp *node)
+void	show_export(t_shell *mshell, t_envp *node)
 {
 	t_envp	**arr;
 	t_envp	*temp;
@@ -52,12 +52,9 @@ void show_export(t_shell *mshell, t_envp *node)
 		temp = temp->next;
 	}
 	bubble_sort(arr, list_size);
-	i = 0;
-	while (i < list_size)
-	{
-		ft_printf_fd(1, "declare -x %s=\"%s\"\n", arr[i]->name, arr[i]->content);
-		i++;
-	}
+	i = -1;
+	while (++i < list_size)
+		ft_printf_fd(1, DEFINE_X, arr[i]->name, arr[i]->content);
 	free(arr);
 	mshell->exit_code = 0;
 }
@@ -103,7 +100,7 @@ void	update_envp_var(char *name, t_envp *node)
 {
 	char	*new;
 	char	*old;
-	char    *new_content;
+	char	*new_content;
 	int		i;
 	int		j;
 
@@ -131,7 +128,7 @@ void	append_envp_var(char *name, t_envp *node)
 {
 	char	*new;
 	char	*old;
-	char    *new_content;
+	char	*new_content;
 	int		i;
 	int		j;
 

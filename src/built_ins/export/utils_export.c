@@ -37,19 +37,18 @@ void	bubble_sort(t_envp **arr, int list_size)
  * @param token Pointer to the token
  * @param exported Boolean flag whether the variable should be exported
  */
-void	create_envp_var(t_shell *mshell, t_token **token, bool exported)
+void	create_envp_var(t_shell *mshell, t_token **token, bool export)
 {
 	int		end;
 	int		start;
 	t_token	*temp;
 	char	*name;
 	char	*content;
-	
+
 	temp = *token;
 	end = 0;
 	start = 0;
-
-	while(temp->name[end] && temp->name[end] != '=')
+	while (temp->name[end] && temp->name[end] != '=')
 		end++;
 	name = ft_substr(temp->name, start, end);
 	start += end;
@@ -59,7 +58,7 @@ void	create_envp_var(t_shell *mshell, t_token **token, bool exported)
 	content = ft_substr(temp->name, start + 1, end);
 	if (!content)
 		content = "";
-	envp_list_addback(&(mshell->env_list), create_node(name, content, exported));
+	envp_list_addback(&(mshell->env_list), create_node(name, content, export));
 	free_envp_content(name, content);
 }
 
@@ -74,12 +73,12 @@ int	validade_export_name(char *name)
 	int	i;
 
 	if (!(name[0] == '_' || ft_isalpha(*name)))
-		return (ft_printf_fd(2, "minishell: export: %s: not a valid identifier\n", name), 0);
+		return (ft_printf_fd(2, ERR_EXPORT, name), 0);
 	i = 1;
 	while (name[i] && (name[i] != '=' && name[i] != '+'))
 	{
 		if (!(ft_isalnum(name[i]) || name[i] == '_'))
-			return (ft_printf_fd(2 ,"minishell: export: `%s': not a valid identifier\n", name), 0);
+			return (ft_printf_fd(2, ERR_EXPORT, name), 0);
 		i++;
 	}
 	return (1);

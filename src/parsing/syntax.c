@@ -25,9 +25,7 @@ int	syntax_error(t_shell *mshell, t_token **token)
 				return (ft_printf_fd(2, ERR_SYNTAX), 0);
 			if (temp->type == INFILE)
 				if (!check_infile(temp))
-				{
-					return (ft_printf_fd(2, "minishell: file: no such file or directory\n"), 0);
-				}
+					return (ft_printf_fd(2, ERR_NO_FILE), 0);
 		}
 		temp = temp->next;
 	}
@@ -94,7 +92,7 @@ int	check_redir_type(t_token *temp)
 
 int	check_infile(t_token *token)
 {
-	int fd;
+	int		fd;
 	t_token	*temp;
 
 	temp = token;

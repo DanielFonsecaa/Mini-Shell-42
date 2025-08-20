@@ -6,10 +6,10 @@
  * @param mshell Pointer to the shell structure
  * @param token Pointer to token array used for command execution
  */
-void    execute_pipe_redirect(t_shell *mshell, t_token **token)
+void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 {
-	int i;
-	t_token *temp;
+	int		i;
+	t_token	*temp;
 
 	i = -1;
 	temp = *token;
@@ -31,7 +31,7 @@ void    execute_pipe_redirect(t_shell *mshell, t_token **token)
 		if (temp)
 			temp = temp->next;
 		if (i > 0)
-			close(mshell->pipes[i-1][1]);
+			close(mshell->pipes[i - 1][1]);
 	}
 	cleanup_and_wait(mshell);
 }
@@ -43,11 +43,11 @@ void    execute_pipe_redirect(t_shell *mshell, t_token **token)
  * @param fd Array of file descriptors [0] for input, [1] for output
  */
 
-void handle_redirections(t_token *token, int fd[2])
+void	handle_redirections(t_token *token, int fd[2])
 {
 	while (token && token->type != PIPE)
 	{
-		if (token->type == INFILE)  // <
+		if (token->type == INFILE)
 		{
 			fd[0] = open(token->next->name, O_RDONLY);
 			if (fd[0] == -1)
@@ -58,7 +58,7 @@ void handle_redirections(t_token *token, int fd[2])
 			dup2(fd[0], STDIN_FILENO);
 			close(fd[0]);
 		}
-		else if (token->type == OUTFILE)  // >
+		else if (token->type == OUTFILE)
 		{
 			fd[1] = open(token->next->name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd[1] == -1)
@@ -69,7 +69,7 @@ void handle_redirections(t_token *token, int fd[2])
 			dup2(fd[1], STDOUT_FILENO);
 			close(fd[1]);
 		}
-		else if (token->type == APPEND)  // >>
+		else if (token->type == APPEND)
 		{
 			fd[1] = open(token->next->name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd[1] == -1)
@@ -115,10 +115,10 @@ void	wait_and_get_exit_status(t_shell *mshell)
  *
  * @param mshell Pointer to the shell structure
  */
-void cleanup_and_wait(t_shell *mshell)
+void	cleanup_and_wait(t_shell *mshell)
 {
 	if (mshell->num_commands > 1)
-		close(mshell->pipes[mshell->num_commands-2][0]);
+		close(mshell->pipes[mshell->num_commands - 2][0]);
 	wait_and_get_exit_status(mshell);
 	cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
 }

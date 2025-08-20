@@ -9,12 +9,12 @@
 void	handle_cd(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
-	
+
 	temp = (*token)->next;
 	if (token_list_size(temp) > 1)
 	{
-		ft_printf_fd(2, "minishell: cd: too many arguments\n");
-		mshell->exit_code = 1;	
+		ft_printf_fd(2, ERR_CD_ARGS);
+		mshell->exit_code = 1;
 	}
 	else if (token_list_size(temp) == 0 || ft_strcmp(temp->name, "--") == 0)
 		cd_to_key(mshell, "HOME");
@@ -43,7 +43,7 @@ void	change_dir(t_shell *mshell, t_token **token)
 	path = *token;
 	if (chdir(path->name) == -1)
 	{
-		ft_printf_fd(2, "minishell: cd: %s: No such file or directory\n", path->name);
+		ft_printf_fd(2, ERR_NO_FILE, path->name);
 		mshell->exit_code = 1;
 		return ;
 	}
@@ -64,9 +64,9 @@ void	cd_to_key(t_shell *mshell, char *key)
 	t_envp	*temp;
 
 	temp = find_envp(mshell->env_list, key);
-	if  (!temp)
+	if (!temp)
 	{
-		ft_printf_fd(2, "minishell: cd: %s is not set\n", key);
+		ft_printf_fd(2, ERR_CD_NO_ENVP, key);
 		mshell->exit_code = 1;
 	}
 	else
@@ -75,7 +75,7 @@ void	cd_to_key(t_shell *mshell, char *key)
 		update_envp_with_string(mshell, "PWD", getcwd(buffer, PATH_MAX));
 		update_envp_with_string(mshell, "OLDPWD", mshell->curr_wd);
 		mshell->exit_code = 0;
-		getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));// needed ? uncomment : delete
+		getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
 	}
 }
 
@@ -98,12 +98,12 @@ int	cd_syntax(t_shell *mshell, t_token **token)
 		{
 			if (flag[2] == '\0')
 				return (1);
-			ft_printf_fd(2, "minishell: cd: invalid option\n");
+			ft_printf_fd(2, ERR_CD_INVALID_OPT);
 			return (0);
 		}
 		if (flag[1] != '\0')
 		{
-			ft_printf_fd(2, "minishell: cd: invalid option\n");
+			ft_printf_fd(2, ERR_CD_INVALID_OPT);
 			return (0);
 		}
 	}
@@ -119,9 +119,9 @@ int	cd_syntax(t_shell *mshell, t_token **token)
  */
 void	update_envp_with_string(t_shell *mshell, char *key, char *cwd)
 {
-	char *content; 
-	char *temp;
-	t_token *token;
+	char	*content;
+	char	*temp;
+	t_token	*token;
 
 	token = NULL;
 	content = ft_strjoin(key, "=");

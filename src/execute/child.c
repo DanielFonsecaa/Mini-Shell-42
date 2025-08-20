@@ -17,10 +17,9 @@ void	execute_child_command(t_shell *mshell, t_token **token, t_cmd *command)
 	if (!path)
 	{
 		handle_error_shell(mshell, token);
-		ft_printf_fd(2, "command not found\n");
-		exit(127);
+		ft_printf_fd(2, ERR_CMD);
+		exit(NOT_FOUND);
 	}
-
 	exec_command = mshell->exec_command;
 	if (execve(path, exec_command, mshell->env_var) == -1)
 	{
@@ -28,7 +27,7 @@ void	execute_child_command(t_shell *mshell, t_token **token, t_cmd *command)
 			free(path);
 		handle_error_shell(mshell, token);
 		perror("execve");
-		exit(126);
+		exit(FOUND_NOT_EXEC);
 	}
 }
 

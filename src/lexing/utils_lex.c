@@ -73,7 +73,7 @@ int	skip_inside_quotes(char *rd_l, int *j, char c)
 	return (1);
 }
 
-void    set_t_arg(t_token **token)
+void	set_t_arg(t_token **token)
 {
 	t_token	*temp;
 

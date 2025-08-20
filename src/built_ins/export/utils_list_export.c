@@ -11,7 +11,7 @@
 t_envp	*create_node(char *name, char *content, bool exported)
 {
 	t_envp	*node;
-	char    *new_content;
+	char	*new_content;
 
 	if (has_quote(content))
 		new_content = ft_strtrim_char(content, which_quote(content));
@@ -24,6 +24,7 @@ t_envp	*create_node(char *name, char *content, bool exported)
 	node->next = NULL;
 	return (node);
 }
+
 /**
  * @brief Adds a new node to the end of the environment variable list.
  * 
@@ -42,6 +43,7 @@ void	envp_list_addback(t_envp **node, t_envp *new_node)
 	else
 		*node = new_node;
 }
+
 /**
  * @brief Gets the last node in the environment variable list.
  * 
@@ -56,6 +58,7 @@ t_envp	*envp_get_last(t_envp *node)
 		node = node->next;
 	return (node);
 }
+
 /**
  * @brief Creates an environment variable list from an array of strings.
  * 
@@ -89,6 +92,7 @@ void	create_envp_list(t_envp **env_list, char **env)
 		free_envp_content(name, content);
 	}
 }
+
 /**
  * @brief Counts the number of nodes in the environment list
  * 

@@ -12,13 +12,13 @@ void	handle_env(t_shell *mshell)
 	if (!mshell)
 	{
 		mshell->exit_code = 1;
-		ft_printf_fd(2, "Error: Computer error"); 
+		ft_printf_fd(2, ERR_COMPUTER_ERROR);
 		return ;
 	}
 	if (!mshell->env_list)
 	{
 		mshell->exit_code = 1;
-		ft_printf_fd(2, "Error: No environment variables");
+		ft_printf_fd(2, ERR_NO_ENVP);
 		return ;
 	}
 	if (check_for_flags(mshell))

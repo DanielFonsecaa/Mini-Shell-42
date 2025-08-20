@@ -59,6 +59,7 @@ void	free_envp_content(char *name, char *content)
 	free(content);
 	content = NULL;
 }
+
 /**
  * @brief Frees the entire environment variable list.
  * 
@@ -88,7 +89,7 @@ void	free_envp_list(t_envp *node)
  */
 void	free_cmd_struct(t_cmd **commands)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!commands)

@@ -1,7 +1,7 @@
 #include "../../includes/minishell.h"
 
 //debug arr of cmd --- erase latetr
-static void     print_cmd_arr(t_shell *mshell)
+static void	print_cmd_arr(t_shell *mshell)
 {
 	int i = -1;
 	int j;
@@ -50,7 +50,6 @@ int	parsing(t_shell *mshell, t_token **token)
 		return (0);
 	}
 	print_cmd_arr(mshell);
-	//ft_printf_fd(1, "token size --%i\n num pipes --%i\n", mshell->tokens_size, mshell->num_pipes);
 	return (1);
 }
 
@@ -97,7 +96,7 @@ void	expansion(t_shell *mshell, t_token **token)
 			}
 			else
 			{
-				char tmp[2];
+				char	tmp[2];
 				tmp[0] = temp->name[i];
 				tmp[1] = 0;
 				new_str = ft_strjoin_free(new_str, tmp);

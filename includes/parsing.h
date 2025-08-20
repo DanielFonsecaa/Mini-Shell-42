@@ -14,5 +14,4 @@ int		check_pipeline(t_token **token);
 int		check_redir_type(t_token *temp);
 int		check_infile(t_token *token);
 
-
 #endif

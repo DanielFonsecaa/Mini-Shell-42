@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:39:09 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/08/19 17:57:58 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/08/20 11:25:14 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	count_words(char *str, char *charset)
 		while (charset_check(str[i], charset) == 1)
 			i++;
 		if ((charset_check(str[i], charset) == 0)
-		    && (charset_check(str[i - 1], charset) == 1))
+			&& (charset_check(str[i - 1], charset) == 1))
 			count++;
 		i++;
 	}

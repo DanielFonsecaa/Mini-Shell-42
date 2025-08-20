@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 13:17:30 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/04/08 14:35:12 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/08/20 11:24:02 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (ret);
 }
 
-char *ft_strjoin_free(char *a, const char *b)
+char	*ft_strjoin_free(char *a, const char *b)
 {
-	char *res;
+	char	*res;
+
 	res = ft_strjoin(a, b);
 	free(a);
-	return res;
+	return (res);
 }
 
 /*

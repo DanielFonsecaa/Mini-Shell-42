@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:08:11 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/08/13 15:00:02 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/08/20 11:23:43 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ void		*ft_calloc(size_t nmemb, size_t size);
 char		*ft_strdup(const char *s);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strjoin(char const *s1, char const *s2);
-char        *ft_strjoin_free(char *a, const char *b);
-char	    *ft_strjoin_arr(char **s2);
+char		*ft_strjoin_free(char *a, const char *b);
+char		*ft_strjoin_arr(char **s2);
 char		*ft_strtrim(char const *s1, char const *set);
 char		*ft_strtrim_char(char const *s1, char c);
 char		**ft_split(char const *s, char c);
-char	    **ft_split_charset(char *str, char *charset);
+char		**ft_split_charset(char *str, char *charset);
 char		*ft_itoa(int n);
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void		ft_striteri(char *s, void (*f)(unsigned int, char*));

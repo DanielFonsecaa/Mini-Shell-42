@@ -16,7 +16,7 @@ void	modify_shell_level(t_envp *node, int value)
 	existing_node = find_envp(node, "SHLVL");
 	if (!existing_node)
 	{
-		ft_printf_fd(2, "shell level not found");
+		ft_printf_fd(2, ERR_SHLVLNOT_FOUND);
 		return ;
 	}
 	old_level = existing_node->content;
@@ -24,16 +24,16 @@ void	modify_shell_level(t_envp *node, int value)
 	str_level = ft_itoa(new_level + value);
 	if (!str_level)
 	{
-		ft_printf_fd(2, "Memory allocation failed for new shell level");
+		ft_printf_fd(2, ERR_MEMORY_SHLVL);
 		return ;
 	}
 	existing_node->content = str_level;
 	free(old_level);
 }
 
-int check_for_flags(t_shell *mshell)
+int	check_for_flags(t_shell *mshell)
 {
-	int     i;
+	int	i;
 
 	i = 0;
 	while (mshell->command[i])
@@ -41,7 +41,7 @@ int check_for_flags(t_shell *mshell)
 		if (mshell->command[i]->flags)
 		{
 			mshell->exit_code = 1;
-			ft_printf_fd(2, "Options/Arguments not allowed with built-ins");
+			ft_printf_fd(2, ERR_NO_FLAG_ALLOWED);
 			return (1);
 		}
 		i++;
@@ -49,12 +49,12 @@ int check_for_flags(t_shell *mshell)
 	return (0);
 }
 
-char *extract_cmd_token(char *rd_l, int *i)
+char	*extract_cmd_token(char *rd_l, int *i)
 {
-	int start;
-	int in_quote;
-	char quote_char;
-	int len;
+	int		start;
+	int		in_quote;
+	char	quote_char;
+	int		len;
 
 	init_values(&len, &start, &in_quote, i);
 	quote_char = 0;
@@ -68,7 +68,7 @@ char *extract_cmd_token(char *rd_l, int *i)
 		else if (in_quote && rd_l[*i] == quote_char)
 			in_quote = 0;
 		else if (!in_quote && ft_iswhite_space(rd_l[*i]))
-			break;
+			break ;
 		else
 			len++;
 		(*i)++;
@@ -76,37 +76,49 @@ char *extract_cmd_token(char *rd_l, int *i)
 	return (get_cmd_token(rd_l, start, len, quote_char));
 }
 
-void    init_values(int *len, int *start, int *in_quote, int *i)
+void	init_values(int *len, int *start, int *in_quote, int *i)
 {
 	*len = 0;
 	*in_quote = 0;
 	*start = *i;
 }
 
-char    *get_cmd_token(char *rd_l, int start, int len, char quote_char)
+char	*get_cmd_token(char *rd_l, int start, int len, char quote_char)
 {
-	char    *cmd_name;
-	int     i;
-	int     in_quote;
+	char	*cmd_name;
+	int		i;
+	int		in_quote;
 
 	cmd_name = safe_calloc(len + 1, sizeof(char));
 	in_quote = 0;
 	i = 0;
-	while (i < len) {
+	while (i < len)
+	{
 		if (!in_quote && (rd_l[start] == '\'' || rd_l[start] == '"'))
 		{
 			in_quote = 1;
 			quote_char = rd_l[start];
 			start++;
-			continue;
+			continue ;
 		}
 		else if (in_quote && rd_l[start] == quote_char)
 		{
 			in_quote = 0;
 			start++;
-			continue;
+			continue ;
 		}
 		cmd_name[i++] = rd_l[start++];
 	}
 	return (cmd_name);
+}
+
+/**
+ * @brief Determines which type of quote char is at the beginning of a string.
+ *
+ * @param str Pointer to the string to examine
+ * @return char of the first character of the string
+ */
+char	which_quote(char *str)
+{
+	return (*str);
 }

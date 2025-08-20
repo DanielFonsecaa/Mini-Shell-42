@@ -8,7 +8,6 @@
  */
 void	handle_error_shell(t_shell *mshell, t_token **token)
 {
-
 	if (token)
 		free_list(token);
 	if (mshell->command)
@@ -18,7 +17,7 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
 	if (mshell->env_var)
 		free_arr(mshell->env_var);
 	if (mshell->exec_command)
-		free(mshell->exec_command); ////////////
+		free(mshell->exec_command);
 	if (mshell->fake_cwd)
 		free(mshell->fake_cwd);
 	if (mshell->rd_l)
@@ -44,7 +43,7 @@ void	free_all(t_shell *mshell, t_token **token)
 	if (mshell->env_var)
 		free_arr(mshell->env_var);
 	if (mshell->exec_command)
-		free(mshell->exec_command); ////////////
+		free(mshell->exec_command);
 	if (mshell->fake_cwd)
 		free(mshell->fake_cwd);
 	if (mshell->rd_l)

@@ -1,6 +1,5 @@
 #include "../../includes/minishell.h"
 
-
 /**
  * @brief Handles the echo built-in command for the minishell
  *
@@ -9,8 +8,8 @@
  */
 void	handle_echo(t_shell *mshell, t_token **token)
 {
-	t_token *temp;
-	t_token **args_arr;
+	t_token	*temp;
+	t_token	**args_arr;
 	bool	flag;
 	int		i;
 
@@ -43,7 +42,6 @@ int	handle_n(t_token **token, int *i)
 			return (*i);
 		*i += 1;
 	}
-
 	return (*i);
 }
 
@@ -100,7 +98,6 @@ void	print_echo(t_token **arr, bool flag, int i)
 		ft_printf_fd(1, "\n");
 }
 
-
 /**
  * @brief Extracts arguments and flags from a token linked list into an array.
  * 
@@ -132,15 +129,4 @@ t_token	**get_args(t_token **token)
 		temp = temp->next;
 	}
 	return (args_arr);
-}
-
-/**
- * @brief Determines which type of quote char is at the beginning of a string.
- *
- * @param str Pointer to the string to examine
- * @return char of the first character of the string
- */
-char	which_quote(char *str)
-{
-	return (*str);
 }

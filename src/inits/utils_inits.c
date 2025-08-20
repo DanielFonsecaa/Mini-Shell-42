@@ -1,6 +1,5 @@
 #include "../../includes/minishell.h"
 
-
 /**
  * @brief Counts the number of pipes and redirections
  *
@@ -81,9 +80,9 @@ t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
  * @param token Pointer to the token containing the flag name to be added
  * @param command Pointer to the command structure where will be stored
  */
-void    add_flag_to_cmd(t_token **token, t_cmd **command)
+void	add_flag_to_cmd(t_token **token, t_cmd **command)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while ((*command)->flags[i])
@@ -91,16 +90,15 @@ void    add_flag_to_cmd(t_token **token, t_cmd **command)
 	(*command)->flags[i] = ft_strdup((*token)->name);
 }
 
-
 /**
  * @brief Adds a token's name as an argument to a command structure
  *
  * @param token Pointer to the token containing the name to add
  * @param command Pointer the command structure to modify
  */
-void    add_arg_to_cmd(t_token **token, t_cmd **command)
+void	add_arg_to_cmd(t_token **token, t_cmd **command)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while ((*command)->args[i])
@@ -116,10 +114,10 @@ void    add_arg_to_cmd(t_token **token, t_cmd **command)
  * @return The number of tokens of the specified type found before a PIPE token
  *         or end of list
  */
-int    count_type_till_pipe(t_token *token, int type)
+int	count_type_till_pipe(t_token *token, int type)
 {
-	int     i;
-	t_token *temp;
+	int		i;
+	t_token	*temp;
 
 	temp = token;
 	i = 0;
@@ -138,10 +136,10 @@ int    count_type_till_pipe(t_token *token, int type)
  * @param token Double pointer to the first token in the linked list
  * @return int The total number of command tokens found in the list
  */
-int count_num_commands(t_token** token)
+int	count_num_commands(t_token **token)
 {
-	t_token *temp;
-	int     i;
+	t_token	*temp;
+	int		i;
 
 	i = 0;
 	temp = *token;
@@ -193,9 +191,8 @@ char	**ft_copy_envp(char **envp)
  */
 void	create_pipes(int num_pipes, t_shell *mshell)
 {
-	//falta lidar com erros caso falhe
 	int	i;
-
+//falta lidar com erros caso falhe
 	i = 0;
 	if (num_pipes <= 0)
 		return ;

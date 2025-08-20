@@ -8,9 +8,9 @@
  */
 void	handle_exit(t_shell *mshell, t_token **token)
 {
-	t_token	*temp;
-	long long		status;
-	char			*value;
+	t_token		*temp;
+	long long	status;
+	char		*value;
 
 	temp = *token;
 	status = 0;
@@ -20,9 +20,9 @@ void	handle_exit(t_shell *mshell, t_token **token)
 		value = temp->next->name;
 		if (!verify_num(value) || !ft_atoll(value, &status))
 		{
-				mshell->exit_code = 2;
-				ft_printf_fd(2, "Error exit: %s : numeric argument required\n", value);
-				return ;
+			mshell->exit_code = 2;
+			ft_printf_fd(2, ERR_EXIT_NOT_NBR, value);
+			return ;
 		}
 		if (status < 0 || status > 255)
 			status %= 256;
@@ -43,7 +43,7 @@ int	verify_num(char *value)
 
 	i = 0;
 	if (ft_strlen(value) > 20 || !value || !*value)
-			return (0);
+		return (0);
 	if (value[i] == '-' || value[i] == '+')
 		i++;
 	if (!value[i])

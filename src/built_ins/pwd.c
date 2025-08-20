@@ -1,6 +1,5 @@
 #include "../../includes/minishell.h"
 
-
 /**
  * @brief Handles the pwd built-in command
  * 
@@ -16,14 +15,14 @@ void	handle_pwd(t_shell *mshell, t_token **token)
 	if (temp->next && temp->next->type != PIPE && temp->next->name[0] == '-')
 	{
 		mshell->exit_code = 1;
-		ft_printf_fd(2, "Error: No flags allowed with pwd\n");
+		ft_printf_fd(2, ERR_NO_FLAG_ALLOWED);
 		return ;
 	}
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
 		mshell->exit_code = 1;
-		ft_printf_fd(2, "pwd: Error retrieving directory\n");
+		ft_printf_fd(2, ERR_PWD);
 		return ;
 	}
 	ft_printf_fd(1, "%s\n", cwd);
