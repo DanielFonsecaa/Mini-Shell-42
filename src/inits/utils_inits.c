@@ -31,82 +31,6 @@ void	pipe_and_redirects_count(t_shell *mshell, t_token **token)
 }
 
 /**
- * @brief Creates and initializes an array of command structures
- *
- * @param mshell Pointer to the main shell structure
- * @param token Double pointer to the first token in the linked list
- * 
- * @return t_cmd** Returns array of pointers to command structures.
- */
-t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
-{
-	t_token	*temp;
-	t_cmd	**command;
-	int		i;
-	int		size_arr;
-
-	size_arr = mshell->num_commands;
-	i = -1;
-	temp = *token;
-	command = safe_calloc(size_arr + 1, sizeof(t_cmd *));
-	while (i < size_arr && temp)
-	{
-		if (temp->type == CMD)
-		{
-			i++;
-			command[i] = safe_calloc(1, sizeof(t_cmd));
-			command[i]->name = ft_strdup(temp->name);
-		}
-		else if (temp->type == FLAG)
-		{
-			if (!command[i]->flags)
-				command[i]->flags = safe_calloc(count_type_till_pipe(temp, FLAG) + 1, sizeof(char *));
-			add_flag_to_cmd(&temp, &command[i]);
-		}
-		else if (temp->type == ARG)
-		{
-			if (!command[i]->args)
-				command[i]->args = safe_calloc(count_type_till_pipe(temp, ARG) + 1, sizeof(char *));
-			add_arg_to_cmd(&temp, &command[i]);
-		}
-		temp = temp->next;
-	}
-	return (command);
-}
-
-/**
- * @brief Adds a flag token to the command's flags array
- * 
- * @param token Pointer to the token containing the flag name to be added
- * @param command Pointer to the command structure where will be stored
- */
-void	add_flag_to_cmd(t_token **token, t_cmd **command)
-{
-	int	i;
-
-	i = 0;
-	while ((*command)->flags[i])
-		i++;
-	(*command)->flags[i] = ft_strdup((*token)->name);
-}
-
-/**
- * @brief Adds a token's name as an argument to a command structure
- *
- * @param token Pointer to the token containing the name to add
- * @param command Pointer the command structure to modify
- */
-void	add_arg_to_cmd(t_token **token, t_cmd **command)
-{
-	int	i;
-
-	i = 0;
-	while ((*command)->args[i])
-		i++;
-	(*command)->args[i] = ft_strdup((*token)->name);
-}
-
-/**
  * @brief Counts the number of tokens of a specific type until a PIPE
  *
  * @param token Pointer to the starting token in the linked list
@@ -124,28 +48,6 @@ int	count_type_till_pipe(t_token *token, int type)
 	while (temp && temp->type != PIPE)
 	{
 		if (temp->type == type)
-			i++;
-		temp = temp->next;
-	}
-	return (i);
-}
-
-/**
- * @brief Counts the number of command tokens in a linked list of tokens
- *
- * @param token Double pointer to the first token in the linked list
- * @return int The total number of command tokens found in the list
- */
-int	count_num_commands(t_token **token)
-{
-	t_token	*temp;
-	int		i;
-
-	i = 0;
-	temp = *token;
-	while (temp)
-	{
-		if (temp->type == CMD)
 			i++;
 		temp = temp->next;
 	}

@@ -58,11 +58,6 @@ void	expansion(t_shell *mshell, t_token **token)
 	t_token	*temp;
 	char	*new_str;
 	int		i;
-	int		start;
-	int		len;
-	t_envp	*node;
-	char	*var;
-	char	*val;
 
 	temp = *token;
 	while (temp)
@@ -72,40 +67,65 @@ void	expansion(t_shell *mshell, t_token **token)
 		while (temp->name[i])
 		{
 			if (temp->name[i] == '$' && temp->name[i + 1] == '?' && temp->type == ARG)
-			{
-				val = ft_itoa(mshell->exit_code);
-				new_str = ft_strjoin_free(new_str, val);
-				free(val);
-				i += 2;
-			}
+				append_exit_code(mshell, new_str, &i);
 			else if (temp->name[i] == '$' && temp->type == ARG)
-			{
-				start = i + 1;
-				len = 0;
-				while (temp->name[start + len] && (ft_isalnum(temp->name[start + len]) || temp->name[start + len] == '_'))
-					len++;
-				var = ft_substr(temp->name, start, len);
-				node = find_envp(mshell->env_list, var);
-				if (node)
-					val = node->content;
-				else
-					val = "";
-				new_str = ft_strjoin_free(new_str, val);
-				free(var);
-				i = start + len;
-			}
+				new_str = append_expansion_content(&temp, new_str, &i);
 			else
-			{
-				char	tmp[2];
-				tmp[0] = temp->name[i];
-				tmp[1] = 0;
-				new_str = ft_strjoin_free(new_str, tmp);
-				i++;
-			}
+				new_str = append_letter(&temp, new_str, &i);
 		}
 		free(temp->name);
 		temp->name = ft_strdup(new_str);
 		free(new_str);
 		temp = temp->next;
 	}
+}
+
+char	*append_exit_code(t_shell *mshell, char *new_str, int *i)
+{
+	char	*exit_code;
+
+	exit_code = ft_itoa(mshell->exit_code);
+	new_str = ft_strjoin_free(new_str, exit_code);
+	free(exit_code);
+	*i += 2;
+	return (new_str);
+}
+
+char	*append_expansion_content(t_token **token, char *new_str, int *i)
+{
+	t_envp	*node;
+	char	*variable;
+	char	*new_content;
+	int		start;
+	int		len;
+
+	start = i + 1;
+	len = 0;
+	while (temp->name[start + len])
+	{
+		if (!(ft_isalnum(temp->name[start + len]) || temp->name[start + len] == '_'))
+			break ;
+		len++;
+	}
+	variable = ft_substr(temp->name, start, len);
+	node = find_envp(mshell->env_list, variable);
+	if (node)
+		new_content = node->content;
+	else
+		new_content = "";
+	new_str = ft_strjoin_free(new_str, new_content);
+	free(variable);
+	*i = start + len;
+	return (new_str);
+}
+
+char	*append_letter(t_token **token, char *old_str, int *i)
+{
+	char	tmp[2];
+
+	tmp[0] = (*token)->name[i];
+	tmp[1] = 0;
+	new_str = ft_strjoin_free(old_str, tmp);
+	(*i)++;
+	return (new_str);
 }

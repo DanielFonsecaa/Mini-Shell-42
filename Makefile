@@ -36,6 +36,7 @@ FILES			=	main.c \
 					free_data/free_pipeline.c \
 					inits/inits.c \
 					inits/utils_inits.c \
+					inits/utils_inits_command.c \
 					lexing/lexing.c \
 					lexing/tokenize_utils.c \
 					lexing/utils_lex.c \

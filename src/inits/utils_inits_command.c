@@ -1,0 +1,89 @@
+#include "../../includes/minishell.h"
+
+/**
+ * @brief Creates and initializes an array of command structures
+ *
+ * @param mshell Pointer to the main shell structure
+ * @param token Double pointer to the first token in the linked list
+ * 
+ * @return t_cmd** Returns array of pointers to command structures.
+ */
+t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
+{
+	t_token	*temp;
+	t_cmd	**command;
+	int		i;
+	int		size_arr;
+
+	size_arr = mshell->num_commands;
+	i = -1;
+	temp = *token;
+	command = safe_calloc(size_arr + 1, sizeof(t_cmd *));
+	while (i < size_arr && temp)
+	{
+		if (temp->type == CMD)
+		{
+			i++;
+			command[i] = safe_calloc(1, sizeof(t_cmd));
+			command[i]->name = ft_strdup(temp->name);
+		}
+		else
+			add_flag_arg_to_cmd(&temp, command[i]);
+		temp = temp->next;
+	}
+	return (command);
+}
+
+/**
+ * @brief Adds a token's name to a command's string array (flags or args)
+ *
+ * @param token Pointer to the token containing the name to add
+ * @param dest The destination (flags or args)
+ */
+void	add_flag_arg_to_cmd(t_token **token, t_cmd *command)
+{
+	int	i;
+	int	number_params;
+
+	i = 0;
+	if ((*token)->type == ARG)
+	{
+		number_params = count_type_till_pipe(*token, ARG);
+		if (!command->args)
+			command->args = safe_calloc(number_params + 1, sizeof(char *));
+		while (command->args[i])
+			i++;
+		command->args[i] = ft_strdup((*token)->name);
+	}
+	else if ((*token)->type == FLAG)
+	{
+		number_params = count_type_till_pipe(*token, FLAG);
+		if (!command->flags)
+			command->flags = safe_calloc(number_params + 1, sizeof(char *));
+		while (command->flags[i])
+			i++;
+		command->flags[i] = ft_strdup((*token)->name);
+	}
+}
+
+/**
+ * @brief Counts the number of command tokens in a linked list of tokens
+ *
+ * @param token Double pointer to the first token in the linked list
+ * @return int The total number of command tokens found in the list
+ */
+int	count_num_commands(t_token **token)
+{
+	t_token	*temp;
+	int		i;
+
+	i = 0;
+	temp = *token;
+	while (temp)
+	{
+		if (temp->type == CMD)
+			i++;
+		temp = temp->next;
+	}
+	return (i);
+}

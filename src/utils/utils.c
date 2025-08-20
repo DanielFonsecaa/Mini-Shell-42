@@ -76,13 +76,6 @@ char	*extract_cmd_token(char *rd_l, int *i)
 	return (get_cmd_token(rd_l, start, len, quote_char));
 }
 
-void	init_values(int *len, int *start, int *in_quote, int *i)
-{
-	*len = 0;
-	*in_quote = 0;
-	*start = *i;
-}
-
 char	*get_cmd_token(char *rd_l, int start, int len, char quote_char)
 {
 	char	*cmd_name;

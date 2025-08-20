@@ -19,7 +19,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 		handle_signal();
 		init_shell_envp_cwd(mshell, envp);
 		mshell->rd_l = readline(mshell->fake_cwd);
-		if (mshell->rd_l)
+		if (mshell->rd_l && mshell->rd_l[0])
 			add_history(mshell->rd_l);
 		if (!mshell->rd_l)
 		{

@@ -62,3 +62,10 @@ void	init_pipeline(t_shell *mshell)
 		// mshell->exit_code = X; and return ;
 	}
 }
+
+void	init_values(int *len, int *start, int *in_quote, int *i)
+{
+	*len = 0;
+	*in_quote = 0;
+	*start = *i;
+}

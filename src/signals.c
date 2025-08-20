@@ -5,7 +5,7 @@
  * @param sig The signal number received (expected to be SIGINT)
  * @note Re-registers the signal handler to maintain consistent behavior
  */
-void    handle_ctrl_c(int sig)
+void	handle_ctrl_c(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -23,7 +23,7 @@ void    handle_ctrl_c(int sig)
  *
  * @param sig The signal number received (expected to be SIGINT)
  */
-void handle_ctrl_c_child(int sig)
+void	handle_ctrl_c_child(int sig)
 {
 	if (sig == SIGINT && g_sig)
 		ft_printf_fd(1, "\n");
@@ -32,7 +32,7 @@ void handle_ctrl_c_child(int sig)
 /**
  * @brief Sets up signal handling for the minishell program
  */
-void    handle_signal(void)
+void	handle_signal(void)
 {
 	signal(SIGINT, handle_ctrl_c);
 	//signal(SIGQUIT, SIG_IGN);
