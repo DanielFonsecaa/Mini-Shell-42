@@ -3,24 +3,26 @@
 //debug arr of cmd --- erase latetr
 static void	print_cmd_arr(t_shell *mshell)
 {
-	int i = -1;
-	int j;
-	while (mshell->command[++i])
+	int		i;
+	int		j;
+	t_cmd	**cmd;
+
+	cmd = mshell->command;
+	i = -1;
+	while (cmd[++i])
 	{
-		ft_printf_fd(1, " name -> %s\n", mshell->command[i]->name);
+		ft_printf_fd(1, " name -> %s\n", cmd[i]->name);
 		j = -1;
-		if (mshell->command[i]->flags)
+		if (cmd[i]->flags)
 		{
-			while (mshell->command[i]->flags[++j]) {
-				ft_printf_fd(1, " flag %d -> %s\n", j, mshell->command[i]->flags[j]);
-			}
+			while (cmd[i]->flags[++j])
+				ft_printf_fd(1, " flag %d -> %s\n", j, cmd[i]->flags[j]);
 		}
 		j = -1;
-		if (mshell->command[i]->args)
+		if (cmd[i]->args)
 		{
-			while (mshell->command[i]->args[++j]) {
-				ft_printf_fd(1, " arg %d -> %s\n", j, mshell->command[i]->args[j]);
-			}
+			while (cmd[i]->args[++j])
+				ft_printf_fd(1, " arg %d -> %s\n", j, cmd[i]->args[j]);
 		}
 	}
 }
@@ -66,10 +68,11 @@ void	expansion(t_shell *mshell, t_token **token)
 		new_str = safe_calloc(ft_strlen(temp->name) + 1, sizeof(char));
 		while (temp->name[i])
 		{
-			if (temp->name[i] == '$' && temp->name[i + 1] == '?' && temp->type == ARG)
+			if (temp->name[i] == '$' && temp->name[i + 1] == '?'
+				&& temp->type == ARG)
 				append_exit_code(mshell, new_str, &i);
 			else if (temp->name[i] == '$' && temp->type == ARG)
-				new_str = append_expansion_content(&temp, new_str, &i);
+				new_str = append_content(mshell, &temp, new_str, &i);
 			else
 				new_str = append_letter(&temp, new_str, &i);
 		}
@@ -91,7 +94,7 @@ char	*append_exit_code(t_shell *mshell, char *new_str, int *i)
 	return (new_str);
 }
 
-char	*append_expansion_content(t_token **token, char *new_str, int *i)
+char	*append_content(t_shell *mshell, t_token **token, char *str, int *i)
 {
 	t_envp	*node;
 	char	*variable;
@@ -99,33 +102,34 @@ char	*append_expansion_content(t_token **token, char *new_str, int *i)
 	int		start;
 	int		len;
 
-	start = i + 1;
+	start = *i + 1;
 	len = 0;
-	while (temp->name[start + len])
+	while ((*token)->name[start + len])
 	{
-		if (!(ft_isalnum(temp->name[start + len]) || temp->name[start + len] == '_'))
+		if (!(ft_isalnum((*token)->name[start + len])
+				|| (*token)->name[start + len] == '_'))
 			break ;
 		len++;
 	}
-	variable = ft_substr(temp->name, start, len);
+	variable = ft_substr((*token)->name, start, len);
 	node = find_envp(mshell->env_list, variable);
 	if (node)
 		new_content = node->content;
 	else
 		new_content = "";
-	new_str = ft_strjoin_free(new_str, new_content);
+	str = ft_strjoin_free(str, new_content);
 	free(variable);
 	*i = start + len;
-	return (new_str);
+	return (str);
 }
 
-char	*append_letter(t_token **token, char *old_str, int *i)
+char	*append_letter(t_token **token, char *new_str, int *i)
 {
 	char	tmp[2];
 
-	tmp[0] = (*token)->name[i];
+	tmp[0] = (*token)->name[*i];
 	tmp[1] = 0;
-	new_str = ft_strjoin_free(old_str, tmp);
+	new_str = ft_strjoin_free(new_str, tmp);
 	(*i)++;
 	return (new_str);
 }

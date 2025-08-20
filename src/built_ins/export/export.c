@@ -117,7 +117,7 @@ void	update_envp_var(char *name, t_envp *node)
 	if (has_quote(new))
 		new_content = ft_strtrim_char(new, which_quote(new));
 	else
-		new_content = new;
+		new_content = ft_strdup(new);
 	node->content = new_content;
 	node->exported = true;
 	free(old);
@@ -143,9 +143,10 @@ void	append_envp_var(char *name, t_envp *node)
 	if (has_quote(new))
 		new_content = ft_strtrim_char(new, which_quote(new));
 	else
-		new_content = new;
+		new_content = ft_strdup(new);
 	node->content = ft_strjoin(old, new_content);
 	node->exported = true;
 	free(old);
 	free(new);
+	free(new_content);
 }

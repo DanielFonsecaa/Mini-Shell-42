@@ -13,7 +13,9 @@ t_envp	*create_node(char *name, char *content, bool exported)
 	t_envp	*node;
 	char	*new_content;
 
-	if (has_quote(content))
+	if (!content)
+		new_content = ft_strdup("");
+	else if (has_quote(content))
 		new_content = ft_strtrim_char(content, which_quote(content));
 	else
 		new_content = ft_strdup(content);

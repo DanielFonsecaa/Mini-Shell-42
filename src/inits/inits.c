@@ -8,6 +8,10 @@
  */
 void	init_shell_envp_cwd(t_shell *mshell, char **envp)
 {
+	if (mshell->env_var)
+		free_arr(mshell->env_var);
+	if (mshell->fake_cwd)
+		free(mshell->fake_cwd);
 	mshell->env_var = ft_copy_envp(envp);
 	getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
 	mshell->fake_cwd = ft_strjoin(mshell->curr_wd, " 👉 ");

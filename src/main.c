@@ -34,8 +34,8 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 		execute_cmd_line(mshell, token);
 		free_all(mshell, token);
 	}
-	modify_shell_level(mshell->env_list, - 1); //still not tested
-	free_envp_list(mshell->env_list);
+	modify_shell_level(mshell->env_list, -1);
+	free_envp_list(mshell);
 }
 
 /**
