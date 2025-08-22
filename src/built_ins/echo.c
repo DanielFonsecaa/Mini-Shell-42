@@ -83,13 +83,10 @@ void	print_echo(char **arr, bool flag, int i)
 		size++;
 	while (arr[i])
 	{
-		if (arr[i][0] == '\'' || arr[i][0] == '"' )
-			name = ft_strtrim_char(arr[i], which_quote(arr[i]));
-		else
-			name = ft_strdup(arr[i]);
+		name = ft_strdup(arr[i]);
 		ft_printf_fd(1, "%s", name);
 		if (i < size - 1)
-			ft_printf(" ");
+			ft_printf_fd(1, " ");
 		if (arr[i])
 			free(name);
 		name = NULL;

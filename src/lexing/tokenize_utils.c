@@ -23,8 +23,12 @@ int	next_token_len(char *s)
 			while (s[i] && s[i] != quote)
 				i++;
 			if (s[i] == quote)
+			{
 				i++;
-			quote = 0;
+				quote = 0;
+				// Continue processing after closing quote without breaking
+				// This allows for quote concatenation like "hello"world'test'
+			}
 		}
 		else if (!quote && (ft_iswhite_space(s[i]) || is_meta_char(s[i])))
 			break ;

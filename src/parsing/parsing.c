@@ -126,10 +126,33 @@ char	*append_content(t_shell *mshell, t_token **token, char *str, int *i)
 char	*append_letter(t_token **token, char *new_str, int *i)
 {
 	char	tmp[2];
+	char	quote_char;
 
-	tmp[0] = (*token)->name[*i];
-	tmp[1] = 0;
-	new_str = ft_strjoin_free(new_str, tmp);
-	(*i)++;
+	// Handle quote removal during expansion
+	if (((*token)->name[*i] == '"' || (*token)->name[*i] == '\''))
+	{
+		quote_char = (*token)->name[*i];
+		(*i)++; // Skip opening quote
+		
+		// Copy content inside quotes
+		while ((*token)->name[*i] && (*token)->name[*i] != quote_char)
+		{
+			tmp[0] = (*token)->name[*i];
+			tmp[1] = 0;
+			new_str = ft_strjoin_free(new_str, tmp);
+			(*i)++;
+		}
+		
+		// Skip closing quote if found
+		if ((*token)->name[*i] == quote_char)
+			(*i)++;
+	}
+	else
+	{
+		tmp[0] = (*token)->name[*i];
+		tmp[1] = 0;
+		new_str = ft_strjoin_free(new_str, tmp);
+		(*i)++;
+	}
 	return (new_str);
 }
