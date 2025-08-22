@@ -16,7 +16,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 	modify_shell_level(mshell->env_list, 1);
 	while (mshell->is_running)
 	{
-		handle_signal();
+		handle_signal(mshell);
 		init_shell_envp_cwd(mshell, envp);
 		mshell->rd_l = readline(mshell->fake_cwd);
 		if (mshell->rd_l && mshell->rd_l[0])
@@ -33,6 +33,7 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 		}
 		execute_cmd_line(mshell, token);
 		free_all(mshell, token);
+		ft_printf("%d\n",mshell->exit_code);
 	}
 	modify_shell_level(mshell->env_list, -1);
 	free_envp_list(mshell);

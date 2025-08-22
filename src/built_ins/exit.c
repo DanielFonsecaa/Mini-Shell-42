@@ -15,6 +15,7 @@ void	handle_exit(t_shell *mshell, t_token **token)
 	temp = *token;
 	status = 0;
 	mshell->is_running = false;
+	ft_printf("exit handle - %d\n",mshell->exit_code);
 	if (temp->next)
 	{
 		value = temp->next->name;

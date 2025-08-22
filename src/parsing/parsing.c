@@ -70,7 +70,7 @@ void	expansion(t_shell *mshell, t_token **token)
 		{
 			if (temp->name[i] == '$' && temp->name[i + 1] == '?'
 				&& temp->type == ARG)
-				append_exit_code(mshell, new_str, &i);
+				new_str = append_exit_code(mshell, new_str, &i);
 			else if (temp->name[i] == '$' && temp->type == ARG)
 				new_str = append_content(mshell, &temp, new_str, &i);
 			else

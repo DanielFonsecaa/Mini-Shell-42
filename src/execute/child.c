@@ -17,6 +17,7 @@ void execute_child_command(t_shell *mshell, t_token **token, t_cmd *command)
 	if (!path)
 	{
 		handle_error_shell(mshell, token);
+		cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
 		ft_printf_fd(2, ERR_CMD);
 		exit(NOT_FOUND);
 	}
@@ -34,6 +35,7 @@ void execute_child_command(t_shell *mshell, t_token **token, t_cmd *command)
 			if (path != command->name)
 				free(path);
 			handle_error_shell(mshell, token);
+			cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
 			perror("execve");
 			exit(FOUND_NOT_EXEC);
 		}
