@@ -8,7 +8,7 @@ void	handle_exit(t_shell *mshell, t_token **token);
 void	handle_export(t_shell *mshell, t_token **token);
 void	handle_cd(t_shell *mshell, t_token **token);
 void	handle_unset(t_shell *mshell, t_token **token);
-void	handle_echo(t_shell *mshell, t_token **token);
+void handle_echo(t_shell *mshell);
 
 // Utils
 int		is_built_in(t_token **token);
@@ -41,9 +41,9 @@ void	remove_envp_var(t_envp *head, t_envp *node);
 
 // Echo Utils
 t_token	**get_args(t_token **token);
-void	print_echo(t_token **arr, bool flag, int i);
+void	print_echo(char **arr, bool flag, int i);
 int		valid_n(char *str);
-int		handle_n(t_token **token, int *i);
+int		handle_n(char **command_arr, int *i);
 char	which_quote(char *str);
 
 #endif

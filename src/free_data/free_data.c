@@ -37,10 +37,15 @@ void	free_arr(char **arr)
 	i = 0;
 	while (arr[i])
 	{
-		free(arr[i]);
+		if (arr[i])
+		{
+			free(arr[i]);
+			arr[i] = NULL;
+		}
 		i++;
 	}
 	free(arr);
+	arr = NULL;
 }
 
 //NOT BEING USED
@@ -93,6 +98,8 @@ void	free_cmd_struct(t_shell *mshell)
 {
 	int	i;
 
+	if (!mshell || !mshell->command)
+		return ;
 	i = -1;
 	while (mshell->command[++i])
 	{

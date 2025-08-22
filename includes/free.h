@@ -4,6 +4,7 @@
 //Main free
 void	free_all(t_shell *mshell, t_token **token);
 void	handle_error_shell(t_shell *mshell, t_token **token);
+void    handle_child_free(t_shell *mshell, t_token **token, char *path);
 //void	error_shell(t_shell *mshell, t_token **token);
 
 //free data

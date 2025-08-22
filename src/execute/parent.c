@@ -25,10 +25,12 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 			setup_child(i, mshell->num_commands, mshell->pipes, mshell->fd);
 			execute_child_command(mshell, token, mshell->command[i]);
 		}
-		while (temp && temp->type != PIPE)
+		while (temp && temp->type != PIPE) {
 			temp = temp->next;
-		if (temp)
+		}
+		if (temp) {
 			temp = temp->next;
+		}
 		if (i > 0)
 			close(mshell->pipes[i - 1][1]);
 	}
@@ -46,22 +48,23 @@ void	handle_redirections(t_token *token, int fd[2])
 {
 	int	flags;
 
+	(void)fd;
 	while (token && token->type != PIPE)
 	{
 		if (token->type == INFILE)
 		{
 			flags = O_RDONLY;
-			helper_handle_redirect(token->next->name, fd[0], flags);
+			helper_handle_redirect(token->next->name, STDIN_FILENO, flags);
 		}
 		else if (token->type == OUTFILE)
 		{
 			flags = O_WRONLY | O_CREAT | O_TRUNC;
-			helper_handle_redirect(token->next->name, fd[1], flags);
+			helper_handle_redirect(token->next->name, STDOUT_FILENO, flags);
 		}
 		else if (token->type == APPEND)
 		{
 			flags = O_WRONLY | O_CREAT | O_APPEND;
-			helper_handle_redirect(token->next->name, fd[1], flags);
+			helper_handle_redirect(token->next->name, STDOUT_FILENO, flags);
 		}
 		token = token->next;
 	}
@@ -69,14 +72,16 @@ void	handle_redirections(t_token *token, int fd[2])
 
 void	helper_handle_redirect(char	*file_name, int fd, int flags)
 {
-	fd = open(file_name, flags, 0644);
-	if (fd == -1)
+	int new_fd;
+
+	new_fd = open(file_name, flags, 0644);
+	if (new_fd == -1)
 	{
 		perror("open");
 		exit(1);
 	}
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	dup2(new_fd, fd);
+	close(new_fd);
 }
 
 /**

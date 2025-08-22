@@ -8,8 +8,13 @@
  */
 void	execute_cmd_line(t_shell *mshell, t_token **token)
 {
+
 	if (is_built_in(token) && !mshell->has_pipes && !mshell->has_redirect)
+	{
+		format_cmd(mshell, mshell->command[0]);
 		execute_built_in(mshell, token);
+		//free_arr(mshell->exec_command);
+	}
 	else
 		execute_with_pipes_or_redirect(mshell, token);
 }
@@ -60,7 +65,7 @@ void	execute_built_in(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	if (ft_strcmp(temp->name, "echo") == 0)
-		handle_echo(mshell, token);
+		handle_echo(mshell);
 	else if (ft_strcmp(temp->name, "env") == 0)
 		handle_env(mshell);
 	else if (ft_strcmp(temp->name, "pwd") == 0)

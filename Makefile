@@ -124,9 +124,9 @@ run: re
 gdb: re
 	gdb --tui ./minishell
 
-val:
+val: re
 	@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp
-	@valgrind --suppressions=readline.supp --leak-check=full -s --show-leak-kinds=all ./$(NAME)
+	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all  --track-origins=yes --tool=memcheck ./$(NAME)
 
 .PHONY: all clean fclean re run gdb val
 

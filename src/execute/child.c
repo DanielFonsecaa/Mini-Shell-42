@@ -7,7 +7,7 @@
  * @param token Pointer to token array for error handling cleanup
  * @param command Pointer to command structure
  */
-void	execute_child_command(t_shell *mshell, t_token **token, t_cmd *command)
+void execute_child_command(t_shell *mshell, t_token **token, t_cmd *command)
 {
 	char	*path;
 	char	**exec_command;
@@ -20,14 +20,23 @@ void	execute_child_command(t_shell *mshell, t_token **token, t_cmd *command)
 		ft_printf_fd(2, ERR_CMD);
 		exit(NOT_FOUND);
 	}
-	exec_command = mshell->exec_command;
-	if (execve(path, exec_command, mshell->env_var) == -1)
+	if (is_built_in(token))
 	{
-		if (path != command->name)
-			free(path);
-		handle_error_shell(mshell, token);
-		perror("execve");
-		exit(FOUND_NOT_EXEC);
+		execute_built_in(mshell, token);
+		handle_child_free(mshell, token, path);
+		exit (mshell->exit_code);
+	}
+	else
+	{
+		exec_command = mshell->exec_command;
+		if (execve(path, exec_command, mshell->env_var) == -1)
+		{
+			if (path != command->name)
+				free(path);
+			handle_error_shell(mshell, token);
+			perror("execve");
+			exit(FOUND_NOT_EXEC);
+		}
 	}
 }
 
@@ -43,18 +52,26 @@ void	setup_child(int index, int num_cmds, int **pipes, int *fd)
 {
 	if (index == 0)
 	{
+		printf("DEBUG: First command - stdin from terminal\n");
 		if (fd && fd[0] > 2)
 			dup2(fd[0], STDIN_FILENO);
 	}
 	else
+	{
+		printf("DEBUG: Command %d - stdin from pipe[%d][0]\n", index, index-1);
 		dup2(pipes[index - 1][0], STDIN_FILENO);
+	}
 	if (index == num_cmds - 1)
 	{
+		printf("DEBUG: Last command - stdout to terminal\n");
 		if (fd && fd[1] > 2)
 			dup2(fd[1], STDOUT_FILENO);
 	}
 	else
+	{
+		printf("DEBUG: Command %d - stdout to pipe[%d][1]\n", index, index);
 		dup2(pipes[index][1], STDOUT_FILENO);
+	}
 	if (fd)
 		close_fds(pipes, num_cmds, fd[0], fd[1]);
 	else
@@ -85,12 +102,12 @@ void	format_cmd(t_shell *mshell, t_cmd *command)
 	size = 0;
 	i = 0;
 	if (command->name)
-		mshell->exec_command[i++] = command->name;
+		mshell->exec_command[i++] = ft_strdup(command->name);
 	while (command->flags && command->flags[size])
-		mshell->exec_command[i++] = command->flags[size++];
+		mshell->exec_command[i++] = ft_strdup(command->flags[size++]);
 	size = 0;
 	while (command->args && command->args[size])
-		mshell->exec_command[i++] = command->args[size++];
+		mshell->exec_command[i++] = ft_strdup(command->args[size++]);
 }
 
 /**
