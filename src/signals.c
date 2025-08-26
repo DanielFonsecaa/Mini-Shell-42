@@ -32,7 +32,7 @@ void	handle_ctrl_c_child(int sig)
 /**
  * @brief Sets up signal handling for the minishell program
  */
-void	handle_signal(t_shell *mshell)
+void	handle_signal(void)
 {
 	signal(SIGINT, handle_ctrl_c);
 	//signal(SIGQUIT, SIG_IGN);
