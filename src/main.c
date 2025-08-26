@@ -33,7 +33,10 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 		}
 		execute_cmd_line(mshell, token);
 		free_all(mshell, token);
+		if (g_sig == SIGINT)
+			mshell->exit_code = g_sig;
 		ft_printf("%d\n",mshell->exit_code);
+		g_sig = 0;
 	}
 	modify_shell_level(mshell->env_list, -1);
 	free_envp_list(mshell);
