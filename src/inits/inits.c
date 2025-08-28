@@ -44,8 +44,9 @@ int	init_shell_data(t_shell *mshell, t_token **token)
  */
 void	init_token_data(t_shell *mshell, t_token **token)
 {
+	(void)mshell;
 	set_t_type(token);
-	expansion(mshell, token);
+//	expansion(mshell, token);
 	type_file(token);
 	print_list(token);
 }
