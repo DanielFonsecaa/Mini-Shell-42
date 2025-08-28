@@ -46,6 +46,7 @@ int	parsing(t_shell *mshell, t_token **token)
 		return (0);
 	}
 	init_token_data(mshell, token);
+	expansion(mshell, token);
 	if (!init_shell_data(mshell, token))
 	{
 		mshell->exit_code = 2;
@@ -57,30 +58,151 @@ int	parsing(t_shell *mshell, t_token **token)
 
 void	expansion(t_shell *mshell, t_token **token)
 {
-	t_token	*temp;
+	t_token	*current;
+	t_token	*next;
+
+	current = *token;
+	while (current)
+	{
+		next = current->next;
+		if (current->type == ARG)
+		{
+			if (current->has_quote)
+				expand_quoted_token(mshell, current);
+			else
+				expand_unquoted(mshell, &current, token);
+		}
+		current = next;
+	}
+}
+
+void	expand_quoted_token(t_shell *mshell, t_token *token)
+{
+	char	*new_str;
+	int		i;
+	char quote_char;
+
+	i = 0;
+	new_str = safe_calloc(1, sizeof(char));
+	while (token->name[i])
+	{
+		// Handle quotes first - but don't skip over content
+		if (token->name[i] == '"' || token->name[i] == '\'')
+		{
+			quote_char = token->name[i];
+			i++; // Skip opening quote
+			
+			// Process content inside quotes
+			while (token->name[i] && token->name[i] != quote_char)
+			{
+				if (token->name[i] == '$' && token->name[i + 1] == '?' && quote_char == '"')
+					new_str = append_exit_code(mshell, new_str, &i);
+				else if (token->name[i] == '$' && quote_char == '"')
+					// Only expand in double quotes, not single quotes
+					new_str = append_content(mshell, &token, new_str, &i);
+				else
+				{
+					char tmp[2] = {token->name[i], 0};
+					new_str = ft_strjoin_free(new_str, tmp);
+					i++;
+				}
+			}
+			
+			// Skip closing quote
+			if (token->name[i] == quote_char)
+				i++;
+		}
+		else if (token->name[i] == '$' && token->name[i + 1] == '?')
+			new_str = append_exit_code(mshell, new_str, &i);
+		else if (token->name[i] == '$')
+			new_str = append_content(mshell, &token, new_str, &i);
+		else
+		{
+			char tmp[2] = {token->name[i], 0};
+			new_str = ft_strjoin_free(new_str, tmp);
+			i++;
+		}
+	}
+	free(token->name);
+	token->name = new_str;
+}
+
+void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
+{
+	char	*expanded;
+	char	**arr;
+	t_token	*next;
+	t_token	*new;
+	int		i;
+
+	expanded = expand_token_content(mshell, *current);
+	next = (*current)->next;
+	if (!expanded)
+	{
+		remove_token_from_list(current, head);
+	}
+	arr = ft_split(expanded, ' ');
+	free(expanded);
+	free((*current)->name);
+	(*current)->name = ft_strdup(arr[0]);
+	(*current)->next = next;
+	i = 1;
+	while (arr[i])
+	{
+		new = ft_newtoken(arr[i]);
+		new->type = (*current)->type;
+		new->has_quote = false;
+		new->next = (*current)->next;
+		(*current)->next = new;
+		(*current) = new;
+		i++;
+	}
+	free_arr(arr);
+}
+
+void	remove_token_from_list(t_token **current, t_token **head)
+{
+	t_token	*prev;
+
+	if (*current == *head)
+	{
+		*head = (*current)->next;
+		free((*current)->name);
+		free(*current);
+		*current = *head;
+		return;
+	}
+	prev = *head;
+	while (prev && prev->next != *current)
+		prev = prev->next;
+	if (prev)
+	{
+		prev->next = (*current)->next;
+		free((*current)->name);
+		free(*current);
+		*current = prev->next;
+	}
+}
+
+
+char	*expand_token_content(t_shell *mshell, t_token *token)
+{
 	char	*new_str;
 	int		i;
 
-	temp = *token;
-	while (temp)
+	i = 0;
+	new_str = safe_calloc(ft_strlen(token->name) + 1, sizeof(char));
+	while (token->name[i])
 	{
-		i = 0;
-		new_str = safe_calloc(ft_strlen(temp->name) + 1, sizeof(char));
-		while (temp->name[i])
-		{
-			if (temp->name[i] == '$' && temp->name[i + 1] == '?'
-				&& temp->type == ARG)
-				new_str = append_exit_code(mshell, new_str, &i);
-			else if (temp->name[i] == '$' && temp->type == ARG)
-				new_str = append_content(mshell, &temp, new_str, &i);
-			else
-				new_str = append_letter(&temp, new_str, &i);
-		}
-		free(temp->name);
-		temp->name = ft_strdup(new_str);
-		free(new_str);
-		temp = temp->next;
+		if (token->name[i] == '$' && token->name[i + 1] == '?'
+			&& token->type == ARG)
+			new_str = append_exit_code(mshell, new_str, &i);
+		else if (token->name[i] == '$' && token->type == ARG)
+			new_str = append_content(mshell, &token, new_str, &i);
+		else
+			new_str = append_letter_unquoted(token, new_str, &i);
 	}
+	return (new_str);
 }
 
 char	*append_exit_code(t_shell *mshell, char *new_str, int *i)
@@ -154,5 +276,16 @@ char	*append_letter(t_token **token, char *new_str, int *i)
 		new_str = ft_strjoin_free(new_str, tmp);
 		(*i)++;
 	}
+	return (new_str);
+}
+
+char	*append_letter_unquoted(t_token *token, char *new_str, int *i)
+{
+	char	tmp[2];
+
+	tmp[0] = token->name[*i];
+	tmp[1] = 0;
+	new_str = ft_strjoin_free(new_str, tmp);
+	(*i)++;
 	return (new_str);
 }

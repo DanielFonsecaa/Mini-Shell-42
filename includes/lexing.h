@@ -26,5 +26,6 @@ int		skip_whitespace(char *str, int i);
 int		next_token_len(char *s);
 void	add_command_token(char *rd_l, t_token **token, int *i);
 int		handle_meta(char *rd_l, t_token **token, int i, int *j);
+void	remove_token_from_list(t_token **current, t_token **head);
 
 #endif
