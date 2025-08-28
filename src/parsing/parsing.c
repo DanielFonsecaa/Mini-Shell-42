@@ -101,11 +101,7 @@ void	expand_quoted_token(t_shell *mshell, t_token *token)
 					// Only expand in double quotes, not single quotes
 					new_str = append_content(mshell, &token, new_str, &i);
 				else
-				{
-					char tmp[2] = {token->name[i], 0};
-					new_str = ft_strjoin_free(new_str, tmp);
-					i++;
-				}
+					new_str = append_letter_unquoted(token, new_str, &i);
 			}
 			
 			// Skip closing quote
@@ -117,11 +113,7 @@ void	expand_quoted_token(t_shell *mshell, t_token *token)
 		else if (token->name[i] == '$')
 			new_str = append_content(mshell, &token, new_str, &i);
 		else
-		{
-			char tmp[2] = {token->name[i], 0};
-			new_str = ft_strjoin_free(new_str, tmp);
-			i++;
-		}
+			new_str = append_letter_unquoted(token, new_str, &i);
 	}
 	free(token->name);
 	token->name = new_str;
