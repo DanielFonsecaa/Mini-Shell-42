@@ -6,15 +6,18 @@
 # Test 1: Basic echo redirect
 echo "hello world" > output.txt
 cat output.txt
+(WORKS)
 
 # Test 2: Overwrite existing file
 echo "first content" > test.txt
 echo "second content" > test.txt
 cat test.txt
+(WORKS)
 
 # Test 3: Redirect command output
 pwd > current_dir.txt
 cat current_dir.txt
+(WORKS)
 
 # Test 4: Redirect with built-ins
 env > environment.txt

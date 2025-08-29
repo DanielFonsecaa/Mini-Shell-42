@@ -23,8 +23,11 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 			add_history(mshell->rd_l);
 		if (!mshell->rd_l)
 		{
+			if (g_sig == 130)
+				mshell->exit_code = 130;
+			ft_printf("exit\n");
 			handle_error_shell(mshell, token);
-			exit (0);
+			exit(mshell->exit_code);
 		}
 		if (!mshell->rd_l[0] || !parsing(mshell, token))
 		{

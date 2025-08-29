@@ -20,5 +20,6 @@ int		quote_checker(char *rd_l);
 int		check_pipeline(t_token **token);
 int		check_redir_type(t_token *temp);
 int		check_infile(t_token *token);
+int		check_perms(t_shell *mshell, t_token *token);
 
 #endif
