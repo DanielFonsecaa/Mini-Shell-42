@@ -86,25 +86,22 @@ void	expand_quoted_token(t_shell *mshell, t_token *token)
 	new_str = safe_calloc(1, sizeof(char));
 	while (token->name[i])
 	{
-		// Handle quotes first - but don't skip over content
+//	handle quotes of a variable like "$var" semelhante ao que era feito no append
 		if (token->name[i] == '"' || token->name[i] == '\'')
 		{
 			quote_char = token->name[i];
-			i++; // Skip opening quote
+			i++;
 			
-			// Process content inside quotes
 			while (token->name[i] && token->name[i] != quote_char)
 			{
 				if (token->name[i] == '$' && token->name[i + 1] == '?' && quote_char == '"')
 					new_str = append_exit_code(mshell, new_str, &i);
 				else if (token->name[i] == '$' && quote_char == '"')
-					// Only expand in double quotes, not single quotes
 					new_str = append_content(mshell, &token, new_str, &i);
 				else
 					new_str = append_letter_unquoted(token, new_str, &i);
 			}
 			
-			// Skip closing quote
 			if (token->name[i] == quote_char)
 				i++;
 		}
@@ -141,6 +138,7 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	i = 1;
 	while (arr[i])
 	{
+//	talvez adicionar o previous no token novo
 		new = ft_newtoken(arr[i]);
 		new->type = (*current)->type;
 		new->has_quote = false;
@@ -242,13 +240,11 @@ char	*append_letter(t_token **token, char *new_str, int *i)
 	char	tmp[2];
 	char	quote_char;
 
-	// Handle quote removal during expansion
 	if (((*token)->name[*i] == '"' || (*token)->name[*i] == '\''))
 	{
 		quote_char = (*token)->name[*i];
-		(*i)++; // Skip opening quote
+		(*i)++;
 		
-		// Copy content inside quotes
 		while ((*token)->name[*i] && (*token)->name[*i] != quote_char)
 		{
 			tmp[0] = (*token)->name[*i];
@@ -257,7 +253,6 @@ char	*append_letter(t_token **token, char *new_str, int *i)
 			(*i)++;
 		}
 		
-		// Skip closing quote if found
 		if ((*token)->name[*i] == quote_char)
 			(*i)++;
 	}
