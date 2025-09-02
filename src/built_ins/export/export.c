@@ -6,7 +6,7 @@
  * @param mshell Pointer to the shell structure.
  * @param token Pointer to the token list.
  */
-void	handle_export(t_shell *mshell, t_token **token)
+void handle_export(t_shell *mshell, t_token **token, int fd)
 {
 	t_token	*temp;
 
@@ -15,10 +15,10 @@ void	handle_export(t_shell *mshell, t_token **token)
 	if (check_for_flags(mshell))
 		return ;
 	if (!temp)
-		show_export(mshell, mshell->env_list);
+		show_export(mshell, mshell->env_list, fd);
 	else
 	{
-		while (temp)
+		while (temp && temp->type != PIPE)
 		{
 			update_export(mshell, &temp);
 			temp = temp->next;
@@ -31,7 +31,7 @@ void	handle_export(t_shell *mshell, t_token **token)
  * 
  * @param node Pointer to the head of the environment variable list.
  */
-void	show_export(t_shell *mshell, t_envp *node)
+void show_export(t_shell *mshell, t_envp *node, int fd)
 {
 	t_envp	**arr;
 	t_envp	*temp;
@@ -54,7 +54,7 @@ void	show_export(t_shell *mshell, t_envp *node)
 	bubble_sort(arr, list_size);
 	i = -1;
 	while (++i < list_size)
-		ft_printf_fd(1, DEFINE_X, arr[i]->name, arr[i]->content);
+		ft_printf_fd(fd, DEFINE_X, arr[i]->name, arr[i]->content);
 	free(arr);
 	mshell->exit_code = 0;
 }

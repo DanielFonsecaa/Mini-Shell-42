@@ -127,9 +127,7 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	expanded = expand_token_content(mshell, *current);
 	next = (*current)->next;
 	if (!expanded)
-	{
 		remove_token_from_list(current, head);
-	}
 	arr = ft_split(expanded, ' ');
 	free(expanded);
 	free((*current)->name);

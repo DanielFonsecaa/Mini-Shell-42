@@ -19,12 +19,13 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 		handle_signal();
 		init_shell_envp_cwd(mshell, envp);
 		mshell->rd_l = readline(mshell->fake_cwd);
-		if (mshell->rd_l && mshell->rd_l[0])
+		if (mshell->rd_l && mshell->rd_l[0]) {
 			add_history(mshell->rd_l);
+		}
+		if (g_sig == 130)
+			mshell->exit_code = 130;
 		if (!mshell->rd_l)
 		{
-			if (g_sig == 130)
-				mshell->exit_code = 130;
 			ft_printf("exit\n");
 			handle_error_shell(mshell, token);
 			exit(mshell->exit_code);
@@ -34,8 +35,6 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 			free_all(mshell, token);
 			continue ;
 		}
-		if (g_sig == 130)
-			mshell->exit_code = 130;
 		execute_cmd_line(mshell, token);
 		free_all(mshell, token);
 		ft_printf("%d\n",mshell->exit_code);
