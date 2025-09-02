@@ -103,7 +103,12 @@ void	wait_and_get_exit_status(t_shell *mshell)
 		waitpid(mshell->pids[i], &status, 0);
 		if (i == mshell->num_commands - 1)
 		{
-			if (WIFEXITED(status))
+			if (WIFSIGNALED(status))
+			{
+				if (WTERMSIG(status) == SIGINT)
+					mshell->exit_code = 130;
+			}
+			else if (WIFEXITED(status))
 				mshell->exit_code = WEXITSTATUS(status);
 			else
 				mshell->exit_code = 1;

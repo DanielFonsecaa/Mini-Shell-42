@@ -26,3 +26,15 @@ fix \ -- literal meaning
  mkdir test2
  cd test/test2
  rm -rf ../../test
+
+export var="s -"
+l$var"l"
+cat > $var -- not
+cat > "$var" -- yes
+cat > "l"$var -- not
+cat > l"$var" -- yes
+cat > "l"$var2 -- yes
+
+shell level fix    1000 >= reset to 1 or if it doesnt exist create with 1
+
+cat e depois mandar CTRL + \

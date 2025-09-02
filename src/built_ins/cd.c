@@ -72,7 +72,6 @@ void	change_dir(t_shell *mshell, t_token **token)
  */
 void	cd_to_key(t_shell *mshell, char *key)
 {
-	char	buffer[PATH_MAX];
 	t_envp	*temp;
 
 	temp = find_envp(mshell->env_list, key);
@@ -84,10 +83,12 @@ void	cd_to_key(t_shell *mshell, char *key)
 	else
 	{
 		chdir(temp->content);
-		update_envp_with_string(mshell, "PWD", getcwd(buffer, PATH_MAX));
 		update_envp_with_string(mshell, "OLDPWD", mshell->curr_wd);
+		if (getcwd(mshell->curr_wd, sizeof(mshell->curr_wd)))
+			update_envp_with_string(mshell, "PWD", mshell->curr_wd);
+		else
+			ft_printf_fd(2, "minishell: cd: %s: No such file or directory\n", temp->content);
 		mshell->exit_code = 0;
-		getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
 	}
 }
 

@@ -43,6 +43,7 @@ FILES			=	main.c \
 					lexing/utils_list_lex.c \
 					parsing/parsing.c \
 					parsing/syntax.c \
+					parsing/expand_utils.c\
 					safe/safe_functions.c \
 					utils/utils.c
 
