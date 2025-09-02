@@ -9,7 +9,7 @@
  * @param mshell Pointer to the shell structure containing shell state
  * @param token Double pointer to the token structure
  */
-void handle_echo(t_shell *mshell, intf fd)
+void handle_echo(t_shell *mshell)
 {
 	char    **args_arr;
 	bool	flag;
@@ -20,7 +20,7 @@ void handle_echo(t_shell *mshell, intf fd)
 	args_arr = mshell->exec_command + 1;
 	if (handle_n(args_arr, &i) > 0)
 		flag = true;
-	print_echo(args_arr, flag, i, fd);
+	print_echo(args_arr, flag, i);
 	mshell->exit_code = 0;
 //	free(args_arr);
 }
@@ -73,7 +73,7 @@ int	valid_n(char *str)
  * @param flag Boolean flag indicating if newline should be suppressed
  * @param i Starting index in the array to begin printing from
  */
-void print_echo(char **arr, bool flag, int i, int fd)
+void print_echo(char **arr, bool flag, int i)
 {
 	int		size;
 	char	*name;
@@ -84,16 +84,16 @@ void print_echo(char **arr, bool flag, int i, int fd)
 	while (arr[i])
 	{
 		name = ft_strdup(arr[i]);
-		ft_printf_fd(fd, "%s", name);
+		ft_printf_fd(1, "%s", name);
 		if (i < size - 1)
-			ft_printf_fd(fd, " ");
+			ft_printf_fd(1, " ");
 		if (arr[i])
 			free(name);
 		name = NULL;
 		i++;
 	}
 	if (!flag)
-		ft_printf_fd(fd, "\n");
+		ft_printf_fd(1, "\n");
 }
 /*
 

@@ -41,14 +41,26 @@ void	change_dir(t_shell *mshell, t_token **token)
 	t_token	*path;
 
 	path = *token;
+	if (access(path->name, F_OK | X_OK) != 0)
+	{
+		if (access(path->name, F_OK) != 0)
+			ft_printf_fd(2, "minishell: cd: %s: No such file or directory\n", path->name);
+		else
+		ft_printf_fd(2, "minishell: cd: %s: Permission denied\n", path->name);
+		mshell->exit_code = 1;
+		return ;
+	}
 	if (chdir(path->name) == -1)
 	{
 		ft_printf_fd(2, ERR_NO_FILE, path->name);
 		mshell->exit_code = 1;
 		return ;
 	}
-	update_envp_with_string(mshell, "PWD", getcwd(buffer, PATH_MAX));
 	update_envp_with_string(mshell, "OLDPWD", mshell->curr_wd);
+	if (getcwd(buffer, PATH_MAX))
+		update_envp_with_string(mshell, "PWD", buffer);
+	else
+		ft_printf_fd(2, "minishell: cd: %s: No such file or directory\n", path->name);
 	mshell->exit_code = 0;
 }
 

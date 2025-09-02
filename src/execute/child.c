@@ -7,7 +7,7 @@
  * @param token Pointer to token array for error handling cleanup
  * @param command Pointer to command structure
  */
-void execute_child_command(t_shell *mshell, t_token **token, t_cmd *command, int out_fd)
+void execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_cmd *command)
 {
 	char	*path;
 	char	**exec_command;
@@ -16,8 +16,8 @@ void execute_child_command(t_shell *mshell, t_token **token, t_cmd *command, int
 	path = ft_get_path(mshell->env_var, command->name);
 	if (is_built_in(token))
 	{
-		execute_built_in(mshell, token, out_fd);
-		handle_child_free(mshell, token, path);
+		execute_built_in(mshell, token);
+		handle_child_free(mshell, head, path);
 		exit (mshell->exit_code);
 	}
 	if (!path)
