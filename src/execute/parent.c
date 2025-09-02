@@ -25,14 +25,16 @@ void execute_pipe_redirect(t_shell *mshell, t_token **token)
 			setup_child(i, mshell->num_commands, mshell->pipes, mshell->fd);
 			execute_child_command(mshell, &temp, token, mshell->command[i]);
 		}
+		if (i > 0)
+			close(mshell->pipes[i - 1][0]);
+		if (i < mshell->num_commands - 1)
+			close(mshell->pipes[i][1]);
 		while (temp && temp->type != PIPE) {
 			temp = temp->next;
 		}
 		if (temp) {
 			temp = temp->next;
 		}
-		if (i > 0)
-			close(mshell->pipes[i - 1][1]);
 	}
 	cleanup_and_wait(mshell);
 }
@@ -117,8 +119,6 @@ void	wait_and_get_exit_status(t_shell *mshell)
  */
 void	cleanup_and_wait(t_shell *mshell)
 {
-	if (mshell->num_commands > 1)
-		close(mshell->pipes[mshell->num_commands - 2][0]);
 	wait_and_get_exit_status(mshell);
 	cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
 }
