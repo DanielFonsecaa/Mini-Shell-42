@@ -2,7 +2,6 @@
 
 void    handle_child_free(t_shell *mshell, t_token **token, char *path)
 {
-	(void)token;
 	if (path)
 	{
 		free(path);

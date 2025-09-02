@@ -85,7 +85,6 @@ int	check_perms(t_shell *mshell, t_token *token)
 		// First check if file exists
 		if (access(pathname, F_OK) == 0)
 		{
-			// File exists, check write permission
 			return_val = access(pathname, W_OK);
 			if (return_val != 0)
 			{

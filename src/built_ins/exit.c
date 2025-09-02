@@ -6,7 +6,7 @@
  * @param mshell Pointer to the shell structure
  * @param token Double pointer to the token structure
  */
-void handle_exit(t_shell *mshell, t_token **token, int fd)
+void handle_exit(t_shell *mshell, t_token **token)
 {
 	t_token		*temp;
 	long long	status;
@@ -22,14 +22,14 @@ void handle_exit(t_shell *mshell, t_token **token, int fd)
 		if (!verify_num(value) || !ft_atoll(value, &status))
 		{
 			mshell->exit_code = 2;
-			ft_printf_fd(fd, ERR_EXIT_NOT_NBR, value);
+			ft_printf_fd(1, ERR_EXIT_NOT_NBR, value);
 			return ;
 		}
 		if (status < 0 || status > 255)
 			status %= 256;
 		mshell->exit_code = status;
 	}
-	ft_printf_fd(fd, "exit\n");
+	ft_printf_fd(1, "exit\n");
 }
 
 /**

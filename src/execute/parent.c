@@ -23,7 +23,7 @@ void execute_pipe_redirect(t_shell *mshell, t_token **token)
 			signal(SIGINT, handle_ctrl_c_child);
 			handle_redirections(temp, mshell->fd);
 			setup_child(i, mshell->num_commands, mshell->pipes, mshell->fd);
-			execute_child_command(mshell, token, mshell->command[i], STDOUT_FILENO);
+			execute_child_command(mshell, &temp, token, mshell->command[i]);
 		}
 		while (temp && temp->type != PIPE) {
 			temp = temp->next;

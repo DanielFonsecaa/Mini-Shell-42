@@ -12,7 +12,7 @@ void	execute_cmd_line(t_shell *mshell, t_token **token)
 	if (is_built_in(token) && !mshell->has_pipes && !mshell->has_redirect)
 	{
 		format_cmd(mshell, mshell->command[0]);
-		execute_built_in(mshell, token, 1);
+		execute_built_in(mshell, token);
 		//free_arr(mshell->exec_command);
 	}
 	else
@@ -46,7 +46,7 @@ void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
 			return ;
 		}
 		if (mshell->pids[0] == 0)
-			execute_child_command(mshell, token, mshell->command[0], 1);
+			execute_child_command(mshell, token, token, mshell->command[0]);
 		wait_and_get_exit_status(mshell);
 		free(mshell->pids);
 		mshell->pids = NULL;
@@ -59,23 +59,23 @@ void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
  * @param mshell Pointer to the shell structure
  * @param token Double pointer to the token structure
  */
-void execute_built_in(t_shell *mshell, t_token **token, int fd)
+void execute_built_in(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
 
 	temp = *token;
 	if (ft_strcmp(temp->name, "echo") == 0)
-		handle_echo(mshell, fd);
+		handle_echo(mshell);
 	else if (ft_strcmp(temp->name, "env") == 0)
-		handle_env(mshell, fd);
+		handle_env(mshell);
 	else if (ft_strcmp(temp->name, "pwd") == 0)
-		handle_pwd(mshell, token, fd);
+		handle_pwd(mshell, token);
 	else if (ft_strcmp(temp->name, "exit") == 0)
-		handle_exit(mshell, token, fd);
+		handle_exit(mshell, token);
 	else if (ft_strcmp(temp->name, "cd") == 0)
 		handle_cd(mshell, token);
 	else if (ft_strcmp(temp->name, "export") == 0)
-		handle_export(mshell, token, fd);
+		handle_export(mshell, token);
 	else if (ft_strcmp(temp->name, "unset") == 0)
 		handle_unset(mshell, token);
 }
