@@ -5,7 +5,7 @@
  * 
  * @param mshell Pointer to the shell structure
  */
-void	handle_env(t_shell *mshell)
+void handle_env(t_shell *mshell, int fd)
 {
 	t_envp	*node;
 
@@ -27,7 +27,7 @@ void	handle_env(t_shell *mshell)
 	while (node)
 	{
 		if (node->exported)
-			ft_printf("%s=%s\n", node->name, node->content);
+			ft_printf_fd(fd, "%s=%s\n", node->name, node->content);
 		node = node->next;
 	}
 	mshell->exit_code = 0;

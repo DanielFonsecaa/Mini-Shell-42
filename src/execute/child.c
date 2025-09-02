@@ -7,13 +7,19 @@
  * @param token Pointer to token array for error handling cleanup
  * @param command Pointer to command structure
  */
-void execute_child_command(t_shell *mshell, t_token **token, t_cmd *command)
+void execute_child_command(t_shell *mshell, t_token **token, t_cmd *command, int out_fd)
 {
 	char	*path;
 	char	**exec_command;
 
 	format_cmd(mshell, command);
 	path = ft_get_path(mshell->env_var, command->name);
+	if (is_built_in(token))
+	{
+		execute_built_in(mshell, token, out_fd);
+		handle_child_free(mshell, token, path);
+		exit (mshell->exit_code);
+	}
 	if (!path)
 	{
 		handle_error_shell(mshell, token);
@@ -21,24 +27,15 @@ void execute_child_command(t_shell *mshell, t_token **token, t_cmd *command)
 		ft_printf_fd(2, ERR_CMD);
 		exit(NOT_FOUND);
 	}
-	if (is_built_in(token))
+	exec_command = mshell->exec_command;
+	if (execve(path, exec_command, mshell->env_var) == -1)
 	{
-		execute_built_in(mshell, token);
-		handle_child_free(mshell, token, path);
-		exit (mshell->exit_code);
-	}
-	else
-	{
-		exec_command = mshell->exec_command;
-		if (execve(path, exec_command, mshell->env_var) == -1)
-		{
-			if (path != command->name)
-				free(path);
-			handle_error_shell(mshell, token);
-			cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
-			perror("execve");
-			exit(FOUND_NOT_EXEC);
-		}
+		if (path != command->name)
+			free(path);
+		handle_error_shell(mshell, token);
+		cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
+		perror("execve");
+		exit(FOUND_NOT_EXEC);
 	}
 }
 

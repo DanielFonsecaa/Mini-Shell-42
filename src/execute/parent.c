@@ -6,7 +6,7 @@
  * @param mshell Pointer to the shell structure
  * @param token Pointer to token array used for command execution
  */
-void	execute_pipe_redirect(t_shell *mshell, t_token **token)
+void execute_pipe_redirect(t_shell *mshell, t_token **token)
 {
 	int		i;
 	t_token	*temp;
@@ -23,7 +23,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 			signal(SIGINT, handle_ctrl_c_child);
 			handle_redirections(temp, mshell->fd);
 			setup_child(i, mshell->num_commands, mshell->pipes, mshell->fd);
-			execute_child_command(mshell, token, mshell->command[i]);
+			execute_child_command(mshell, token, mshell->command[i], STDOUT_FILENO);
 		}
 		while (temp && temp->type != PIPE) {
 			temp = temp->next;

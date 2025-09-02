@@ -2,11 +2,11 @@
 # define EXECUTE_H
 
 //Main execution
-void	execute_built_in(t_shell *mshell, t_token **token);
-void    execute_child_command(t_shell *mshell, t_token **token, t_cmd *command);
+void execute_built_in(t_shell *mshell, t_token **token, int fd);
+void execute_child_command(t_shell *mshell, t_token **token, t_cmd *command, int out_fd);
 void	execute_cmd_line(t_shell *mshell, t_token **token);
 void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token);
-void	execute_pipe_redirect(t_shell *mshell, t_token **token);
+void execute_pipe_redirect(t_shell *mshell, t_token **token);
 
 //Child related
 void	format_cmd(t_shell *mshell, t_cmd *command);

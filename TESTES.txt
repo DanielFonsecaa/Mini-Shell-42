@@ -6,19 +6,23 @@
 # Test 1: Basic echo redirect
 echo "hello world" > output.txt
 cat output.txt
+(WORKS)
 
 # Test 2: Overwrite existing file
 echo "first content" > test.txt
 echo "second content" > test.txt
 cat test.txt
+(WORKS)
 
 # Test 3: Redirect command output
 pwd > current_dir.txt
 cat current_dir.txt
+(WORKS)
 
 # Test 4: Redirect with built-ins
 env > environment.txt
 head -5 environment.txt
+(NEED TO CHECK AGAIN BECAUSE WE HAVE DEBUGGING MESSAGES IN OUTPUT, SO I THINK IT MESSES head CMD)
 
 ## APPEND REDIRECTION (>>)
 
@@ -27,39 +31,47 @@ echo "line 1" > append_test.txt
 echo "line 2" >> append_test.txt
 echo "line 3" >> append_test.txt
 cat append_test.txt
+(WORKS)
 
 # Test 6: Append to new file
 echo "first line in new file" >> new_append.txt
 cat new_append.txt
+(WORKS)
 
 # Test 7: Multiple appends
 echo "a" >> multi.txt
 echo "b" >> multi.txt
 echo "c" >> multi.txt
 cat multi.txt
+(WORKS
 
 ## INPUT REDIRECTION (<)
 
 # Test 8: Basic input redirection
 echo "test input content" > input_file.txt
 cat < input_file.txt
+(WORKS)
 
 # Test 9: Input with other commands
 echo "hello" > greeting.txt
 cat < greeting.txt > copy.txt
 cat copy.txt
+(WORKS)
 
 # Test 10: Input redirection with wc
 echo -e "line1\nline2\nline3" > lines.txt
 wc -l < lines.txt
+(DOESN'T WORK TO WELL BECAUSE OF THE BACKSLASH, BUT REDIRECTION WORKS NICELY)
 
 ## ERROR CASES TO TEST
 
 # Test 11: Permission errors (if applicable)
 echo "test" > /root/noperm.txt
+(SHOULD WORK NOW)
 
 # Test 12: Input from non-existent file
 cat < nonexistent.txt
+(WORKS)
 
 # Test 13: Directory as output
 echo "test" > /tmp

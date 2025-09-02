@@ -18,3 +18,11 @@ echo \n prints n
 echo \\n prints \n
 fix \ -- literal meaning
 
+ echo | pwd | cd | export | unset | exit | env
+
+ cat | cat | cat | ls
+
+ mkdir test
+ mkdir test2
+ cd test/test2
+ rm -rf ../../test
