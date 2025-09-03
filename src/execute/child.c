@@ -7,13 +7,14 @@
  * @param token Pointer to token array for error handling cleanup
  * @param command Pointer to command structure
  */
-void execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_cmd *command)
+void	execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_cmd *command)
 {
 	char	*path;
 	char	**exec_command;
 
 	format_cmd(mshell, command);
 	path = ft_get_path(mshell->env_var, command->name);
+	handle_child();
 	if (is_built_in(token))
 	{
 		execute_built_in(mshell, token);
@@ -51,26 +52,18 @@ void	setup_child(int index, int num_cmds, int **pipes, int *fd)
 {
 	if (index == 0)
 	{
-		printf("DEBUG: First command - stdin from terminal\n");
 		if (fd && fd[0] > 2)
 			dup2(fd[0], STDIN_FILENO);
 	}
 	else
-	{
-		printf("DEBUG: Command %d - stdin from pipe[%d][0]\n", index, index-1);
 		dup2(pipes[index - 1][0], STDIN_FILENO);
-	}
 	if (index == num_cmds - 1)
 	{
-		printf("DEBUG: Last command - stdout to terminal\n");
 		if (fd && fd[1] > 2)
 			dup2(fd[1], STDOUT_FILENO);
 	}
 	else
-	{
-		printf("DEBUG: Command %d - stdout to pipe[%d][1]\n", index, index);
 		dup2(pipes[index][1], STDOUT_FILENO);
-	}
 	if (fd)
 		close_fds(pipes, num_cmds, fd[0], fd[1]);
 	else

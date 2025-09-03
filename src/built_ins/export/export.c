@@ -6,7 +6,7 @@
  * @param mshell Pointer to the shell structure.
  * @param token Pointer to the token list.
  */
-void handle_export(t_shell *mshell, t_token **token)
+void	handle_export(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
 
@@ -31,7 +31,7 @@ void handle_export(t_shell *mshell, t_token **token)
  * 
  * @param node Pointer to the head of the environment variable list.
  */
-void show_export(t_shell *mshell, t_envp *node)
+void	show_export(t_shell *mshell, t_envp *node)
 {
 	t_envp	**arr;
 	t_envp	*temp;

@@ -11,7 +11,6 @@ int	syntax_error(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
 
-//	(void)mshell;
 	temp = *token;
 	if (!check_pipeline(token))
 		return (ft_printf_fd(2, ERR_PIPELINE), 0);
@@ -70,30 +69,26 @@ int	check_perms(t_shell *mshell, t_token *token)
 	}
 	if (token->type == INFILE || token->type == HERE)
 	{
-		// Input files need read permission
 		return_val = access(pathname, R_OK);
 		if (return_val != 0)
 		{
-			ft_printf_fd(2, "minishell: %s: Permission denied\n", token->next->name);
+			ft_printf_fd(2, ERR_NO_PERMS, token->next->name);
 			free(pathname);
 			return (0);
 		}
 	}
 	else if (token->type == OUTFILE || token->type == APPEND)
 	{
-		// Output files need write permission (or ability to create)
-		// First check if file exists
 		if (access(pathname, F_OK) == 0)
 		{
 			return_val = access(pathname, W_OK);
 			if (return_val != 0)
 			{
-				ft_printf_fd(2, "minishell: %s: Permission denied\n", token->next->name);
+				ft_printf_fd(2, ERR_NO_PERMS, token->next->name);
 				free(pathname);
 				return (0);
 			}
 		}
-//		TALVEZ ADICONAR UMA VERIFICACAO DE DIRETORIO VALIDO ONDE DA PARA CRIAR FICHEIRO
 	}
 	free(pathname);
 	return (1);

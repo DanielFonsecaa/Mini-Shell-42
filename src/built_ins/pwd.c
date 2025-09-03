@@ -6,7 +6,7 @@
  * @param mshell Pointer to the shell structure containing exit code and state
  * @param token Double pointer to the current token (pwd command token)
  */
-void handle_pwd(t_shell *mshell, t_token **token)
+void	handle_pwd(t_shell *mshell, t_token **token)
 {
 	char	*cwd;
 	t_token	*temp;

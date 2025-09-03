@@ -20,14 +20,17 @@ void	handle_ctrl_c(int sig)
 
 void    handle_child(void)
 {
-	signal(SIGINT, handle_quit_child);
-	signal(SIGQUIT, handle_quit_child);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 void    handle_quit_child(int sig)
 {
 	if (sig == SIGQUIT)
+	{
 		ft_printf_fd(1, "Quit (core dumped)\n");
+		exit(131);
+	}
 }
 
 /**
@@ -45,6 +48,24 @@ void	handle_ctrl_c_child(int sig)
  * @brief Sets up signal handling for the minishell program
  */
 void	handle_signal(void)
+{
+	signal(SIGINT, handle_ctrl_c);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+/**
+ * @brief Blocks signals in parent while child is executing
+ */
+void	block_parent_signals(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+/**
+ * @brief Restores signal handling after child execution
+ */
+void	restore_parent_signals(void)
 {
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);

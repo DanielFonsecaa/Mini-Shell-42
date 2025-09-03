@@ -10,9 +10,9 @@ char	*expand_token_content(t_shell *mshell, t_token *token)
 	while (token->name[i])
 	{
 		if (token->name[i] == '$' && token->name[i + 1] == '?'
-		    && token->type == ARG)
+			&& token->type == ARG)
 			new_str = append_exit_code(mshell, new_str, &i);
-		else if (token->name[i] == '$')// && token->type == ARG)
+		else if (token->name[i] == '$')
 			new_str = append_content(mshell, &token, new_str, &i);
 		else
 			new_str = append_letter_unquoted(token, new_str, &i);
@@ -44,7 +44,7 @@ char	*append_content(t_shell *mshell, t_token **token, char *str, int *i)
 	while ((*token)->name[start + len])
 	{
 		if (!(ft_isalnum((*token)->name[start + len])
-		      || (*token)->name[start + len] == '_'))
+				|| (*token)->name[start + len] == '_'))
 			break ;
 		len++;
 	}
@@ -69,7 +69,6 @@ char	*append_letter(t_token **token, char *new_str, int *i)
 	{
 		quote_char = (*token)->name[*i];
 		(*i)++;
-
 		while ((*token)->name[*i] && (*token)->name[*i] != quote_char)
 		{
 			tmp[0] = (*token)->name[*i];
@@ -77,7 +76,6 @@ char	*append_letter(t_token **token, char *new_str, int *i)
 			new_str = ft_strjoin_free(new_str, tmp);
 			(*i)++;
 		}
-
 		if ((*token)->name[*i] == quote_char)
 			(*i)++;
 	}
@@ -112,7 +110,7 @@ void	remove_token_from_list(t_token **current, t_token **head)
 		free((*current)->name);
 		free(*current);
 		*current = *head;
-		return;
+		return ;
 	}
 	prev = *head;
 	while (prev && prev->next != *current)

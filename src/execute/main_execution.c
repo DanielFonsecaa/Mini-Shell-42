@@ -37,7 +37,6 @@ void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
 		//talvez aqui tenha que mudar quando so tem um comando com redirects
 		mshell->pids = safe_malloc(sizeof(pid_t));
 		mshell->pids[0] = fork();
-		signal(SIGINT, handle_ctrl_c_child);
 		if (mshell->pids[0] == -1)
 		{
 			perror("fork");
@@ -46,7 +45,9 @@ void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
 			return ;
 		}
 		if (mshell->pids[0] == 0)
+		{
 			execute_child_command(mshell, token, token, mshell->command[0]);
+		}
 		wait_and_get_exit_status(mshell);
 		free(mshell->pids);
 		mshell->pids = NULL;

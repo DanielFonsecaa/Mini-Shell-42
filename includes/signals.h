@@ -6,5 +6,7 @@ void	handle_ctrl_c(int sig);
 void	handle_ctrl_c_child(int sig);
 void    handle_child(void);
 void    handle_quit_child(int sig);
+void	block_parent_signals(void);
+void	restore_parent_signals(void);
 
 #endif

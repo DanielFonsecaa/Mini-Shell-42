@@ -5,7 +5,7 @@
  * 
  * @param mshell Pointer to the shell structure
  */
-void handle_env(t_shell *mshell)
+void	handle_env(t_shell *mshell)
 {
 	t_envp	*node;
 

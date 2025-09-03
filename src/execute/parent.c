@@ -6,7 +6,7 @@
  * @param mshell Pointer to the shell structure
  * @param token Pointer to token array used for command execution
  */
-void execute_pipe_redirect(t_shell *mshell, t_token **token)
+void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 {
 	int		i;
 	t_token	*temp;
@@ -20,8 +20,6 @@ void execute_pipe_redirect(t_shell *mshell, t_token **token)
 			return (perror("fork"));
 		if (mshell->pids[i] == 0)
 		{
-//			handle_child();
-//			signal(SIGINT, handle_ctrl_c_child);
 			handle_redirections(temp, mshell->fd);
 			setup_child(i, mshell->num_commands, mshell->pipes, mshell->fd);
 			execute_child_command(mshell, &temp, token, mshell->command[i]);
@@ -30,12 +28,10 @@ void execute_pipe_redirect(t_shell *mshell, t_token **token)
 			close(mshell->pipes[i - 1][0]);
 		if (i < mshell->num_commands - 1)
 			close(mshell->pipes[i][1]);
-		while (temp && temp->type != PIPE) {
+		while (temp && temp->type != PIPE)
 			temp = temp->next;
-		}
-		if (temp) {
+		if (temp)
 			temp = temp->next;
-		}
 	}
 	cleanup_and_wait(mshell);
 }
@@ -75,7 +71,7 @@ void	handle_redirections(t_token *token, int fd[2])
 
 void	helper_handle_redirect(char	*file_name, int fd, int flags)
 {
-	int new_fd;
+	int	new_fd;
 
 	new_fd = open(file_name, flags, 0644);
 	if (new_fd == -1)
@@ -98,6 +94,7 @@ void	wait_and_get_exit_status(t_shell *mshell)
 	int	i;
 	int	status;
 
+	block_parent_signals();
 	i = 0;
 	while (i < mshell->num_commands)
 	{
@@ -107,7 +104,17 @@ void	wait_and_get_exit_status(t_shell *mshell)
 			if (WIFSIGNALED(status))
 			{
 				if (WTERMSIG(status) == SIGINT)
+				{
 					mshell->exit_code = 130;
+					ft_printf_fd(1, "\n");
+				}
+				else if (WTERMSIG(status) == SIGQUIT)
+				{
+					ft_printf_fd(1, "Quit (core dumped)\n");
+					mshell->exit_code = 131;
+				}
+				else
+					mshell->exit_code = 128 + WTERMSIG(status);
 			}
 			else if (WIFEXITED(status))
 				mshell->exit_code = WEXITSTATUS(status);
@@ -116,6 +123,7 @@ void	wait_and_get_exit_status(t_shell *mshell)
 		}
 		i++;
 	}
+	restore_parent_signals();  // Restore parent signals after children finish
 }
 
 /**

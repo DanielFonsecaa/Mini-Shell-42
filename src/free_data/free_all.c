@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void    handle_child_free(t_shell *mshell, t_token **token, char *path)
+void	handle_child_free(t_shell *mshell, t_token **token, char *path)
 {
 	if (path)
 	{

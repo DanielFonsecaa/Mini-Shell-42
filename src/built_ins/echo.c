@@ -1,6 +1,3 @@
-//
-// Created by mipinhei on 8/22/25.
-//
 #include "../../includes/minishell.h"
 
 /**
@@ -9,9 +6,9 @@
  * @param mshell Pointer to the shell structure containing shell state
  * @param token Double pointer to the token structure
  */
-void handle_echo(t_shell *mshell)
+void	handle_echo(t_shell *mshell)
 {
-	char    **args_arr;
+	char	**args_arr;
 	bool	flag;
 	int		i;
 
@@ -73,7 +70,7 @@ int	valid_n(char *str)
  * @param flag Boolean flag indicating if newline should be suppressed
  * @param i Starting index in the array to begin printing from
  */
-void print_echo(char **arr, bool flag, int i)
+void	print_echo(char **arr, bool flag, int i)
 {
 	int		size;
 	char	*name;

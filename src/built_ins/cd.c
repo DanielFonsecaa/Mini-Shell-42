@@ -44,9 +44,9 @@ void	change_dir(t_shell *mshell, t_token **token)
 	if (access(path->name, F_OK | X_OK) != 0)
 	{
 		if (access(path->name, F_OK) != 0)
-			ft_printf_fd(2, "minishell: cd: %s: No such file or directory\n", path->name);
+			ft_printf_fd(2, ERR_NO_FILE, path->name);
 		else
-		ft_printf_fd(2, "minishell: cd: %s: Permission denied\n", path->name);
+			ft_printf_fd(2, ERR_NO_PERMS, path->name);
 		mshell->exit_code = 1;
 		return ;
 	}
@@ -60,7 +60,7 @@ void	change_dir(t_shell *mshell, t_token **token)
 	if (getcwd(buffer, PATH_MAX))
 		update_envp_with_string(mshell, "PWD", buffer);
 	else
-		ft_printf_fd(2, "minishell: cd: %s: No such file or directory\n", path->name);
+		ft_printf_fd(2, ERR_NO_FILE, path->name);
 	mshell->exit_code = 0;
 }
 
@@ -87,7 +87,7 @@ void	cd_to_key(t_shell *mshell, char *key)
 		if (getcwd(mshell->curr_wd, sizeof(mshell->curr_wd)))
 			update_envp_with_string(mshell, "PWD", mshell->curr_wd);
 		else
-			ft_printf_fd(2, "minishell: cd: %s: No such file or directory\n", temp->content);
+			ft_printf_fd(2, ERR_NO_FILE, temp->content);
 		mshell->exit_code = 0;
 	}
 }

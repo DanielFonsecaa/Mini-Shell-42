@@ -81,18 +81,16 @@ void	expand_quoted_token(t_shell *mshell, t_token *token)
 {
 	char	*new_str;
 	int		i;
-	char quote_char;
+	char	quote_char;
 
 	i = 0;
 	new_str = safe_calloc(1, sizeof(char));
 	while (token->name[i])
 	{
-//	handle quotes of a variable like "$var" semelhante ao que era feito no append
 		if (token->name[i] == '"' || token->name[i] == '\'')
 		{
 			quote_char = token->name[i];
 			i++;
-			
 			while (token->name[i] && token->name[i] != quote_char)
 			{
 				if (token->name[i] == '$' && token->name[i + 1] == '?' && quote_char == '"')
@@ -102,7 +100,6 @@ void	expand_quoted_token(t_shell *mshell, t_token *token)
 				else
 					new_str = append_letter_unquoted(token, new_str, &i);
 			}
-			
 			if (token->name[i] == quote_char)
 				i++;
 		}
