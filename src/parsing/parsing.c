@@ -47,6 +47,7 @@ int	parsing(t_shell *mshell, t_token **token)
 	}
 	init_token_data(mshell, token);
 	expansion(mshell, token);
+	set_t_type(token);
 	if (!init_shell_data(mshell, token))
 	{
 		mshell->exit_code = 2;
@@ -65,7 +66,7 @@ void	expansion(t_shell *mshell, t_token **token)
 	while (current)
 	{
 		next = current->next;
-		if (current->type == ARG)
+		if (current->type == ARG || current->type == CMD || current->type == FLAG || current->type == OUTFILE || current->type == INFILE)
 		{
 			if (current->has_quote)
 				expand_quoted_token(mshell, current);
@@ -141,6 +142,7 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 		new->type = (*current)->type;
 		new->has_quote = false;
 		new->next = (*current)->next;
+		new->prev = (*current);
 		(*current)->next = new;
 		(*current) = new;
 		i++;

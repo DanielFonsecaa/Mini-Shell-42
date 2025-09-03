@@ -30,7 +30,7 @@ int	next_token_len(char *s)
 				// This allows for quote concatenation like "hello"world'test'
 			}
 		}
-		else if (!quote && (ft_iswhite_space(s[i]) || is_meta_char(s[i])))
+		if (!quote && (ft_iswhite_space(s[i]) || is_meta_char(s[i])))
 			break ;
 		else
 			i++;

@@ -27,6 +27,8 @@ void	handle_ctrl_c_child(int sig)
 {
 	if (sig == SIGINT && g_sig)
 		ft_printf_fd(1, "\n");
+	else if (sig == SIGQUIT)
+		signal(SIGQUIT, SIG_DFL);
 }
 
 /**
