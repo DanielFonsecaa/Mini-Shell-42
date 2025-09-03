@@ -1,7 +1,7 @@
 #include "../includes/minishell.h"
 /**
  * @brief Signal handler for SIGINT (Ctrl+C) interruption
- * 
+ *
  * @param sig The signal number received (expected to be SIGINT)
  * @note Re-registers the signal handler to maintain consistent behavior
  */
@@ -18,6 +18,18 @@ void	handle_ctrl_c(int sig)
 	}
 }
 
+void    handle_child(void)
+{
+	signal(SIGINT, handle_quit_child);
+	signal(SIGQUIT, handle_quit_child);
+}
+
+void    handle_quit_child(int sig)
+{
+	if (sig == SIGQUIT)
+		ft_printf_fd(1, "Quit (core dumped)\n");
+}
+
 /**
  * @brief Signal handler for CTRL+C (SIGINT) in child processes
  *
@@ -27,8 +39,6 @@ void	handle_ctrl_c_child(int sig)
 {
 	if (sig == SIGINT && g_sig)
 		ft_printf_fd(1, "\n");
-	else if (sig == SIGQUIT)
-		signal(SIGQUIT, SIG_DFL);
 }
 
 /**

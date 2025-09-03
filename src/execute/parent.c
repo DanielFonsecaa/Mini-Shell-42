@@ -20,7 +20,8 @@ void execute_pipe_redirect(t_shell *mshell, t_token **token)
 			return (perror("fork"));
 		if (mshell->pids[i] == 0)
 		{
-			signal(SIGINT, handle_ctrl_c_child);
+//			handle_child();
+//			signal(SIGINT, handle_ctrl_c_child);
 			handle_redirections(temp, mshell->fd);
 			setup_child(i, mshell->num_commands, mshell->pipes, mshell->fd);
 			execute_child_command(mshell, &temp, token, mshell->command[i]);
