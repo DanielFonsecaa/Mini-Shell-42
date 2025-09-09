@@ -78,6 +78,8 @@ void	set_t_arg(t_token **token)
 	t_token	*temp;
 
 	temp = *token;
+	if (temp->type == TFILE)
+		return ;
 	temp->type = ARG;
 	if (temp->name[0] == '-')
 		temp->type = FLAG;

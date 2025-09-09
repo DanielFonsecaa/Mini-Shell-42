@@ -1,4 +1,36 @@
 #include "../../includes/minishell.h"
+/**
+ * @brief Adds a token's name to a command's string array (flags or args)
+ *
+ * @param token Pointer to the token containing the name to add
+ * @param dest The destination (flags or args)
+ */
+void add_flag_arg_to_cmd(t_token **token, t_cmd *command)
+{
+	int i;
+	int number_params;
+	int type;
+
+	ft_printf_fd(2, "[DEBUG] add_flag_arg_to_cmd: token name='%s', type=%d\n", (*token)->name, (*token)->type);
+	if ((*token)->type == TFILE) {
+		ft_printf_fd(2, "[DEBUG] Skipping TFILE token: '%s'\n", (*token)->name);
+		return ;
+	}
+	i = 0;
+	if ((*token)->type == ARG || (*token)->type == FLAG)
+	{
+		if ((*token)->type == ARG)
+			type = ARG;
+		else
+			type = FLAG;
+		number_params = count_type_till_pipe(*token, type);
+		if (!command->args)
+			command->args = safe_calloc(number_params + 1, sizeof(char *));
+		while (command->args[i])
+			i++;
+		command->args[i] = ft_strdup((*token)->name);
+	}
+}
 
 /**
  * @brief Creates and initializes an array of command structures
@@ -8,12 +40,12 @@
  * 
  * @return t_cmd** Returns array of pointers to command structures.
  */
-t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
+t_cmd   **set_cmd_arr(t_shell *mshell, t_token **token)
 {
-	t_token	*temp;
-	t_cmd	**command;
-	int		i;
-	int		size_arr;
+	t_token *temp;
+	t_cmd   **command;
+	int     i;
+	int     size_arr;
 
 	size_arr = mshell->num_commands;
 	i = -1;
@@ -32,43 +64,6 @@ t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
 		temp = temp->next;
 	}
 	return (command);
-}
-
-/**
- * @brief Adds a token's name to a command's string array (flags or args)
- *
- * @param token Pointer to the token containing the name to add
- * @param dest The destination (flags or args)
- */
-void	add_flag_arg_to_cmd(t_token **token, t_cmd *command)
-{
-	int	i;
-	int	number_params;
-	int	type;
-
-	i = 0;
-	if ((*token)->type == ARG || (*token)->type == FLAG)
-	{
-		if ((*token)->type == ARG)
-			type = ARG;
-		else
-			type = FLAG;
-		number_params = count_type_till_pipe(*token, type);
-		if (!command->args)
-			command->args = safe_calloc(number_params + 1, sizeof(char *));
-		while (command->args[i])
-			i++;
-		command->args[i] = ft_strdup((*token)->name);
-	}
-/*	else if ((*token)->type == FLAG)
-	{
-		number_params = count_type_till_pipe(*token, FLAG);
-		if (!command->flags)
-			command->flags = safe_calloc(number_params + 1, sizeof(char *));
-		while (command->flags[i])
-			i++;
-		command->flags[i] = ft_strdup((*token)->name);
-	}*/
 }
 
 /**
