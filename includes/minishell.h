@@ -65,7 +65,7 @@
 # define ERR_PWD "pwd: Error retrieving directory\n"
 # define ERR_MEMORY_SHLVL "Memory allocation failed for new shell level"
 # define ERR_SHLVLNOT_FOUND "Error: shell level not found\n"
-# define ERR_NO_PERMS "minishell: cd: %s: Permission denied\n"
+# define ERR_NO_PERMS "minishell: %s: Permission denied\n"
 
 extern int	g_sig;
 

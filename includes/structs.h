@@ -39,7 +39,9 @@ typedef struct s_shell
 	int				tokens_size;
 	int				num_pipes;
 	int				num_redirecs;
+	int				num_heredoc;
 	int				fd[2];
+	int				*heredoc_fd;
 	int				**pipes;
 	int				exit_code;
 	bool			has_pipes;

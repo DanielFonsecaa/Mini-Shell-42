@@ -53,6 +53,7 @@ int	parsing(t_shell *mshell, t_token **token)
 		mshell->exit_code = 2;
 		return (0);
 	}
+	init_heredoc(mshell, token);
 //	print_cmd_arr(mshell);
 	return (1);
 }

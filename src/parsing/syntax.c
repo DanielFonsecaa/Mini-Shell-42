@@ -67,7 +67,7 @@ int	check_perms(t_shell *mshell, t_token *token)
 		pathname = ft_strjoin(mshell->curr_wd, "/");
 		pathname = ft_strjoin_free(pathname, token->next->name);
 	}
-	if (token->type == INFILE || token->type == HERE)
+	if (token->type == INFILE)
 	{
 		return_val = access(pathname, R_OK);
 		if (return_val != 0)

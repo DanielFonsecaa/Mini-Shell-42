@@ -82,33 +82,97 @@ void execute_built_in(t_shell *mshell, t_token **token)
 		handle_unset(mshell, token);
 }
 
-/*
-void	ft_here(char **argv, int *fd)
+int	create_heredoc(t_shell *mshell, char *limiter)
 {
-	char	*limiter;
 	char	*line;
-	int		pipe_fd[2];
+	int		fd[2];
 
-	limiter = argv[2];
-	if (pipe(pipe_fd) == -1)
-		exit(EXIT_FAILURE);
+	if (pipe(fd) == -1)
+		return (-1);
 	while (1)
 	{
-		ft_putstr_fd("heredoc> ", 1);
-		line = get_next_line(0);
-		if (!line)
-			break ;
-		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
-			&& (line[ft_strlen(limiter)] == '\n'
-				|| line[ft_strlen(limiter) + 1] == '\0'))
+		line = readline("> ");
+		if (line)
+			add_history(line);
+		if (!line || ft_strcmp(line, limiter) == 0)
 		{
-			free(line);
+			//free, signals and stuff
 			break ;
 		}
-		write(pipe_fd[1], line, ft_strlen(line));
+		write_to_fd(mshell, fd[1], line); //to do
 		free(line);
 	}
-	close(pipe_fd[1]);
-	fd[0] = pipe_fd[0];
+	close(fd[1]);
+	return (fd[0]);
 }
-*/
+
+void	init_heredoc(t_shell *mshell, t_token **token)
+{
+	int		heredoc_count;
+	t_token	*temp;
+
+	temp = *token;
+	heredoc_count = mshell->num_heredoc;
+	mshell->heredoc_fd = safe_malloc(sizeof(int) * heredoc_count);
+	if (!mshell->heredoc_fd)
+		return; // handle error
+
+	int i = 0;
+	while (temp && i < heredoc_count) {
+		if (temp->type == HERE && temp->next)
+		{
+			mshell->heredoc_fd[i] = create_heredoc(mshell, temp->next->name);
+			// Optionally associate with command: mshell->command[cmd_index]->heredoc_fd = mshell->heredoc_fd[i];
+			i++;
+		}
+		temp = temp->next;
+	}
+}
+
+void	write_to_fd(t_shell *mshell, int fd, char *line)
+{
+	int		i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '$')
+		{
+			i++;
+			//find node and replace with expansion
+			find_node_write_replace(mshell, fd, line, &i); //to do
+			//node = find_envp(mshell->env_list, );
+		}
+		else
+		{
+			write(fd, &line[i], 1);
+			i++;
+		}
+	}
+	write(fd, "\n", 1);
+}
+
+void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i)
+{
+	t_envp	*node;
+	int		j;
+	int		start;
+	char	*name;
+
+	j = 0;
+	start = *i;
+	while(line[*i] && !ft_iswhite_space(line[*i]))
+	{
+		i++;
+		j++;
+	}
+	name = ft_substr(line, start, j);
+	node = find_envp(mshell->env_list, name);
+	if (!node)
+		return ;
+	j = -1;
+	while (node->content[++j])
+		write(fd, &node->content[j], 1);
+	free(name);
+	//maybe free node
+}

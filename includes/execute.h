@@ -11,12 +11,18 @@ void execute_pipe_redirect(t_shell *mshell, t_token **token);
 //Child related
 void	format_cmd(t_shell *mshell, t_cmd *command);
 char	*ft_get_path(char **envp, char *cmd);
-void	setup_child(int index, int num_cmds, int **pipes, int *fd);
+void	setup_child(t_shell *mshell, int index, int *fd);
 
 //Parent related
 void	handle_redirections(t_shell *mshell, t_token *token, int fd[2]);
 void	helper_handle_redirect(char	*file_name, int fd, int flags);
 void	wait_and_get_exit_status(t_shell *mshell);
 void	cleanup_and_wait(t_shell *mshell);
+
+//heredoc
+int	    create_heredoc(t_shell *mshell, char *limiter);
+void	init_heredoc(t_shell *mshell, t_token **token);
+void	write_to_fd(t_shell *mshell, int fd, char *line);
+void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i);
 
 #endif

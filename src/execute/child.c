@@ -57,27 +57,32 @@ void	execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_c
  * @param pipes     2D array of pipe file descriptors [index][read=0/write=1]
  * @param fd        Array containing input (fd[0]) and output (fd[1])
  */
-void	setup_child(int index, int num_cmds, int **pipes, int *fd)
+void	setup_child(t_shell *mshell, int index, int *fd)
 {
-	if (index == 0)
-	{
+	// If heredoc_fd is set for this command, use it for STDIN
+	int heredoc_fd = -1;
+	if (mshell->heredoc_fd && mshell->heredoc_fd[index] >= 0)
+		heredoc_fd = mshell->heredoc_fd[index];
+	if (heredoc_fd >= 0) {
+		dup2(heredoc_fd, STDIN_FILENO);
+		close(heredoc_fd);
+	} else if (index == 0) {
 		if (fd && fd[0] > 2)
 			dup2(fd[0], STDIN_FILENO);
+	} else {
+		dup2(mshell->pipes[index - 1][0], STDIN_FILENO);
 	}
-	else
-		dup2(pipes[index - 1][0], STDIN_FILENO);
-	if (index == num_cmds - 1)
-	{
+	if (index == mshell->num_commands - 1) {
 		ft_printf_fd(2, "[DEBUG] setup_child: fd[1]=%d before dup2 to STDOUT\n", fd ? fd[1] : -1);
 		if (fd && fd[1] > 2)
 			dup2(fd[1], STDOUT_FILENO);
+	} else {
+		dup2(mshell->pipes[index][1], STDOUT_FILENO);
 	}
-	else
-		dup2(pipes[index][1], STDOUT_FILENO);
 	if (fd)
-		close_fds(pipes, num_cmds, fd[0], fd[1]);
+		close_fds(mshell->pipes, mshell->num_commands, fd[0], fd[1]);
 	else
-		close_fds(pipes, num_cmds, -1, -1);
+		close_fds(mshell->pipes, mshell->num_commands, -1, -1);
 }
 
 /**

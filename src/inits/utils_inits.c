@@ -17,6 +17,8 @@ void	pipe_and_redirects_count(t_shell *mshell, t_token **token)
 	temp = *token;
 	while (temp)
 	{
+		if (temp->type == HERE)
+			mshell->num_heredoc++;
 		if (temp->type == PIPE)
 			mshell->num_pipes++;
 		if (temp->type == APPEND || temp->type == INFILE

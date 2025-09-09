@@ -21,7 +21,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 		if (mshell->pids[i] == 0)
 		{
 			handle_redirections(mshell, temp, mshell->fd);
-			setup_child(i, mshell->num_commands, mshell->pipes, mshell->fd);
+			setup_child(mshell, i, mshell->fd);
 			execute_child_command(mshell, &temp, token, mshell->command[i]);
 		}
 		if (i > 0)
