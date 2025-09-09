@@ -1,7 +1,7 @@
 #include "../../includes/minishell.h"
 
 //debug arr of cmd --- erase latetr
-static void	print_cmd_arr(t_shell *mshell)
+/*static void	print_cmd_arr(t_shell *mshell)
 {
 	int		i;
 	int		j;
@@ -25,7 +25,7 @@ static void	print_cmd_arr(t_shell *mshell)
 				ft_printf_fd(1, " arg %d -> %s\n", j, cmd[i]->args[j]);
 		}
 	}
-}
+}*/
 
 /**
  * @brief Parses the command line input and processes tokens for the minishell
@@ -53,7 +53,7 @@ int	parsing(t_shell *mshell, t_token **token)
 		mshell->exit_code = 2;
 		return (0);
 	}
-	print_cmd_arr(mshell);
+//	print_cmd_arr(mshell);
 	return (1);
 }
 

@@ -85,8 +85,8 @@ void	format_cmd(t_shell *mshell, t_cmd *command)
 	size = 0;
 	if (command->name)
 		size++;
-	while (command->flags && command->flags[i++])
-		size++;
+/*	while (command->flags && command->flags[i++])
+		size++;*/
 	i = 0;
 	while (command->args && command->args[i++])
 		size++;
@@ -95,9 +95,9 @@ void	format_cmd(t_shell *mshell, t_cmd *command)
 	i = 0;
 	if (command->name)
 		mshell->exec_command[i++] = ft_strdup(command->name);
-	while (command->flags && command->flags[size])
+	/*while (command->flags && command->flags[size])
 		mshell->exec_command[i++] = ft_strdup(command->flags[size++]);
-	size = 0;
+	size = 0;*/
 	while (command->args && command->args[size])
 		mshell->exec_command[i++] = ft_strdup(command->args[size++]);
 }

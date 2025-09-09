@@ -44,18 +44,23 @@ void	add_flag_arg_to_cmd(t_token **token, t_cmd *command)
 {
 	int	i;
 	int	number_params;
+	int	type;
 
 	i = 0;
-	if ((*token)->type == ARG)
+	if ((*token)->type == ARG || (*token)->type == FLAG)
 	{
-		number_params = count_type_till_pipe(*token, ARG);
+		if ((*token)->type == ARG)
+			type = ARG;
+		else
+			type = FLAG;
+		number_params = count_type_till_pipe(*token, type);
 		if (!command->args)
 			command->args = safe_calloc(number_params + 1, sizeof(char *));
 		while (command->args[i])
 			i++;
 		command->args[i] = ft_strdup((*token)->name);
 	}
-	else if ((*token)->type == FLAG)
+/*	else if ((*token)->type == FLAG)
 	{
 		number_params = count_type_till_pipe(*token, FLAG);
 		if (!command->flags)
@@ -63,7 +68,7 @@ void	add_flag_arg_to_cmd(t_token **token, t_cmd *command)
 		while (command->flags[i])
 			i++;
 		command->flags[i] = ft_strdup((*token)->name);
-	}
+	}*/
 }
 
 /**

@@ -15,7 +15,7 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	char			*name;
-	char			**flags;
+//	char			**flags;
 	char			**args;
 }		t_cmd;
 

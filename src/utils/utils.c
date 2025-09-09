@@ -34,15 +34,23 @@ void	modify_shell_level(t_envp *node, int value)
 int	check_for_flags(t_shell *mshell)
 {
 	int	i;
+	int	check;
 
 	i = 0;
 	while (mshell->command[i])
 	{
-		if (mshell->command[i]->flags)
+		check = 0;
+		if (!mshell->command[i]->args || !mshell->command[i]->args[check])
+			return (0);
+		while (mshell->command[i]->args[check])
 		{
-			mshell->exit_code = 1;
-			ft_printf_fd(2, ERR_NO_FLAG_ALLOWED);
-			return (1);
+			if (mshell->command[i]->args[check][0] == '-')
+			{
+				mshell->exit_code = 1;
+				ft_printf_fd(2, ERR_NO_FLAG_ALLOWED);
+				return (1);
+			}
+			check++;
 		}
 		i++;
 	}

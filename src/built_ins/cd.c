@@ -16,7 +16,8 @@ void	handle_cd(t_shell *mshell, t_token **token)
 		ft_printf_fd(2, ERR_CD_ARGS);
 		mshell->exit_code = 1;
 	}
-	else if (token_list_size(temp) == 0 || ft_strcmp(temp->name, "--") == 0)
+	else if (token_list_size(temp) == 0 || ft_strcmp(temp->name, "--") == 0
+				|| ft_strcmp(temp->name, "~") == 0)
 		cd_to_key(mshell, "HOME");
 	else if (!cd_syntax(mshell, &temp))
 		mshell->exit_code = 2;

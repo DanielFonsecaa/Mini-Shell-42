@@ -45,9 +45,10 @@ int	count_type_till_pipe(t_token *token, int type)
 
 	temp = token;
 	i = 0;
+	(void)type;
 	while (temp && temp->type != PIPE)
 	{
-		if (temp->type == type)
+		if (temp->type == ARG || temp->type == FLAG)
 			i++;
 		temp = temp->next;
 	}

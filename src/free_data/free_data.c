@@ -108,11 +108,11 @@ void	free_cmd_struct(t_shell *mshell)
 			free(mshell->command[i]->name);
 			mshell->command[i]->name = NULL;
 		}
-		if (mshell->command[i]->flags)
+/*		if (mshell->command[i]->flags)
 		{
 			free_arr(mshell->command[i]->flags);
 			mshell->command[i]->flags = NULL;
-		}
+		}*/
 		if (mshell->command[i]->args)
 		{
 			free_arr(mshell->command[i]->args);
