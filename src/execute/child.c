@@ -29,17 +29,8 @@ void	execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_c
 		exit(NOT_FOUND);
 	}
 	exec_command = mshell->exec_command;
-	// Debug output for exec_command
-	int dbg_i = 0;
-	ft_printf_fd(2, "[DEBUG] exec_command array:\n");
-	while (exec_command && exec_command[dbg_i]) {
-		ft_printf_fd(2, "  [%d]: %s\n", dbg_i, exec_command[dbg_i]);
-		dbg_i++;
-	}
-	ft_printf_fd(2, "[DEBUG] execve path: %s\n", path);
 	if (execve(path, exec_command, mshell->env_var) == -1)
 	{
-		ft_printf_fd(2, "[DEBUG] execve failed\n");
 		if (path != command->name)
 			free(path);
 		handle_error_shell(mshell, token);
@@ -59,26 +50,30 @@ void	execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_c
  */
 void	setup_child(t_shell *mshell, int index, int *fd)
 {
-	// If heredoc_fd is set for this command, use it for STDIN
-	int heredoc_fd = -1;
+	int heredoc_fd;
+	
+	heredoc_fd = -1;
 	if (mshell->heredoc_fd && mshell->heredoc_fd[index] >= 0)
 		heredoc_fd = mshell->heredoc_fd[index];
-	if (heredoc_fd >= 0) {
+	if (heredoc_fd >= 0)
+	{
 		dup2(heredoc_fd, STDIN_FILENO);
 		close(heredoc_fd);
-	} else if (index == 0) {
+	}
+	else if (index == 0)
+	{
 		if (fd && fd[0] > 2)
 			dup2(fd[0], STDIN_FILENO);
-	} else {
-		dup2(mshell->pipes[index - 1][0], STDIN_FILENO);
 	}
-	if (index == mshell->num_commands - 1) {
-		ft_printf_fd(2, "[DEBUG] setup_child: fd[1]=%d before dup2 to STDOUT\n", fd ? fd[1] : -1);
+	else
+		dup2(mshell->pipes[index - 1][0], STDIN_FILENO);
+	if (index == mshell->num_commands - 1)
+	{
 		if (fd && fd[1] > 2)
 			dup2(fd[1], STDOUT_FILENO);
-	} else {
-		dup2(mshell->pipes[index][1], STDOUT_FILENO);
 	}
+	else
+		dup2(mshell->pipes[index][1], STDOUT_FILENO);
 	if (fd)
 		close_fds(mshell->pipes, mshell->num_commands, fd[0], fd[1]);
 	else
@@ -100,8 +95,6 @@ void	format_cmd(t_shell *mshell, t_cmd *command)
 	size = 0;
 	if (command->name)
 		size++;
-/*	while (command->flags && command->flags[i++])
-		size++;*/
 	i = 0;
 	while (command->args && command->args[i++])
 		size++;
@@ -110,9 +103,6 @@ void	format_cmd(t_shell *mshell, t_cmd *command)
 	i = 0;
 	if (command->name)
 		mshell->exec_command[i++] = ft_strdup(command->name);
-	/*while (command->flags && command->flags[size])
-		mshell->exec_command[i++] = ft_strdup(command->flags[size++]);
-	size = 0;*/
 	while (command->args && command->args[size])
 		mshell->exec_command[i++] = ft_strdup(command->args[size++]);
 }

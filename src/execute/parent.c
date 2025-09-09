@@ -61,7 +61,6 @@ void	handle_redirections(t_shell *mshell, t_token *token, int fd[2])
 					expanded_name = token->next->name;
 				} else {
 					expanded_name = expand_token_content(mshell, token->next);
-					// If unquoted and expansion results in spaces, error
 					if (expanded_name && ft_strchr(expanded_name, ' ')) {
 						ft_printf_fd(2, "minishell: ambiguous redirect: %s\n", expanded_name);
 						is_error = 1;
@@ -179,7 +178,7 @@ void	wait_and_get_exit_status(t_shell *mshell)
 		}
 		i++;
 	}
-	restore_parent_signals();  // Restore parent signals after children finish
+	restore_parent_signals();
 }
 
 /**

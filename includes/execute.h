@@ -2,8 +2,8 @@
 # define EXECUTE_H
 
 //Main execution
-void execute_built_in(t_shell *mshell, t_token **token);
-void execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_cmd *command);
+void	execute_built_in(t_shell *mshell, t_token **token);
+void	execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_cmd *command);
 void	execute_cmd_line(t_shell *mshell, t_token **token);
 void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token);
 void execute_pipe_redirect(t_shell *mshell, t_token **token);
@@ -20,7 +20,7 @@ void	wait_and_get_exit_status(t_shell *mshell);
 void	cleanup_and_wait(t_shell *mshell);
 
 //heredoc
-int	    create_heredoc(t_shell *mshell, char *limiter);
+int		create_heredoc(t_shell *mshell, char *limiter);
 void	init_heredoc(t_shell *mshell, t_token **token);
 void	write_to_fd(t_shell *mshell, int fd, char *line);
 void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i);

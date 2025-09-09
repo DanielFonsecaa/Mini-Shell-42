@@ -1,32 +1,5 @@
 #include "../../includes/minishell.h"
 
-//debug arr of cmd --- erase latetr
-/*static void	print_cmd_arr(t_shell *mshell)
-{
-	int		i;
-	int		j;
-	t_cmd	**cmd;
-
-	cmd = mshell->command;
-	i = -1;
-	while (cmd[++i])
-	{
-		ft_printf_fd(1, " name -> %s\n", cmd[i]->name);
-		j = -1;
-		if (cmd[i]->flags)
-		{
-			while (cmd[i]->flags[++j])
-				ft_printf_fd(1, " flag %d -> %s\n", j, cmd[i]->flags[j]);
-		}
-		j = -1;
-		if (cmd[i]->args)
-		{
-			while (cmd[i]->args[++j])
-				ft_printf_fd(1, " arg %d -> %s\n", j, cmd[i]->args[j]);
-		}
-	}
-}*/
-
 /**
  * @brief Parses the command line input and processes tokens for the minishell
  * 
@@ -54,7 +27,6 @@ int	parsing(t_shell *mshell, t_token **token)
 		return (0);
 	}
 	init_heredoc(mshell, token);
-//	print_cmd_arr(mshell);
 	return (1);
 }
 
@@ -135,7 +107,6 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	i = 1;
 	while (arr[i])
 	{
-//	talvez adicionar o previous no token novo
 		new = ft_newtoken(arr[i]);
 		new->type = (*current)->type;
 		new->has_quote = false;

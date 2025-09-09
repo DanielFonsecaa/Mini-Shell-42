@@ -39,6 +39,7 @@
 # define FLAG 7
 # define TFILE 8
 # define APPEND 9
+# define LIMITER 10
 # define PATH_MAX 4096
 
 //Error Values

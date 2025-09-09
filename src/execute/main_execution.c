@@ -13,7 +13,6 @@ void	execute_cmd_line(t_shell *mshell, t_token **token)
 	{
 		format_cmd(mshell, mshell->command[0]);
 		execute_built_in(mshell, token);
-		//free_arr(mshell->exec_command);
 	}
 	else
 		execute_with_pipes_or_redirect(mshell, token);
@@ -34,7 +33,6 @@ void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
 	}
 	else
 	{
-		//talvez aqui tenha que mudar quando so tem um comando com redirects
 		mshell->pids = safe_malloc(sizeof(pid_t));
 		mshell->pids[0] = fork();
 		if (mshell->pids[0] == -1)
@@ -99,7 +97,7 @@ int	create_heredoc(t_shell *mshell, char *limiter)
 			//free, signals and stuff
 			break ;
 		}
-		write_to_fd(mshell, fd[1], line); //to do
+		write_to_fd(mshell, fd[1], line);
 		free(line);
 	}
 	close(fd[1]);
@@ -115,14 +113,12 @@ void	init_heredoc(t_shell *mshell, t_token **token)
 	heredoc_count = mshell->num_heredoc;
 	mshell->heredoc_fd = safe_malloc(sizeof(int) * heredoc_count);
 	if (!mshell->heredoc_fd)
-		return; // handle error
-
+		return ;
 	int i = 0;
 	while (temp && i < heredoc_count) {
 		if (temp->type == HERE && temp->next)
 		{
 			mshell->heredoc_fd[i] = create_heredoc(mshell, temp->next->name);
-			// Optionally associate with command: mshell->command[cmd_index]->heredoc_fd = mshell->heredoc_fd[i];
 			i++;
 		}
 		temp = temp->next;
@@ -131,7 +127,7 @@ void	init_heredoc(t_shell *mshell, t_token **token)
 
 void	write_to_fd(t_shell *mshell, int fd, char *line)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (line[i])
@@ -139,9 +135,7 @@ void	write_to_fd(t_shell *mshell, int fd, char *line)
 		if (line[i] == '$')
 		{
 			i++;
-			//find node and replace with expansion
-			find_node_write_replace(mshell, fd, line, &i); //to do
-			//node = find_envp(mshell->env_list, );
+			find_node_write_replace(mshell, fd, line, &i);
 		}
 		else
 		{
