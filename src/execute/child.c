@@ -29,8 +29,17 @@ void	execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_c
 		exit(NOT_FOUND);
 	}
 	exec_command = mshell->exec_command;
+	// Debug output for exec_command
+	int dbg_i = 0;
+	ft_printf_fd(2, "[DEBUG] exec_command array:\n");
+	while (exec_command && exec_command[dbg_i]) {
+		ft_printf_fd(2, "  [%d]: %s\n", dbg_i, exec_command[dbg_i]);
+		dbg_i++;
+	}
+	ft_printf_fd(2, "[DEBUG] execve path: %s\n", path);
 	if (execve(path, exec_command, mshell->env_var) == -1)
 	{
+		ft_printf_fd(2, "[DEBUG] execve failed\n");
 		if (path != command->name)
 			free(path);
 		handle_error_shell(mshell, token);
@@ -59,6 +68,7 @@ void	setup_child(int index, int num_cmds, int **pipes, int *fd)
 		dup2(pipes[index - 1][0], STDIN_FILENO);
 	if (index == num_cmds - 1)
 	{
+		ft_printf_fd(2, "[DEBUG] setup_child: fd[1]=%d before dup2 to STDOUT\n", fd ? fd[1] : -1);
 		if (fd && fd[1] > 2)
 			dup2(fd[1], STDOUT_FILENO);
 	}

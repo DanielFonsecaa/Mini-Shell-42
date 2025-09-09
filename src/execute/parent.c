@@ -20,7 +20,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 			return (perror("fork"));
 		if (mshell->pids[i] == 0)
 		{
-			handle_redirections(temp, mshell->fd);
+			handle_redirections(mshell, temp, mshell->fd);
 			setup_child(i, mshell->num_commands, mshell->pipes, mshell->fd);
 			execute_child_command(mshell, &temp, token, mshell->command[i]);
 		}
@@ -43,7 +43,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
  * @param fd Array of file descriptors [0] for input, [1] for output
  */
 
-void	handle_redirections(t_token *token, int fd[2])
+void	handle_redirections(t_shell *mshell, t_token *token, int fd[2])
 {
 	int	flags;
 
@@ -53,17 +53,72 @@ void	handle_redirections(t_token *token, int fd[2])
 		if (token->type == INFILE)
 		{
 			flags = O_RDONLY;
-			helper_handle_redirect(token->next->name, STDIN_FILENO, flags);
+			char *expanded_name = NULL;
+			int is_error = 0;
+			if (token->next) {
+				if (token->next->has_quote) {
+					expand_quoted_token(mshell, token->next);
+					expanded_name = token->next->name;
+				} else {
+					expanded_name = expand_token_content(mshell, token->next);
+					// If unquoted and expansion results in spaces, error
+					if (expanded_name && ft_strchr(expanded_name, ' ')) {
+						ft_printf_fd(2, "minishell: ambiguous redirect: %s\n", expanded_name);
+						is_error = 1;
+					}
+				}
+				if (!is_error && expanded_name) {
+					helper_handle_redirect(expanded_name, STDIN_FILENO, flags);
+					if (!token->next->has_quote)
+						free(expanded_name);
+				}
+			}
 		}
 		else if (token->type == OUTFILE)
 		{
 			flags = O_WRONLY | O_CREAT | O_TRUNC;
-			helper_handle_redirect(token->next->name, STDOUT_FILENO, flags);
+			char *expanded_name = NULL;
+			int is_error = 0;
+			if (token->next) {
+				if (token->next->has_quote) {
+					expand_quoted_token(mshell, token->next);
+					expanded_name = token->next->name;
+				} else {
+					expanded_name = expand_token_content(mshell, token->next);
+					if (expanded_name && ft_strchr(expanded_name, ' ')) {
+						ft_printf_fd(2, "minishell: ambiguous redirect: %s\n", expanded_name);
+						is_error = 1;
+					}
+				}
+				if (!is_error && expanded_name) {
+					helper_handle_redirect(expanded_name, STDOUT_FILENO, flags);
+					if (!token->next->has_quote)
+						free(expanded_name);
+				}
+			}
 		}
 		else if (token->type == APPEND)
 		{
 			flags = O_WRONLY | O_CREAT | O_APPEND;
-			helper_handle_redirect(token->next->name, STDOUT_FILENO, flags);
+			char *expanded_name = NULL;
+			int is_error = 0;
+			if (token->next) {
+				if (token->next->has_quote) {
+					expand_quoted_token(mshell, token->next);
+					expanded_name = token->next->name;
+				} else {
+					expanded_name = expand_token_content(mshell, token->next);
+					if (expanded_name && ft_strchr(expanded_name, ' ')) {
+						ft_printf_fd(2, "minishell: ambiguous redirect: %s\n", expanded_name);
+						is_error = 1;
+					}
+				}
+				if (!is_error && expanded_name) {
+					helper_handle_redirect(expanded_name, STDOUT_FILENO, flags);
+					if (!token->next->has_quote)
+						free(expanded_name);
+				}
+			}
 		}
 		token = token->next;
 	}
@@ -79,7 +134,8 @@ void	helper_handle_redirect(char	*file_name, int fd, int flags)
 		perror("open");
 		exit(1);
 	}
-	dup2(new_fd, fd);
+	int result = dup2(new_fd, fd);
+	ft_printf_fd(2, "[DEBUG] helper_handle_redirect: file='%s', fd=%d, new_fd=%d, dup2_result=%d\n", file_name, fd, new_fd, result);
 	close(new_fd);
 }
 
