@@ -46,10 +46,16 @@ int	check_pipeline(t_token **token)
 	temp = *token;
 	while (temp)
 	{
-		if (temp->next && temp->type == PIPE && temp->next->type == PIPE)
-			return (0);
-		if (temp->type == PIPE && !temp->next)
-			return (0);
+		if (!(temp->has_quote))
+		{
+			if (temp->next && temp->type == PIPE && temp->next->type == PIPE)
+				return (0);
+		}
+		if (!(temp->has_quote))
+		{
+			if (temp->type == PIPE && !temp->next)
+				return (0);
+		}
 		temp = temp->next;
 	}
 	return (1);
