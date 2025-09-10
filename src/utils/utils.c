@@ -86,11 +86,11 @@ char	*extract_cmd_token(char *rd_l, int *i)
 
 char	*get_cmd_token(char *rd_l, int start, int len, char quote_char)
 {
-	char	*cmd_name;
+	char	*name;
 	int		i;
 	int		in_quote;
 
-	cmd_name = safe_calloc(len + 1, sizeof(char));
+	name = safe_calloc(len + 1, sizeof(char));
 	in_quote = 0;
 	i = 0;
 	while (i < len)
@@ -108,9 +108,9 @@ char	*get_cmd_token(char *rd_l, int start, int len, char quote_char)
 			start++;
 			continue ;
 		}
-		cmd_name[i++] = rd_l[start++];
+		name[i++] = rd_l[start++];
 	}
-	return (cmd_name);
+	return (name);
 }
 
 /**
