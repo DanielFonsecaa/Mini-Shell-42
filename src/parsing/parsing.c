@@ -41,7 +41,7 @@ void	expansion(t_shell *mshell, t_token **token)
 		next = current->next;
 		if (current->type == ARG || current->type == CMD || current->type == FLAG || current->type == OUTFILE || current->type == INFILE)
 		{
-			if (current->has_quote)
+			if (current->has_quote || ft_strchr(current->name, ' '))
 				expand_quoted_token(mshell, current);
 			else
 				expand_unquoted(mshell, &current, token);

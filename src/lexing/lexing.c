@@ -73,7 +73,12 @@ void	set_t_type(t_token **token)
 	temp = *token;
 	while (temp)
 	{
-		if (ft_strcmp(temp->name, "<<") == 0)
+		ft_printf_fd(1, "value %s\n", temp->name);
+		
+		// Don't retype quoted tokens as metacharacters
+		if (temp->has_quote && ft_strchr(temp->name, ' '))
+			temp->type = ARG;
+		else if (ft_strcmp(temp->name, "<<") == 0)
 			temp->type = HERE;
 		else if (ft_strcmp(">>", temp->name) == 0)
 			temp->type = APPEND;
@@ -84,8 +89,6 @@ void	set_t_type(t_token **token)
 		else if (temp->prev == NULL || (temp->prev->type == PIPE
 				&& ft_strcmp(temp->name, "|") != 0))
 			temp->type = CMD;
-		else if (temp->prev->type == HERE)
-			temp->type = LIMITER;
 		else if (ft_strcmp("|", temp->name) == 0)
 			temp->type = PIPE;
 		else
