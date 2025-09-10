@@ -89,6 +89,8 @@ void	set_t_type(t_token **token)
 		else if (temp->prev == NULL || (temp->prev->type == PIPE
 				&& ft_strcmp(temp->name, "|") != 0))
 			temp->type = CMD;
+		else if (temp->prev->type == HERE)
+			temp->type = LIMITER;
 		else if (ft_strcmp("|", temp->name) == 0)
 			temp->type = PIPE;
 		else
