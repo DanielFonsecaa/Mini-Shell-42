@@ -63,41 +63,37 @@ int	check_pipeline(t_token **token)
 
 int	check_perms(t_shell *mshell, t_token *token)
 {
-	int		return_val;
-	char	*pathname;
+	char	*path_name;
 
 	if (token->name[0] == '/')
-		pathname = ft_strdup(token->next->name);
+		path_name = ft_strdup(token->next->name);
 	else
 	{
-		pathname = ft_strjoin(mshell->curr_wd, "/");
-		pathname = ft_strjoin_free(pathname, token->next->name);
+		path_name = ft_strjoin(mshell->curr_wd, "/");
+		path_name = ft_strjoin_free(path_name, token->next->name);
 	}
 	if (token->type == INFILE)
 	{
-		return_val = access(pathname, R_OK);
-		if (return_val != 0)
-		{
-			ft_printf_fd(2, ERR_NO_PERMS, token->next->name);
-			free(pathname);
-			return (0);
-		}
+		if (access(path_name, R_OK) != 0)
+			return (helper_check_perms(token->next->name, path_name));
 	}
 	else if (token->type == OUTFILE || token->type == APPEND)
 	{
-		if (access(pathname, F_OK) == 0)
+		if (access(path_name, F_OK) == 0)
 		{
-			return_val = access(pathname, W_OK);
-			if (return_val != 0)
-			{
-				ft_printf_fd(2, ERR_NO_PERMS, token->next->name);
-				free(pathname);
-				return (0);
-			}
+			if (access(path_name, W_OK) != 0)
+				return (helper_check_perms(token->next->name, path_name));
 		}
 	}
-	free(pathname);
+	free(path_name);
 	return (1);
+}
+
+int	helper_check_perms(char *token_name, char *path_name)
+{
+	ft_printf_fd(2, ERR_NO_PERMS, token_name);
+	free(path_name);
+	return (0);
 }
 
 /**
@@ -121,31 +117,5 @@ int	quote_checker(char *rd_l)
 		else
 			i++;
 	}
-	return (1);
-}
-
-/**
- * @brief Checks if a token represents a redirection operator
- *
- * @param temp Pointer to the token to be checked
- * @return int Returns 1 if the token is a redirection type, 0 if not
- */
-int	check_redir_type(t_token *temp)
-{
-	return (temp->type == INFILE || temp->type == OUTFILE
-		|| temp->type == HERE || temp->type == APPEND);
-}
-
-int	check_infile(t_token *token)
-{
-	int		fd;
-	t_token	*temp;
-
-	temp = token;
-	fd = open(temp->next->name, O_RDONLY);
-	if (fd == -1)
-		return (0);
-	else
-		close(fd);
 	return (1);
 }

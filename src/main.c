@@ -11,17 +11,12 @@ int	g_sig;
  */
 static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 {
-	mshell->is_running = true;
-	create_envp_list(&(mshell->env_list), envp);
-	modify_shell_level(mshell->env_list, 1);
-	handle_signal();
 	while (mshell->is_running)
 	{
 		init_shell_envp_cwd(mshell, envp);
 		mshell->rd_l = readline(mshell->fake_cwd);
-		if (mshell->rd_l && mshell->rd_l[0]) {
+		if (mshell->rd_l && mshell->rd_l[0])
 			add_history(mshell->rd_l);
-		}
 		if (g_sig == 130)
 			mshell->exit_code = 130;
 		if (!mshell->rd_l)
@@ -37,7 +32,6 @@ static void	run_shell(t_shell *mshell, t_token **token, char **envp)
 		}
 		execute_cmd_line(mshell, token);
 		free_all(mshell, token);
-	//	ft_printf("%d\n",mshell->exit_code);
 		g_sig = 0;
 	}
 	modify_shell_level(mshell->env_list, -1);
@@ -61,6 +55,10 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	token = NULL;
 	ft_memset(&mshell, 0, sizeof(t_shell));
+	mshell.is_running = true;
+	create_envp_list(&(mshell.env_list), envp);
+	modify_shell_level(mshell.env_list, 1);
+	handle_signal();
 	run_shell(&mshell, &token, envp);
 	return (mshell.exit_code);
 }

@@ -29,6 +29,8 @@ FILES			=	main.c \
 					built_ins/export/utils_list_export.c \
 					built_ins/export/utils_export.c \
 					execute/child.c \
+					execute/heredoc.c \
+					execute/helper_parent.c \
 					execute/main_execution.c \
 					execute/parent.c \
 					free_data/free_all.c \
@@ -41,9 +43,10 @@ FILES			=	main.c \
 					lexing/tokenize_utils.c \
 					lexing/utils_lex.c \
 					lexing/utils_list_lex.c \
+					parsing/expand_utils.c\
+					parsing/helper_parsing.c \
 					parsing/parsing.c \
 					parsing/syntax.c \
-					parsing/expand_utils.c\
 					safe/safe_functions.c \
 					utils/utils.c
 

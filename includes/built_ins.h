@@ -1,16 +1,14 @@
 #ifndef BUILT_INS_H
 # define BUILT_INS_H
 
-#include <zconf.h>
-
 // Built ins handlers
-void handle_pwd(t_shell *mshell, t_token **token);
-void handle_env(t_shell *mshell);
-void handle_exit(t_shell *mshell, t_token **token);
-void handle_export(t_shell *mshell, t_token **token);
+void	handle_pwd(t_shell *mshell, t_token **token);
+void	handle_env(t_shell *mshell);
+void	handle_exit(t_shell *mshell, t_token **token);
+void	handle_export(t_shell *mshell, t_token **token);
 void	handle_cd(t_shell *mshell, t_token **token);
 void	handle_unset(t_shell *mshell, t_token **token);
-void handle_echo(t_shell *mshell);
+void	handle_echo(t_shell *mshell);
 
 // Utils
 int		is_built_in(t_token **token);
@@ -20,7 +18,7 @@ int		validade_export_name(char *name);
 
 //	Export Utils
 void	bubble_sort(t_envp **arr, int list_size);
-void show_export(t_shell *mshell, t_envp *node);
+void	show_export(t_shell *mshell, t_envp *node);
 void	update_export(t_shell *mshell, t_token **token);
 void	update_envp_var(char *name, t_envp *node);
 void	append_envp_var(char *name, t_envp *node);
@@ -43,7 +41,7 @@ void	remove_envp_var(t_envp *head, t_envp *node);
 
 // Echo Utils
 t_token	**get_args(t_token **token);
-void print_echo(char **arr, bool flag, int i);
+void	print_echo(char **arr, bool flag, int i);
 int		valid_n(char *str);
 int		handle_n(char **command_arr, int *i);
 char	which_quote(char *str);

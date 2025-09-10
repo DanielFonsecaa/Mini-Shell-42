@@ -13,6 +13,7 @@
 # include <limits.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <zconf.h>
 
 //	Custom libs
 # include "../libft/libft/libft.h"
@@ -67,6 +68,7 @@
 # define ERR_MEMORY_SHLVL "Memory allocation failed for new shell level"
 # define ERR_SHLVLNOT_FOUND "Error: shell level not found\n"
 # define ERR_NO_PERMS "minishell: %s: Permission denied\n"
+# define ERR_AMBIGUOUS "minishell: ambiguous redirect: %s\n"
 
 extern int	g_sig;
 

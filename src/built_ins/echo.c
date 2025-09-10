@@ -19,7 +19,6 @@ void	handle_echo(t_shell *mshell)
 		flag = true;
 	print_echo(args_arr, flag, i);
 	mshell->exit_code = 0;
-//	free(args_arr);
 }
 
 /**
@@ -92,38 +91,3 @@ void	print_echo(char **arr, bool flag, int i)
 	if (!flag)
 		ft_printf_fd(1, "\n");
 }
-/*
-
-*/
-/**
- * @brief Extracts arguments and flags from a token linked list into an array.
- *
- * @param token Double pointer to the first token in the linked list.
- * @return t_token** Array of pointers to tokens.
- *//*
-
-char	**get_args(t_cmd *cmd)
-{
-	t_cmd	*temp;
-	char	**args_arr;
-	int		i;
-
-	args_arr = NULL;
-	temp = cmd;
-	i = 0;
-	while (temp->args[i])
-		i++;
-	while (temp->flags[i])
-		i++;
-	args_arr = safe_calloc(i + 1, sizeof(t_token *));
-	temp = *cmd;
-	i = -1;
-	while (temp->args[++i])
-		args_arr[i] = temp->args[i];
-	while (temp->flags[i])
-	{
-		args_arr[i] = temp->args[i];
-		i++;
-	}
-	return (args_arr);
-}*/

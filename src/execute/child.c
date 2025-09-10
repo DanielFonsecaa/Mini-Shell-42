@@ -7,37 +7,33 @@
  * @param token Pointer to token array for error handling cleanup
  * @param command Pointer to command structure
  */
-void	execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_cmd *command)
+void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 {
 	char	*path;
-	char	**exec_command;
 
-	format_cmd(mshell, command);
-	path = ft_get_path(mshell->env_var, command->name);
+	format_cmd(ms, cmd);
+	path = ft_get_path(ms->env_var, cmd->name);
 	handle_child();
-	if (is_built_in(token))
+	if (is_built_in(toke))
 	{
-		execute_built_in(mshell, token);
-		handle_child_free(mshell, head, path);
-		exit (mshell->exit_code);
+		execute_built_in(ms, toke);
+		handle_child_free(ms, head, path);
+		exit (ms->exit_code);
 	}
 	if (!path)
 	{
-		handle_error_shell(mshell, token);
-		cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
+		handle_error_shell(ms, toke);
+		cleanup_pipes(ms->pipes, ms->num_commands - 1, ms);
 		ft_printf_fd(2, ERR_CMD);
 		exit(NOT_FOUND);
 	}
-	exec_command = mshell->exec_command;
-	if (execve(path, exec_command, mshell->env_var) == -1)
-	{
-		if (path != command->name)
-			free(path);
-		handle_error_shell(mshell, token);
-		cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
-		perror("execve");
-		exit(FOUND_NOT_EXEC);
-	}
+	execve(path, ms->exec_command, ms->env_var);
+	if (path != cmd->name)
+		free(path);
+	handle_error_shell(ms, toke);
+	cleanup_pipes(ms->pipes, ms->num_commands - 1, ms);
+	perror("execve");
+	exit(FOUND_NOT_EXEC);
 }
 
 /**
@@ -50,15 +46,10 @@ void	execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_c
  */
 void	setup_child(t_shell *mshell, int index, int *fd)
 {
-	int heredoc_fd;
-	
-	heredoc_fd = -1;
 	if (mshell->heredoc_fd && mshell->heredoc_fd[index] >= 0)
-		heredoc_fd = mshell->heredoc_fd[index];
-	if (heredoc_fd >= 0)
 	{
-		dup2(heredoc_fd, STDIN_FILENO);
-		close(heredoc_fd);
+		dup2(mshell->heredoc_fd[index], STDIN_FILENO);
+		close(mshell->heredoc_fd[index]);
 	}
 	else if (index == 0)
 	{

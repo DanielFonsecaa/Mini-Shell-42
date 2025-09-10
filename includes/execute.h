@@ -3,10 +3,10 @@
 
 //Main execution
 void	execute_built_in(t_shell *mshell, t_token **token);
-void	execute_child_command(t_shell *mshell, t_token **token, t_token **head, t_cmd *command);
+void	exec_child_cmd(t_shell *ms, t_token **t, t_token **h, t_cmd *c);
 void	execute_cmd_line(t_shell *mshell, t_token **token);
 void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token);
-void execute_pipe_redirect(t_shell *mshell, t_token **token);
+void	execute_pipe_redirect(t_shell *mshell, t_token **token);
 
 //Child related
 void	format_cmd(t_shell *mshell, t_cmd *command);
@@ -14,9 +14,11 @@ char	*ft_get_path(char **envp, char *cmd);
 void	setup_child(t_shell *mshell, int index, int *fd);
 
 //Parent related
-void	handle_redirections(t_shell *mshell, t_token *token, int fd[2]);
-void	helper_handle_redirect(char	*file_name, int fd, int flags);
+void	handle_redirections(t_shell *mshell, t_token *token);
+void	helper_handle_redir(t_shell *mshell, t_token *token, int flag, int fd);
+void	open_file_and_dup(char	*file_name, int fd, int flags);
 void	wait_and_get_exit_status(t_shell *mshell);
+void	set_exitcode_status(t_shell *mshell, int status);
 void	cleanup_and_wait(t_shell *mshell);
 
 //heredoc

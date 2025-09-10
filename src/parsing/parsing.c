@@ -39,7 +39,9 @@ void	expansion(t_shell *mshell, t_token **token)
 	while (current)
 	{
 		next = current->next;
-		if (current->type == ARG || current->type == CMD || current->type == FLAG || current->type == OUTFILE || current->type == INFILE)
+		if (current->type == ARG || current->type == CMD
+			|| current->type == FLAG || current->type == OUTFILE
+			|| current->type == INFILE)
 		{
 			if (current->has_quote || ft_strchr(current->name, ' '))
 				expand_quoted_token(mshell, current);
@@ -54,28 +56,13 @@ void	expand_quoted_token(t_shell *mshell, t_token *token)
 {
 	char	*new_str;
 	int		i;
-	char	quote_char;
 
 	i = 0;
 	new_str = safe_calloc(1, sizeof(char));
 	while (token->name[i])
 	{
 		if (token->name[i] == '"' || token->name[i] == '\'')
-		{
-			quote_char = token->name[i];
-			i++;
-			while (token->name[i] && token->name[i] != quote_char)
-			{
-				if (token->name[i] == '$' && token->name[i + 1] == '?' && quote_char == '"')
-					new_str = append_exit_code(mshell, new_str, &i);
-				else if (token->name[i] == '$' && quote_char == '"')
-					new_str = append_content(mshell, &token, new_str, &i);
-				else
-					new_str = append_letter_unquoted(token, new_str, &i);
-			}
-			if (token->name[i] == quote_char)
-				i++;
-		}
+			expand_inside_quotes(token, mshell, &new_str, &i);
 		else if (token->name[i] == '$' && token->name[i + 1] == '?')
 			new_str = append_exit_code(mshell, new_str, &i);
 		else if (token->name[i] == '$')
@@ -87,13 +74,31 @@ void	expand_quoted_token(t_shell *mshell, t_token *token)
 	token->name = new_str;
 }
 
+void	expand_inside_quotes(t_token *token, t_shell *msh, char **str, int *i)
+{
+	char	quote_char;
+
+	quote_char = token->name[*i];
+	(*i)++;
+	while (token->name[*i] && token->name[*i] != quote_char)
+	{
+		if (token->name[*i] == '$' && token->name[*i + 1]
+			== '?' && quote_char == '"')
+			*str = append_exit_code(msh, *str, i);
+		else if (token->name[*i] == '$' && quote_char == '"')
+			*str = append_content(msh, &token, *str, i);
+		else
+			*str = append_letter_unquoted(token, *str, i);
+	}
+	if (token->name[*i] == quote_char)
+		(*i)++;
+}
+
 void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 {
 	char	*expanded;
 	char	**arr;
 	t_token	*next;
-	t_token	*new;
-	int		i;
 
 	expanded = expand_token_content(mshell, *current);
 	next = (*current)->next;
@@ -104,17 +109,6 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	free((*current)->name);
 	(*current)->name = ft_strdup(arr[0]);
 	(*current)->next = next;
-	i = 1;
-	while (arr[i])
-	{
-		new = ft_newtoken(arr[i]);
-		new->type = (*current)->type;
-		new->has_quote = false;
-		new->next = (*current)->next;
-		new->prev = (*current);
-		(*current)->next = new;
-		(*current) = new;
-		i++;
-	}
+	add_split_tokens(current, next, arr);
 	free_arr(arr);
 }

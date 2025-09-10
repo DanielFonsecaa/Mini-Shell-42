@@ -18,30 +18,10 @@ void	handle_ctrl_c(int sig)
 	}
 }
 
-void    handle_child(void)
+void	handle_child(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-}
-
-void    handle_quit_child(int sig)
-{
-	if (sig == SIGQUIT)
-	{
-		ft_printf_fd(1, "Quit (core dumped)\n");
-		exit(131);
-	}
-}
-
-/**
- * @brief Signal handler for CTRL+C (SIGINT) in child processes
- *
- * @param sig The signal number received (expected to be SIGINT)
- */
-void	handle_ctrl_c_child(int sig)
-{
-	if (sig == SIGINT && g_sig)
-		ft_printf_fd(1, "\n");
 }
 
 /**

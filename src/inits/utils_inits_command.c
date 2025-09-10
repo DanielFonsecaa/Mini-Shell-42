@@ -5,17 +5,14 @@
  * @param token Pointer to the token containing the name to add
  * @param dest The destination (flags or args)
  */
-void add_flag_arg_to_cmd(t_token **token, t_cmd *command)
+void	add_flag_arg_to_cmd(t_token **token, t_cmd *command)
 {
-	int i;
-	int number_params;
-	int type;
+	int	i;
+	int	number_params;
+	int	type;
 
-	ft_printf_fd(2, "[DEBUG] add_flag_arg_to_cmd: token name='%s', type=%d\n", (*token)->name, (*token)->type);
-	if ((*token)->type == TFILE) {
-		ft_printf_fd(2, "[DEBUG] Skipping TFILE token: '%s'\n", (*token)->name);
+	if ((*token)->type == TFILE)
 		return ;
-	}
 	i = 0;
 	if ((*token)->type == ARG || (*token)->type == FLAG)
 	{
@@ -40,12 +37,12 @@ void add_flag_arg_to_cmd(t_token **token, t_cmd *command)
  * 
  * @return t_cmd** Returns array of pointers to command structures.
  */
-t_cmd   **set_cmd_arr(t_shell *mshell, t_token **token)
+t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
 {
-	t_token *temp;
-	t_cmd   **command;
-	int     i;
-	int     size_arr;
+	t_token	*temp;
+	t_cmd	**command;
+	int		i;
+	int		size_arr;
 
 	size_arr = mshell->num_commands;
 	i = -1;

@@ -73,12 +73,8 @@ void	set_t_type(t_token **token)
 	temp = *token;
 	while (temp)
 	{
-		ft_printf_fd(1, "value %s\n", temp->name);
-		
-		// Don't retype quoted tokens as metacharacters
-		if (temp->has_quote && ft_strchr(temp->name, ' '))
-			temp->type = ARG;
-		else if (ft_strcmp(temp->name, "<<") == 0)
+		// Removed redundant ARG assignment; let set_t_arg handle it
+		if (ft_strcmp(temp->name, "<<") == 0)
 			temp->type = HERE;
 		else if (ft_strcmp(">>", temp->name) == 0)
 			temp->type = APPEND;
@@ -120,11 +116,11 @@ void	type_file(t_token **token)
 		}
 		temp = temp->next;
 	}
-
 	// Debug output: print token names and types after type_file
 	temp = *token;
 	ft_printf_fd(2, "[DEBUG] Token list after type_file:\n");
-	while (temp) {
+	while (temp)
+	{
 		ft_printf_fd(2, "  name: '%s', type: %d\n", temp->name, temp->type);
 		temp = temp->next;
 	}

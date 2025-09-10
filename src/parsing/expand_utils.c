@@ -99,27 +99,3 @@ char	*append_letter_unquoted(t_token *token, char *new_str, int *i)
 	(*i)++;
 	return (new_str);
 }
-
-void	remove_token_from_list(t_token **current, t_token **head)
-{
-	t_token	*prev;
-
-	if (*current == *head)
-	{
-		*head = (*current)->next;
-		free((*current)->name);
-		free(*current);
-		*current = *head;
-		return ;
-	}
-	prev = *head;
-	while (prev && prev->next != *current)
-		prev = prev->next;
-	if (prev)
-	{
-		prev->next = (*current)->next;
-		free((*current)->name);
-		free(*current);
-		*current = prev->next;
-	}
-}
