@@ -37,6 +37,7 @@ void	cleanup_pipes(int **pipes, int num_pipes, t_shell *mshell)
 	int	i;
 
 	i = 0;
+	(void)mshell;
 	while (i < num_pipes)
 	{
 		close(pipes[i][0]);
@@ -45,5 +46,4 @@ void	cleanup_pipes(int **pipes, int num_pipes, t_shell *mshell)
 		i++;
 	}
 	free(pipes);
-	free(mshell->pids);
 }

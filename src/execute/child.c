@@ -46,10 +46,13 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
  */
 void	setup_child(t_shell *mshell, int index, int *fd)
 {
-	if (mshell->heredoc_fd && mshell->heredoc_fd[index] >= 0)
+	if (mshell->heredoc_fd != NULL && mshell->num_heredoc > 0)
 	{
-		dup2(mshell->heredoc_fd[index], STDIN_FILENO);
-		close(mshell->heredoc_fd[index]);
+		if (index < mshell->num_heredoc && mshell->heredoc_fd[index] >= 0)
+		{
+			dup2(mshell->heredoc_fd[index], STDIN_FILENO);
+			close(mshell->heredoc_fd[index]);
+		}
 	}
 	else if (index == 0)
 	{

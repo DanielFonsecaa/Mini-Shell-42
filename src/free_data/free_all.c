@@ -18,6 +18,8 @@ void	handle_child_free(t_shell *mshell, t_token **token, char *path)
 		free(mshell->fake_cwd);
 	if (mshell->rd_l)
 		free(mshell->rd_l);
+	if (mshell->heredoc_fd)
+		free_heredoc(mshell);
 	cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
 	mshell->pids = NULL;
 	mshell->env_var = NULL;
@@ -82,6 +84,8 @@ void	free_all(t_shell *mshell, t_token **token)
 		free_arr(mshell->exec_command);
 		mshell->exec_command = NULL;
 	}
+	if (mshell->heredoc_fd)
+		free_heredoc(mshell);
 	if (mshell->fake_cwd)
 	{
 		free(mshell->fake_cwd);

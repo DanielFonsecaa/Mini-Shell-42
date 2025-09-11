@@ -12,6 +12,7 @@ void	free_envp_list(t_shell *mshell);
 void	free_envp_content(char *name, char *content);
 void	free_arr(char **arr);
 void	free_cmd_struct(t_shell *mshell);
+void	free_heredoc(t_shell *mshell);
 
 // free pipes and fds
 void	close_fds(int **pipes, int num_pipes, int fd_in, int fd_out);

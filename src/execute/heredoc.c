@@ -32,6 +32,11 @@ void	init_heredoc(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	heredoc_count = mshell->num_heredoc;
+	if (heredoc_count == 0)
+	{
+		mshell->heredoc_fd = NULL;
+		return ;
+	}
 	mshell->heredoc_fd = safe_malloc(sizeof(int) * heredoc_count);
 	if (!mshell->heredoc_fd)
 		return ;

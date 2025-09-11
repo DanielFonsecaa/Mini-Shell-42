@@ -63,6 +63,16 @@ void	free_envp_content(char *name, char *content)
 	content = NULL;
 }
 
+// DESCULPA DANIEL, CORRIGISTE NORMINETTE MAS VOU METER AQUI UMA FUNCAO PARA DEPOIS METER PARA OUTRO LADO
+void	free_heredoc(t_shell *mshell)
+{
+	if (mshell->heredoc_fd != NULL)
+	{
+		free(mshell->heredoc_fd);
+		mshell->heredoc_fd = NULL;
+	}
+}
+
 /**
  * @brief Frees the entire environment variable list.
  * 
