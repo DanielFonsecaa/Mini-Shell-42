@@ -30,7 +30,7 @@ int	next_token_len(char *s)
 		}
 		if (!quote && (ft_iswhite_space(s[i]) || is_meta_char(s[i])))
 			break ;
-		else
+		else if (s[i])
 			i++;
 	}
 	return (i);

@@ -30,9 +30,9 @@ cat e depois mandar CTRL + \
 
 
 LEAKS!!!!!
-cat << eof > file | cat file
+cat << eof > file | cat file - FIXED
 
-ls " -la" | "ls -la" | cat
+ls " -la" | "ls -la" | cat - FIXED
 
 ../..
 
