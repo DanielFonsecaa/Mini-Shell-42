@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:08:11 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/08/20 11:23:43 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/09/12 15:48:26 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 int			ft_strcmp(char *s1, char *s2);
 int			ft_iswhite_space(int c);
 int			ft_isspace(int c);
+char		*ft_strjoin_three(char const *s1, char *s2, char const *s3);
 
 #endif

@@ -21,13 +21,20 @@ void	modify_shell_level(t_envp *node, int value)
 	}
 	old_level = existing_node->content;
 	new_level = ft_atoi(old_level);
-	str_level = ft_itoa(new_level + value);
+	if (new_level >= 999)
+	{
+		ft_printf("bash: warning: shell level (%d) too high, resetting to 1\n", new_level + 1);
+		str_level = ft_itoa(1);
+	}
+	else
+		str_level = ft_itoa(new_level + value);
 	if (!str_level)
 	{
 		ft_printf_fd(2, ERR_MEMORY_SHLVL);
 		return ;
 	}
 	existing_node->content = str_level;
+	existing_node->exported = true;
 	free(old_level);
 }
 

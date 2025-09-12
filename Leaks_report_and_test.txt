@@ -1,32 +1,27 @@
-Tips to work on
-
-usar strcmp(ja temos implementado);
-usar um strjoin_free em que mandamos um int para determinar de libermos str1 ou str2 ou ambas str;
-implementar um fd_printf em que mandamos o fd;
-
-
 se apagarem o diretorio, o que acontece o prompt.
 
- echo | pwd | cd | export | unset | exit | env
+ echo | pwd | cd | export | unset | exit | env -- FIXED
 
- cat | cat | cat | ls
+ cat | cat | cat | ls  -- FIXED
 
  mkdir test
  mkdir test2
  cd test/test2
- rm -rf ../../test
+ rm -rf ../../test -- FIXED
 
 export var="s -"
 l$var"l"
-cat > $var -- not
-cat > "$var" -- yes
-cat > "l"$var -- not
-cat > l"$var" -- yes
-cat > "l"$var2 -- yes
+cat > $var -- not --work
+cat > "$var" -- yes --work
+cat > "l"$var -- not  --NEED TO FIX
+cat > l"$var" -- yes --work
+cat > "l"$var2 -- yes --work
 
 shell level fix    1000 >= reset to 1 or if it doesnt exist create with 1
 
-cat e depois mandar CTRL + \
+cat e depois mandar CTRL + \ -- FIXED
+
+export |' '  -- test whitout the quotes export | (space)
 
 
 LEAKS!!!!!
@@ -43,11 +38,11 @@ acho que sao da mesma fonte de erro, corrigindo um corrige o outro
 
 ../..
 
-""|"""ls""-la""|"|"ls"
+""|"""ls""-la""|"|"ls" --TO DO
 
-echo "$"a -> temos de printar o dollar talvez
+echo "$"a -> temos de printar o dollar talvez  -- NO LEAKS, but did not print $
 
-echo "" > file
+echo "" > file  -- MAYBE FIXED
 
 random command tipo assdff - FIXED
 

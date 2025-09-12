@@ -64,26 +64,33 @@ int	count_type_till_pipe(t_token *token, int type)
  * @return char** Pointer to the newly allocated copy of the environment array,
  *                or NULL if memory allocation fails
  */
-char	**ft_copy_envp(char **envp)
+char	**ft_copy_envp(t_envp *head)
 {
 	int		i;
 	int		size;
 	char	**ret;
+	t_envp	*temp;
 
+	temp = head;
 	size = 0;
-	i = 0;
-	while (envp[size])
-		size++;
-	ret = safe_calloc((size + 1), sizeof(char *));
-	while (i < size && envp[i])
+	i = -1;
+	while (temp)
 	{
-		ret[i] = ft_strdup(envp[i]);
+		size++;
+		temp = temp->next;
+	}
+	ret = safe_calloc((size + 1), sizeof(char *));
+	temp = head;
+	while (++i < size && temp)
+	{
+		if (temp->exported)
+			ret[i] = ft_strjoin_three(temp->name, "=", temp->content);
 		if (!ret[i])
 		{
 			free_arr(ret);
 			return (NULL);
 		}
-		i++;
+		temp = temp->next;
 	}
 	return (ret);
 }

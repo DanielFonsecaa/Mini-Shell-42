@@ -16,7 +16,7 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 	handle_child();
 	if (is_built_in(toke))
 	{
-		execute_built_in(ms, toke);
+		execute_built_in(ms, toke, STDOUT_FILENO);
 		handle_child_free(ms, head, path);
 		exit (ms->exit_code);
 	}

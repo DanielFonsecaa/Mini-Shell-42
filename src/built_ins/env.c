@@ -4,8 +4,9 @@
  * @brief Handles the 'env' command
  * 
  * @param mshell Pointer to the shell structure
+ * @param fd
  */
-void	handle_env(t_shell *mshell)
+void	handle_env(t_shell *mshell, int fd)
 {
 	t_envp	*node;
 
@@ -27,7 +28,7 @@ void	handle_env(t_shell *mshell)
 	while (node)
 	{
 		if (node->exported)
-			ft_printf_fd(1, "%s=%s\n", node->name, node->content);
+			ft_printf_fd(fd, "%s=%s\n", node->name, node->content);
 		node = node->next;
 	}
 	mshell->exit_code = 0;

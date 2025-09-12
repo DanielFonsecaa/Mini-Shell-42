@@ -6,13 +6,13 @@
  * @param mshell Pointer to the shell structure to initialize
  * @param envp Array of environment variable strings to copy
  */
-void	init_shell_envp_cwd(t_shell *mshell, char **envp)
+void	init_shell_envp_cwd(t_shell *mshell)
 {
 	if (mshell->env_var)
 		free_arr(mshell->env_var);
 	if (mshell->fake_cwd)
 		free(mshell->fake_cwd);
-	mshell->env_var = ft_copy_envp(envp);
+	mshell->env_var = ft_copy_envp(mshell->env_list);
 	getcwd(mshell->curr_wd, sizeof(mshell->curr_wd));
 	mshell->fake_cwd = ft_strjoin(mshell->curr_wd, " 👉 ");
 }

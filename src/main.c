@@ -9,11 +9,11 @@ int	g_sig;
  * @param token Double pointer to token structure for command parsing
  * @param envp Array of environment variables passed from main
  */
-static void	run_shell(t_shell *mshell, t_token **token, char **envp)
+static void	run_shell(t_shell *mshell, t_token **token)
 {
 	while (mshell->is_running)
 	{
-		init_shell_envp_cwd(mshell, envp);
+		init_shell_envp_cwd(mshell);
 		mshell->rd_l = readline(mshell->fake_cwd);
 		if (mshell->rd_l && mshell->rd_l[0])
 			add_history(mshell->rd_l);
@@ -59,6 +59,6 @@ int	main(int ac, char **av, char **envp)
 	create_envp_list(&(mshell.env_list), envp);
 	modify_shell_level(mshell.env_list, 1);
 	handle_signal();
-	run_shell(&mshell, &token, envp);
+	run_shell(&mshell, &token);
 	return (mshell.exit_code);
 }

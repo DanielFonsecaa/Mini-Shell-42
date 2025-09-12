@@ -11,7 +11,7 @@ void	execute_cmd_line(t_shell *mshell, t_token **token)
 	if (is_built_in(token) && !mshell->has_pipes && !mshell->has_redirect)
 	{
 		format_cmd(mshell, mshell->command[0]);
-		execute_built_in(mshell, token);
+		execute_built_in(mshell, token, 1);
 	}
 	else
 		execute_with_pipes_or_redirect(mshell, token);
@@ -57,24 +57,25 @@ void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
  * 
  * @param mshell Pointer to the shell structure
  * @param token Double pointer to the token structure
+ * @param fd
  */
-void	execute_built_in(t_shell *mshell, t_token **token)
+void	execute_built_in(t_shell *mshell, t_token **token, int fd)
 {
 	t_token	*temp;
 
 	temp = *token;
 	if (ft_strcmp(temp->name, "echo") == 0)
-		handle_echo(mshell);
+		handle_echo(mshell, fd);
 	else if (ft_strcmp(temp->name, "env") == 0)
-		handle_env(mshell);
+		handle_env(mshell, fd);
 	else if (ft_strcmp(temp->name, "pwd") == 0)
-		handle_pwd(mshell, token);
+		handle_pwd(mshell, token, fd);
 	else if (ft_strcmp(temp->name, "exit") == 0)
 		handle_exit(mshell, token);
 	else if (ft_strcmp(temp->name, "cd") == 0)
 		handle_cd(mshell, token);
 	else if (ft_strcmp(temp->name, "export") == 0)
-		handle_export(mshell, token);
+		handle_export(mshell, token, fd);
 	else if (ft_strcmp(temp->name, "unset") == 0)
 		handle_unset(mshell, token);
 }
