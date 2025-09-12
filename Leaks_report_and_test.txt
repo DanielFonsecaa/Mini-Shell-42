@@ -37,9 +37,9 @@ ls " -la" | "ls -la" | cat
 ../..
 
 acho que sao da mesma fonte de erro, corrigindo um corrige o outro
-"ls -la | echo a" "|" | ls
-"echo a > test.txt"
-"ls | cat | echo a" | "ls" " -la" | cat
+"ls -la | echo a" "|" | ls - FIXED
+"echo a > test.txt" - FIXED
+"ls | cat | echo a" | "ls" " -la" | cat - FIXED
 
 ../..
 
@@ -49,7 +49,7 @@ echo "$"a -> temos de printar o dollar talvez
 
 echo "" > file
 
-random command tipo assdff 
+random command tipo assdff - FIXED
 
-echo $variavelnaoexistente -> muitooooos leaks e core dump
-qualquer cena com variaveis nao existentes crasha
+echo $variavelnaoexistente -> muitooooos leaks e core dump -> fixed for now
+qualquer cena com variaveis nao existentes crasha -> fixed for now

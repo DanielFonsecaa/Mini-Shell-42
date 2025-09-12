@@ -109,6 +109,7 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	free((*current)->name);
 	(*current)->name = ft_strdup(arr[0]);
 	(*current)->next = next;
-	add_split_tokens(current, next, arr);
+	if (arr && arr[0])
+		add_split_tokens(current, next, arr);
 	free_arr(arr);
 }

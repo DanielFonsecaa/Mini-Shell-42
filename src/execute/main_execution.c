@@ -47,7 +47,8 @@ void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
 		exec_child_cmd(mshell, token, token, mshell->command[0]);
 	}
 	wait_and_get_exit_status(mshell);
-	free(mshell->pids);
+	if (mshell->pids)
+		free(mshell->pids);
 	mshell->pids = NULL;
 }
 

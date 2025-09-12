@@ -22,16 +22,20 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 	}
 	if (!path)
 	{
-		handle_error_shell(ms, toke);
+		handle_error_shell(ms, head);
 		cleanup_pipes(ms->pipes, ms->num_commands - 1, ms);
+		ms->pipes = NULL;
+		free(ms->pids);
+		ms->pids = NULL;
 		ft_printf_fd(2, ERR_CMD);
 		exit(NOT_FOUND);
 	}
 	execve(path, ms->exec_command, ms->env_var);
 	if (path != cmd->name)
 		free(path);
-	handle_error_shell(ms, toke);
+	handle_error_shell(ms, head);
 	cleanup_pipes(ms->pipes, ms->num_commands - 1, ms);
+	ms->pipes = NULL;
 	perror("execve");
 	exit(FOUND_NOT_EXEC);
 }

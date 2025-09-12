@@ -55,6 +55,8 @@ void	cleanup_and_wait(t_shell *mshell)
 {
 	wait_and_get_exit_status(mshell);
 	cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
+	mshell->pipes = NULL;
 	if (mshell->pids)
 		free(mshell->pids);
+	mshell->pids = NULL;
 }

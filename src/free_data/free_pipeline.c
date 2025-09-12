@@ -38,6 +38,8 @@ void	cleanup_pipes(int **pipes, int num_pipes, t_shell *mshell)
 
 	i = 0;
 	(void)mshell;
+	if (!pipes)
+		return ;
 	while (i < num_pipes)
 	{
 		close(pipes[i][0]);

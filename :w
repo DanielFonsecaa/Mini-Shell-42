@@ -15,10 +15,13 @@ int	tokenize(char *rd_l, t_token **token)
 	j = 0;
 	i = skip_whitespace(rd_l, i);
 	add_command_token(rd_l, token, &i);
-	while (rd_l[i])
+	while (rd_l[i] && rd_l[i + 1])
 	{
 		i = skip_whitespace(rd_l, i);
-		j = next_token_len(rd_l + i);
+		if (rd_l[i] && rd_l[i + 1])
+			j = next_token_len(rd_l + i);
+		else
+			j = next_token_len(rd_l + i - 1);
 		if (j > 0 && !is_meta_char(rd_l[i]))
 			ft_first_token(token, rd_l + i, j);
 		i += j;

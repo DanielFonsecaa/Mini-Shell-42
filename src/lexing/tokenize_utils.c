@@ -2,7 +2,7 @@
 
 int	skip_whitespace(char *str, int i)
 {
-	while (ft_iswhite_space(str[i]))
+	while (str[i] && ft_iswhite_space(str[i]))
 		i++;
 	return (i);
 }
@@ -47,7 +47,7 @@ void	add_command_token(char *rd_l, t_token **token, int *i)
 
 int	handle_meta(char *rd_l, t_token **token, int i, int *j)
 {
-	while (is_meta_char(rd_l[i + *j]))
+	while (rd_l[i + *j] && is_meta_char(rd_l[i + *j]))
 		(*j)++;
 	if (*j && is_meta_char(rd_l[i + *j - 1]))
 		ft_first_token(token, rd_l + i, *j);
