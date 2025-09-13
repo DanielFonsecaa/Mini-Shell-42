@@ -19,32 +19,67 @@ cat > "l"$var2 -- yes --work
 
 shell level fix    1000 >= reset to 1 or if it doesnt exist create with 1
 
-cat e depois mandar CTRL + \ -- FIXED
-
 export |' '  -- test whitout the quotes export | (space)
 
-
 LEAKS!!!!!
-cat << eof > file | cat file - FIXED
-
-ls " -la" | "ls -la" | cat - FIXED
 
 ../..
+IMPORTANTE!!
+{
+	corrigir uma cena no export, se ja tiver uma variavel existente e tentar exportar sem o igual, nao mexer no valor penso eu, testar
+	exemplo: export a=123 
+	export a 
+	nao mexe no valor de a
+}
+
+""|"""ls""-la""|"|"ls" --TO DO
+
+echo "$"a -> temos de printar o dollar talvez  -- NO LEAKS, but did not print $
+
+"" | echo a | ls | "" -> LEAK still reachable
+echo a | $abc | ls -> LEAK still reachable com bad file descriptor
+
+cat << EOF << EOF1 -> devia printar no terminal apenas o ultimo heredoc, printa o primeiro
+problemas de conditional jumps depois de usar heredocs, testar bem isso, talvez reset nos valores.
+cat << EOF > test.txt | cat << EOF2 > test1.txt -> mesmo problema de contagem de heredoc
+
+cat << EOF
+> $USER -> isto crasha a shell, lidar com expansoes no heredoc
+para isto ter em conta que basta ir buscar o conteudo a lista do export, visto que nao faz diferenca usar quotes, resultado sempre o mesmo
+
+cat << echo | grep BCD
+> ABC
+> BCD
+> CDE
+> echo
+conditional jump -> acho que tem a ver com o numero de heredocs nao estar a ser atualizado ou a ser contado -> talvez adicionar um valor na linha de comando que conta os heredoc e ve se e maior ou nao que zero para entrar na verificacao
+
+nao temos signais de heredoc->CTRL-C CTRL-D
+
+unset PATH 
+ls -> sequencia da imensos leaks still reachable e nao manda erro de ls:command not found
+
+echo a | cat << EOF -> da problemas,, leaks still reachable e nao fecha execucao
+
+
+
+
+
 
 acho que sao da mesma fonte de erro, corrigindo um corrige o outro
 "ls -la | echo a" "|" | ls - FIXED
 "echo a > test.txt" - FIXED
 "ls | cat | echo a" | "ls" " -la" | cat - FIXED
 
-../..
-
-""|"""ls""-la""|"|"ls" --TO DO
-
-echo "$"a -> temos de printar o dollar talvez  -- NO LEAKS, but did not print $
-
 echo "" > file  -- MAYBE FIXED
+
+cat e depois mandar CTRL + \ -- FIXED
 
 random command tipo assdff - FIXED
 
 echo $variavelnaoexistente -> muitooooos leaks e core dump -> fixed for now
 qualquer cena com variaveis nao existentes crasha -> fixed for now
+
+cat << eof > file | cat file - FIXED
+
+ls " -la" | "ls -la" | cat - FIXED
