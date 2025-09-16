@@ -44,7 +44,8 @@ void	remove_token_from_list(t_token **current, t_token **head)
 		free(*current);
 		*current = NULL;
 		*current = prev->next;
-		(*current)->prev = prev;
+		if (current && prev)
+			(*current)->prev = prev;
 	}
 }
 

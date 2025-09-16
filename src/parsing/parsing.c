@@ -103,7 +103,7 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 
 	expanded = expand_token_content(mshell, *current);
 	next = (*current)->next;
-	if (!expanded || !expanded[0])
+	if ((!expanded || !expanded[0]))
 	{
 		if (expanded)
 			free(expanded);
@@ -112,7 +112,7 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	}
 	arr = ft_split(expanded, ' ');
 	free(expanded);
-	if (!arr || !arr[0])
+	if ((!arr || !arr[0]))
 	{
 		if (arr)
 			free(arr);

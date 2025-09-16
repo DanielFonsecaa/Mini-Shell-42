@@ -25,6 +25,9 @@ LEAKS!!!!!
 
 
 redirecting to a directory: example-> echo hello > l/
+
+crash quando tentamos usar echo $a e neste caso $a nao em nada la dentro
+
 ../..
 IMPORTANTE!!
 {
