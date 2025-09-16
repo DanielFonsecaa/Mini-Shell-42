@@ -12,7 +12,7 @@ char	*expand_token_content(t_shell *mshell, t_token *token)
 		if (token->name[i] == '$' && token->name[i + 1] == '?'
 			&& token->type == ARG)
 			new_str = append_exit_code(mshell, new_str, &i);
-		else if (token->name[i] == '$')
+		else if (token->name[i] == '$' && token->name[i + 1])
 			new_str = append_content(mshell, &token, new_str, &i);
 		else
 			new_str = append_letter_unquoted(token, new_str, &i);

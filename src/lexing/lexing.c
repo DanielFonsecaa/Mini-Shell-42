@@ -116,12 +116,4 @@ void	type_file(t_token **token)
 		}
 		temp = temp->next;
 	}
-	// Debug output: print token names and types after type_file
-	temp = *token;
-	ft_printf_fd(2, "[DEBUG] Token list after type_file:\n");
-	while (temp)
-	{
-		ft_printf_fd(2, "  name: '%s', type: %d\n", temp->name, temp->type);
-		temp = temp->next;
-	}
 }

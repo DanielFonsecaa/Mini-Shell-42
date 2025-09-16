@@ -8,3 +8,4 @@ lib/
 .git/
 readline.supp
 .idea/
+minishell_tester

@@ -124,8 +124,10 @@ char	*ft_get_path(char **envp, char *cmd)
 		return (NULL);
 	if (access(cmd, F_OK | X_OK) == 0)
 		return (cmd);
-	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
+	while (envp[i] && ft_strnstr(envp[i], "PATH=", 5) == 0)
 		i++;
+	if (!envp[i])
+		return (NULL);
 	full_path = ft_split(envp[i] + 5, ':');
 	i = 0;
 	while (full_path[i])

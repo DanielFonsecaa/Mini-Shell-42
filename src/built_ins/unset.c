@@ -20,7 +20,7 @@ void	handle_unset(t_shell *mshell, t_token **token)
 	{
 		node = find_envp(mshell->env_list, temp->name);
 		if (node)
-			remove_envp_var(mshell->env_list, node);
+			remove_envp_var(&(mshell->env_list), node);
 		temp = temp->next;
 	}
 	mshell->exit_code = 0;
@@ -32,20 +32,20 @@ void	handle_unset(t_shell *mshell, t_token **token)
  * @param head Pointer to the head of the environment variable list.
  * @param node Pointer to the node to be removed.
  */
-void	remove_envp_var(t_envp *head, t_envp *node)
+void	remove_envp_var(t_envp **head, t_envp *node)
 {
 	t_envp	*temp;
 
-	temp = head;
+	temp = *head;
 	if (ft_strcmp(temp->name, node->name) == 0)
 	{
-		head = head->next;
+		*head = temp->next;
 		free_envp_content(temp->name, temp->content);
 		free(temp);
 		temp = NULL;
 		return ;
 	}
-	while (temp->next)
+	while (temp)
 	{
 		if (ft_strcmp(temp->next->name, node->name) == 0)
 		{

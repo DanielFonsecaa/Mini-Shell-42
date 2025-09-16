@@ -37,7 +37,7 @@ int		cd_syntax(t_shell *mshell, t_token **token);
 void	update_envp_with_string(t_shell *mshell, char *key, char *cwd);
 
 // Unset Utils
-void	remove_envp_var(t_envp *head, t_envp *node);
+void	remove_envp_var(t_envp **head, t_envp *node);
 
 // Echo Utils
 t_token	**get_args(t_token **token);

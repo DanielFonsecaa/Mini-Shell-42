@@ -23,7 +23,7 @@ int	parsing(t_shell *mshell, t_token **token)
 	set_t_type(token);
 	if (!init_shell_data(mshell, token))
 	{
-		mshell->exit_code = 2;
+		mshell->exit_code = 1;
 		return (0);
 	}
 	init_heredoc(mshell, token);
@@ -65,7 +65,7 @@ void	expand_quoted_token(t_shell *mshell, t_token *token)
 			expand_inside_quotes(token, mshell, &new_str, &i);
 		else if (token->name[i] == '$' && token->name[i + 1] == '?')
 			new_str = append_exit_code(mshell, new_str, &i);
-		else if (token->name[i] == '$')
+		else if (token->name[i] == '$' && token->name[i + 1])
 			new_str = append_content(mshell, &token, new_str, &i);
 		else
 			new_str = append_letter_unquoted(token, new_str, &i);
@@ -85,7 +85,8 @@ void	expand_inside_quotes(t_token *token, t_shell *msh, char **str, int *i)
 		if (token->name[*i] == '$' && token->name[*i + 1]
 			== '?' && quote_char == '"')
 			*str = append_exit_code(msh, *str, i);
-		else if (token->name[*i] == '$' && quote_char == '"')
+		else if (token->name[*i] == '$' && token->name[*i + 1]
+			&& (token->name[*i + 1] != quote_char) && token->name[*i + 1] != ' ' && quote_char == '"')
 			*str = append_content(msh, &token, *str, i);
 		else
 			*str = append_letter_unquoted(token, *str, i);

@@ -59,9 +59,20 @@ int	check_infile(t_token *token)
 {
 	int		fd;
 	t_token	*temp;
+	char	*file;
 
 	temp = token;
-	fd = open(temp->next->name, O_RDONLY);
+	file = NULL;
+	if (temp->next->has_quote)
+	{
+		file = ft_strtrim_char(temp->next->name, which_quote(temp->next->name));
+		fd = open(file, O_RDONLY);
+		free(temp->next->name);
+		temp->next->name = NULL;
+		temp->next->name = file;
+	}
+	else
+		fd = open(temp->next->name, O_RDONLY);
 	if (fd == -1)
 		return (0);
 	else

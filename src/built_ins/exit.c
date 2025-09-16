@@ -14,6 +14,12 @@ void	handle_exit(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	status = 0;
+	if (temp->next && temp->next->next)
+	{
+		ft_printf_fd(2, "bash: exit: too many arguments\n");
+		mshell->exit_code = 1;
+		return ;
+	}
 	mshell->is_running = false;
 	if (temp->next)
 	{
@@ -21,12 +27,10 @@ void	handle_exit(t_shell *mshell, t_token **token)
 		if (!verify_num(value) || !ft_atoll(value, &status))
 		{
 			mshell->exit_code = 2;
-			ft_printf_fd(1, ERR_EXIT_NOT_NBR, value);
+			ft_printf_fd(2, ERR_EXIT_NOT_NBR, value);
 			return ;
 		}
-		if (status < 0 || status > 255)
-			status %= 256;
-		mshell->exit_code = status;
+		mshell->exit_code = status % 256;
 	}
 	ft_printf_fd(1, "exit\n");
 }
@@ -44,6 +48,8 @@ int	verify_num(char *value)
 	i = 0;
 	if (ft_strlen(value) > 20 || !value || !*value)
 		return (0);
+	if (strcmp(value, "--") == 0)
+		return (1);
 	if (value[i] == '-' || value[i] == '+')
 		i++;
 	if (!value[i])

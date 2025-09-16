@@ -23,6 +23,8 @@ export |' '  -- test whitout the quotes export | (space)
 
 LEAKS!!!!!
 
+
+redirecting to a directory: example-> echo hello > l/
 ../..
 IMPORTANTE!!
 {
