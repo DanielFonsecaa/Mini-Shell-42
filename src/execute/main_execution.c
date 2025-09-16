@@ -8,13 +8,16 @@
  */
 void	execute_cmd_line(t_shell *mshell, t_token **token)
 {
-	if (is_built_in(token) && !mshell->has_pipes && !mshell->has_redirect)
+	if (*token)
 	{
-		format_cmd(mshell, mshell->command[0]);
-		execute_built_in(mshell, token, 1);
+		if (is_built_in(token) && !mshell->has_pipes && !mshell->has_redirect)
+		{
+			format_cmd(mshell, mshell->command[0]);
+			execute_built_in(mshell, token, 1);
+		}
+		else
+			execute_with_pipes_or_redirect(mshell, token);
 	}
-	else
-		execute_with_pipes_or_redirect(mshell, token);
 }
 
 /**

@@ -103,10 +103,22 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 
 	expanded = expand_token_content(mshell, *current);
 	next = (*current)->next;
-	if (!expanded)
+	if (!expanded || !expanded[0])
+	{
+		if (expanded)
+			free(expanded);
 		remove_token_from_list(current, head);
+		return ;
+	}
 	arr = ft_split(expanded, ' ');
 	free(expanded);
+	if (!arr || !arr[0])
+	{
+		if (arr)
+			free(arr);
+		remove_token_from_list(current, head);
+		return ;
+	}
 	free((*current)->name);
 	(*current)->name = ft_strdup(arr[0]);
 	(*current)->next = next;

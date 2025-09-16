@@ -23,9 +23,9 @@ int	syntax_error(t_shell *mshell, t_token **token)
 			if (!temp->next)
 				return (ft_printf_fd(2, ERR_SYNTAX), 0);
 			if (temp->type == INFILE)
-				if (!check_infile(temp))
+				if (!check_infile(temp) && !mshell->has_pipes)
 					return (ft_printf_fd(2, ERR_NO_FILE, temp->next->name), 0);
-			if (!check_perms(mshell, temp))
+			if (!check_perms(mshell, temp) && !mshell->has_pipes)
 				return (0);
 		}
 		temp = temp->next;

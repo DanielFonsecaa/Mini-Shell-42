@@ -28,7 +28,10 @@ void	remove_token_from_list(t_token **current, t_token **head)
 		*head = (*current)->next;
 		free((*current)->name);
 		free(*current);
+		*current = NULL;
 		*current = *head;
+		if (*current)
+			(*current)->prev = NULL;
 		return ;
 	}
 	prev = *head;
@@ -39,7 +42,9 @@ void	remove_token_from_list(t_token **current, t_token **head)
 		prev->next = (*current)->next;
 		free((*current)->name);
 		free(*current);
+		*current = NULL;
 		*current = prev->next;
+		(*current)->prev = prev;
 	}
 }
 
