@@ -14,9 +14,9 @@ char	*ft_get_path(char **envp, char *cmd);
 void	setup_child(t_shell *mshell, int index, int *fd);
 
 //Parent related
-void	handle_redirections(t_shell *mshell, t_token *token);
-void	helper_handle_redir(t_shell *mshell, t_token *token, int flag, int fd);
-void    open_file_and_dup(char	*file_name, int fd, int flag);
+void	handle_redirections(t_shell *mshell, t_token **head, t_token *token);
+void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints ints);
+int     open_file_and_dup(char	*file_name, int fd, int flag);
 void	wait_and_get_exit_status(t_shell *mshell);
 void	set_exitcode_status(t_shell *mshell, int status);
 void	cleanup_and_wait(t_shell *mshell);

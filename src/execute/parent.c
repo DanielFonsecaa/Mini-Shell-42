@@ -21,7 +21,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 		if (mshell->pids[i] == 0)
 		{
 			setup_child(mshell, i, mshell->fd);
-			handle_redirections(mshell, temp);
+			handle_redirections(mshell, token, temp);
 			exec_child_cmd(mshell, &temp, token, mshell->command[i]);
 		}
 		if (i > 0)
@@ -42,32 +42,36 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
  * @param fd Array of file descriptors [0] for input, [1] for output
  */
 
-void	handle_redirections(t_shell *mshell, t_token *token)
+void	handle_redirections(t_shell *mshell, t_token **head, t_token *token)
 {
-	int		flags;
+	t_ints	ints;
 
+	ints.flags = 0;
 	while (token && token->type != PIPE)
 	{
 		if (token->type == INFILE)
 		{
-			flags = O_RDONLY;
-			helper_handle_redir(mshell, token, flags, STDIN_FILENO);
+			ints.flags = O_RDONLY;
+			ints.fd = STDIN_FILENO;
+			helper_handle_redir(mshell, token, head, ints);
 		}
 		else if (token->type == OUTFILE)
 		{
-			flags = O_WRONLY | O_CREAT | O_TRUNC;
-			helper_handle_redir(mshell, token, flags, STDOUT_FILENO);
+			ints.flags = O_WRONLY | O_CREAT | O_TRUNC;
+			ints.fd = STDOUT_FILENO;
+			helper_handle_redir(mshell, token, head, ints);
 		}
 		else if (token->type == APPEND)
 		{
-			flags = O_WRONLY | O_CREAT | O_APPEND;
-			helper_handle_redir(mshell, token, flags, STDOUT_FILENO);
+			ints.flags = O_WRONLY | O_CREAT | O_APPEND;
+			ints.fd = STDOUT_FILENO;
+			helper_handle_redir(mshell, token, head, ints);
 		}
 		token = token->next;
 	}
 }
 
-void	helper_handle_redir(t_shell *mshell, t_token *token, int flags, int fd)
+void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints ints)
 {
 	char	*expanded_name;
 	int		is_error;
@@ -92,13 +96,18 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, int flags, int fd)
 	}
 	if (!is_error && expanded_name)
 	{
-		open_file_and_dup(expanded_name, fd, flags);
+		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags))
+		{
+			handle_child_free(mshell, head, expanded_name);
+			exit(ERROR);
+		}
+
 	}
 	if (!token->next->has_quote && expanded_name)
 		free(expanded_name);
 }
 
-void	open_file_and_dup(char	*file_name, int fd, int flags)
+int	open_file_and_dup(char	*file_name, int fd, int flags)
 {
 	int	new_fd;
 
@@ -106,8 +115,9 @@ void	open_file_and_dup(char	*file_name, int fd, int flags)
 	if (new_fd == -1)
 	{
 		perror("open");
-		exit(ERROR);
+		return (0);
 	}
 	dup2(new_fd, fd);
 	close(new_fd);
+	return (1);
 }

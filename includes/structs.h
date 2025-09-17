@@ -27,6 +27,12 @@ typedef struct s_envp
 	struct s_envp	*next;
 }		t_envp;
 
+typedef struct s_ints
+{
+	int				fd;
+	int				flags;
+}		t_ints;
+
 typedef struct s_shell
 {
 	char			*rd_l;

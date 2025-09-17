@@ -41,9 +41,8 @@ IMPORTANTE!!
 
 echo "$"a -> temos de printar o dollar talvez  -- NO LEAKS, but did not print $
 
-"" | echo a | ls | "" -> LEAK still reachable
-echo a | $abc | ls -> LEAK still reachable com bad file descriptor
-
+"" | echo a | ls | "" -> FIXED
+echo a | $abc | ls -> FIXED
 cat << EOF << EOF1 -> devia printar no terminal apenas o ultimo heredoc, printa o primeiro
 problemas de conditional jumps depois de usar heredocs, testar bem isso, talvez reset nos valores.
 cat << EOF > test.txt | cat << EOF2 > test1.txt -> mesmo problema de contagem de heredoc
@@ -62,7 +61,7 @@ conditional jump -> acho que tem a ver com o numero de heredocs nao estar a ser 
 nao temos signais de heredoc->CTRL-C CTRL-D
 
 unset PATH 
-ls -> sequencia da imensos leaks still reachable e nao manda erro de ls:command not found
+ls -> sequencia FIXED
 
 echo a | cat << EOF -> da problemas,, leaks still reachable e nao fecha execucao
 
@@ -76,14 +75,14 @@ acho que sao da mesma fonte de erro, corrigindo um corrige o outro
 "echo a > test.txt" - FIXED
 "ls | cat | echo a" | "ls" " -la" | cat - FIXED
 
-echo "" > file  -- MAYBE FIXED
+echo "" > file  -- FIXED
 
 cat e depois mandar CTRL + \ -- FIXED
 
 random command tipo assdff - FIXED
 
-echo $variavelnaoexistente -> muitooooos leaks e core dump -> fixed for now
-qualquer cena com variaveis nao existentes crasha -> fixed for now
+echo $variavelnaoexistente -> FIXED
+qualquer cena com variaveis nao existentes crasha -> FIXED
 
 cat << eof > file | cat file - FIXED
 
