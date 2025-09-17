@@ -9,7 +9,8 @@
  */
 void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 {
-	char	*path;
+	char		*path;
+	struct stat	st;
 
 	format_cmd(ms, cmd);
 	path = ft_get_path(ms->env_var, cmd->name);
@@ -33,11 +34,25 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 	execve(path, ms->exec_command, ms->env_var);
 	if (path != cmd->name)
 		free(path);
-	handle_error_shell(ms, head);
 	cleanup_pipes(ms->pipes, ms->num_commands - 1, ms);
 	ms->pipes = NULL;
-	perror("execve");
-	exit(FOUND_NOT_EXEC);
+	if ((errno == EACCES) && (stat(path, &st) == 0) && S_ISDIR(st.st_mode))
+	{
+    ft_printf_fd(2, ERR_IS_DIR);
+    handle_error_shell(ms, head);
+    exit(126);
+	}
+	else
+	{
+    ft_printf_fd(2, "%s: %s\n", cmd->name, strerror(errno));
+    handle_error_shell(ms, head);
+    if (errno == EACCES || errno == EISDIR)
+        exit(126);
+    else if (errno == ENOENT)
+        exit(127);
+    else
+        exit(1);
+	}
 }
 
 /**
@@ -118,12 +133,17 @@ char	*ft_get_path(char **envp, char *cmd)
 	char	*half_path;
 	char	*path;
 	int		i;
+	struct	stat st;
 
 	i = 0;
 	if (!envp || !cmd)
 		return (NULL);
-	if (access(cmd, F_OK | X_OK) == 0)
-		return (cmd);
+	if (strchr(cmd, '/'))
+	{
+		if (access(cmd, F_OK) == 0)
+			return (cmd);
+		return (NULL);
+	}
 	while (envp[i] && ft_strnstr(envp[i], "PATH=", 5) == 0)
 		i++;
 	if (!envp[i])
@@ -135,8 +155,16 @@ char	*ft_get_path(char **envp, char *cmd)
 		half_path = ft_strjoin(full_path[i], "/");
 		path = ft_strjoin(half_path, cmd);
 		free(half_path);
-		if (access(path, F_OK | X_OK) == 0)
+		if (access(path, F_OK) == 0)
+		{
+			if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+			{
+				free(path);
+				i++;
+				continue;
+			}
 			return (free_arr(full_path), path);
+		}
 		free(path);
 		i++;
 	}

@@ -23,6 +23,7 @@ int	parsing(t_shell *mshell, t_token **token)
 	set_t_type(token);
 	if (!init_shell_data(mshell, token))
 	{
+		ft_printf_fd(2, "%s\n", strerror(errno));
 		mshell->exit_code = 1;
 		return (0);
 	}
@@ -103,7 +104,7 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 
 	expanded = expand_token_content(mshell, *current);
 	next = (*current)->next;
-	if ((!expanded || !expanded[0]))
+	if ((!expanded || !expanded[0]) && (*current)->type == CMD && (*current)->name[0] == '$')
 	{
 		if (expanded)
 			free(expanded);
@@ -112,7 +113,7 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	}
 	arr = ft_split(expanded, ' ');
 	free(expanded);
-	if ((!arr || !arr[0]))
+	if ((!arr || !arr[0]) && (*current)->type == CMD && (*current)->name[0] == '$')
 	{
 		if (arr)
 			free(arr);

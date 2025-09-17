@@ -91,12 +91,17 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, int flags, int fd)
 		}
 	}
 	if (!is_error && expanded_name)
-		open_file_and_dup(expanded_name, fd, flags);
+	{
+		if (!open_file_and_dup(expanded_name, fd, flags, token->type))
+		{
+			return (0);
+		}
+	}
 	if (!token->next->has_quote && expanded_name)
 		free(expanded_name);
 }
 
-void	open_file_and_dup(char	*file_name, int fd, int flags)
+int	open_file_and_dup(char	*file_name, int fd, int flags, int type)
 {
 	int	new_fd;
 
@@ -104,8 +109,9 @@ void	open_file_and_dup(char	*file_name, int fd, int flags)
 	if (new_fd == -1)
 	{
 		perror("open");
-		exit(1);
+		return (0);
 	}
 	dup2(new_fd, fd);
 	close(new_fd);
+	return (1);
 }

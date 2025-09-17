@@ -19,14 +19,14 @@ int	syntax_error(t_shell *mshell, t_token **token)
 		if (check_redir_type(temp))
 		{
 			if (temp->next && check_redir_type(temp->next))
-				return (ft_printf_fd(2, ERR_REDIRECT), 0);
+				return (0);
 			if (!temp->next)
-				return (ft_printf_fd(2, ERR_SYNTAX), 0);
+				return (0);
 			if (temp->type == INFILE)
 				if (!check_infile(temp) && !mshell->has_pipes)
-					return (ft_printf_fd(2, ERR_NO_FILE, temp->next->name), 0);
-			if (!check_perms(mshell, temp) && !mshell->has_pipes)
-				return (0);
+					return (0);
+//			if (!check_perms(mshell, temp) && !mshell->has_pipes)
+//				return (0);
 		}
 		temp = temp->next;
 	}
@@ -91,7 +91,8 @@ int	check_perms(t_shell *mshell, t_token *token)
 
 int	helper_check_perms(char *token_name, char *path_name)
 {
-	ft_printf_fd(2, ERR_NO_PERMS, token_name);
+	(void)token_name;
+	//ft_printf_fd(2, ERR_NO_PERMS, token_name);
 	free(path_name);
 	return (0);
 }

@@ -11,8 +11,10 @@
 # include <stddef.h>
 # include <unistd.h>
 # include <limits.h>
+# include <errno.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <zconf.h>
 
 //	Custom libs
@@ -52,12 +54,13 @@
 # define ERR_QUOTE "Error: Unmatched quotes in input\n"
 # define ERR_SYNTAX "Error: Syntax error in command line input\n"
 # define ERR_CMD "Error: Command not found\n"
+# define ERR_IS_DIR "Error: Is a directory\n"
 # define ERR_REDIRECT "Error: Invalid redirection syntax\n"
 # define ERR_PIPELINE "Error: Invalid pipeline syntax\n"
 # define ERR_EXPORT "minishell: export: %s: not a valid identifier\n"
 # define DEFINE_X "declare -x %s=\"%s\"\n"
 # define ERR_CD_ARGS "minishell: cd: too many arguments\n"
-# define ERR_NO_FILE "minishell: %s: No such file or directory\n"
+# define ERR_NO_FILE "minishell: %s:  No such file or directory\n"
 # define ERR_CD_NO_ENVP "minishell: cd: %s is not set\n"
 # define ERR_CD_INVALID_OPT "minishell: cd: invalid option\n"
 # define ERR_NO_ENVP "Error: No environment variables"
