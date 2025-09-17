@@ -21,7 +21,16 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 		if (mshell->pids[i] == 0)
 		{
 			setup_child(mshell, i, mshell->fd);
-			handle_redirections(mshell, temp);
+			if (!handle_redirections(mshell, temp))
+			{
+				handle_error_shell(mshell, token);
+				cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
+				mshell->pipes = NULL;
+				free(mshell->pids);
+				mshell->pids = NULL;
+				ft_printf_fd(2, ERR_CMD);
+				exit(FOUND_NOT_EXEC);
+			}
 			exec_child_cmd(mshell, &temp, token, mshell->command[i]);
 		}
 		if (i > 0)
@@ -42,7 +51,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
  * @param fd Array of file descriptors [0] for input, [1] for output
  */
 
-void	handle_redirections(t_shell *mshell, t_token *token)
+int handle_redirections(t_shell* mshell, t_token* token)
 {
 	int		flags;
 
@@ -51,23 +60,27 @@ void	handle_redirections(t_shell *mshell, t_token *token)
 		if (token->type == INFILE)
 		{
 			flags = O_RDONLY;
-			helper_handle_redir(mshell, token, flags, STDIN_FILENO);
+			if (!helper_handle_redir(mshell, token, flags, STDIN_FILENO))
+				return (0);
 		}
 		else if (token->type == OUTFILE)
 		{
 			flags = O_WRONLY | O_CREAT | O_TRUNC;
-			helper_handle_redir(mshell, token, flags, STDOUT_FILENO);
+			if (helper_handle_redir(mshell, token, flags, STDOUT_FILENO))
+				return (0);
 		}
 		else if (token->type == APPEND)
 		{
 			flags = O_WRONLY | O_CREAT | O_APPEND;
-			helper_handle_redir(mshell, token, flags, STDOUT_FILENO);
+			if (!helper_handle_redir(mshell, token, flags, STDOUT_FILENO))
+				return (0);
 		}
 		token = token->next;
 	}
+	return (1);
 }
 
-void	helper_handle_redir(t_shell *mshell, t_token *token, int flags, int fd)
+int helper_handle_redir(t_shell* mshell, t_token* token, int flags, int fd)
 {
 	char	*expanded_name;
 	int		is_error;
@@ -75,7 +88,7 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, int flags, int fd)
 	expanded_name = NULL;
 	is_error = 0;
 	if (!token->next)
-		return ;
+		return (0);
 	if (token->next->has_quote)
 	{
 		expand_quoted_token(mshell, token->next);
@@ -92,16 +105,21 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, int flags, int fd)
 	}
 	if (!is_error && expanded_name)
 	{
-		if (!open_file_and_dup(expanded_name, fd, flags, token->type))
+		if (!open_file_and_dup(expanded_name, fd, flags))
 		{
+			free(expanded_name);
 			return (0);
 		}
 	}
 	if (!token->next->has_quote && expanded_name)
+	{
 		free(expanded_name);
+		return (0);
+	}
+	return (1);
 }
 
-int	open_file_and_dup(char	*file_name, int fd, int flags, int type)
+int	open_file_and_dup(char	*file_name, int fd, int flags)
 {
 	int	new_fd;
 

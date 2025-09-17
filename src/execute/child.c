@@ -38,21 +38,19 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 	ms->pipes = NULL;
 	if ((errno == EACCES) && (stat(path, &st) == 0) && S_ISDIR(st.st_mode))
 	{
-    ft_printf_fd(2, ERR_IS_DIR);
-    handle_error_shell(ms, head);
-    exit(126);
+		ft_printf_fd(2, ERR_IS_DIR);
+		handle_error_shell(ms, head);
+		exit(126);
 	}
-	else
-	{
     ft_printf_fd(2, "%s: %s\n", cmd->name, strerror(errno));
     handle_error_shell(ms, head);
-    if (errno == EACCES || errno == EISDIR)
+	if (errno == EACCES || errno == EISDIR)
         exit(126);
-    else if (errno == ENOENT)
-        exit(127);
-    else
-        exit(1);
-	}
+	if (errno == ENOENT)
+    {
+		exit(127);
+    }
+	exit(1);
 }
 
 /**

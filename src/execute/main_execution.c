@@ -46,7 +46,16 @@ void	execute_with_pipes_or_redirect(t_shell *mshell, t_token **token)
 	}
 	if (mshell->pids[0] == 0)
 	{
-		handle_redirections(mshell, *token);
+		if (!handle_redirections(mshell, *token))
+		{
+			handle_error_shell(mshell, token);
+			cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
+			mshell->pipes = NULL;
+			free(mshell->pids);
+			mshell->pids = NULL;
+			ft_printf_fd(2, ERR_CMD);
+			exit(FOUND_NOT_EXEC);
+		}
 		exec_child_cmd(mshell, token, token, mshell->command[0]);
 	}
 	wait_and_get_exit_status(mshell);
