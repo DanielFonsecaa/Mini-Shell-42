@@ -21,6 +21,7 @@ int	parsing(t_shell *mshell, t_token **token)
 	init_token_data(mshell, token);
 	expansion(mshell, token);
 	set_t_type(token);
+	set_command(token);
 	if (!init_shell_data(mshell, token))
 	{
 		ft_printf_fd(2, "%s\n", strerror(errno));

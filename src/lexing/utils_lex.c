@@ -82,6 +82,8 @@ void	set_t_arg(t_token **token)
 		return ;
 	if (temp->type == LIMITER)
 		return ;
+	if (temp->type == CMD)
+		return ;
 	temp->type = ARG;
 	if (temp->name[0] == '-')
 		temp->type = FLAG;

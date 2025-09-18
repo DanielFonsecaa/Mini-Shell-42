@@ -69,23 +69,18 @@ static int	command_has_heredoc(t_token *token, int target_index)
 
 	temp = token;
 	current_cmd_index = 0;
-	
-	// Skip to the target command
-	while (temp && current_cmd_index < target_index)
+		while (temp && current_cmd_index < target_index)
 	{
 		if (temp->type == PIPE)
 			current_cmd_index++;
 		temp = temp->next;
 	}
-	
-	// Check if this command has any HERE tokens before the next PIPE or end
 	while (temp && temp->type != PIPE)
 	{
 		if (temp->type == HERE)
 			return (1);
 		temp = temp->next;
 	}
-	
 	return (0);
 }
 

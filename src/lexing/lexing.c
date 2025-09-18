@@ -73,7 +73,6 @@ void	set_t_type(t_token **token)
 	temp = *token;
 	while (temp)
 	{
-		// Removed redundant ARG assignment; let set_t_arg handle it
 		if (ft_strcmp(temp->name, "<<") == 0)
 			temp->type = HERE;
 		else if (ft_strcmp(">>", temp->name) == 0)
@@ -82,15 +81,40 @@ void	set_t_type(t_token **token)
 			temp->type = OUTFILE;
 		else if (ft_strcmp("<", temp->name) == 0)
 			temp->type = INFILE;
-		else if (temp->prev == NULL || (temp->prev->type == PIPE
-				&& ft_strcmp(temp->name, "|") != 0))
-			temp->type = CMD;
-		else if (temp->prev->type == HERE)
+		else if (temp->prev && temp->prev->type == HERE)
 			temp->type = LIMITER;
 		else if (ft_strcmp("|", temp->name) == 0)
 			temp->type = PIPE;
 		else
 			set_t_arg(&temp);
+		temp = temp->next;
+	}
+	temp = *token;
+}
+
+void	set_command(t_token **token)
+{
+	t_token	*temp;
+	bool	flag;
+
+	flag = false;
+	temp = *token;
+	while (temp)
+	{
+		if (temp->type == CMD)
+		{
+			flag = true;
+			temp = temp->next;
+			continue ;
+		}
+		if (!flag && temp->type == ARG)
+		{
+			temp->type = CMD;
+			flag = true;
+		}
+		else if (temp->type == PIPE)
+			flag = false;
+		//ft_printf_fd(1, "type - %d  name -%s\n", temp->type, temp->name);	
 		temp = temp->next;
 	}
 }
