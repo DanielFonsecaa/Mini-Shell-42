@@ -20,7 +20,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 			return (perror("fork"));
 		if (mshell->pids[i] == 0)
 		{
-			setup_child(mshell, i, mshell->fd);
+			setup_child(mshell, i, mshell->fd, *token);
 			handle_redirections(mshell, token, temp);
 			exec_child_cmd(mshell, &temp, token, mshell->command[i]);
 		}
@@ -49,7 +49,7 @@ void	handle_redirections(t_shell *mshell, t_token **head, t_token *token)
 	ints.flags = 0;
 	while (token && token->type != PIPE)
 	{
-		if (token->type == INFILE)
+		if (token->type == INFILE && !(mshell->heredoc_fd != NULL && mshell->num_heredoc > 0))
 		{
 			ints.flags = O_RDONLY;
 			ints.fd = STDIN_FILENO;

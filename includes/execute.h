@@ -11,7 +11,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token);
 //Child related
 void	format_cmd(t_shell *mshell, t_cmd *command);
 char	*ft_get_path(char **envp, char *cmd);
-void	setup_child(t_shell *mshell, int index, int *fd);
+void	setup_child(t_shell *mshell, int index, int *fd, t_token *token);
 
 //Parent related
 void	handle_redirections(t_shell *mshell, t_token **head, t_token *token);

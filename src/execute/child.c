@@ -56,6 +56,78 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 }
 
 /**
+ * @brief Checks if the command at given index has heredocs by parsing token structure
+ *
+ * @param token Pointer to the token list
+ * @param target_index The command index to check for heredocs
+ * @return 1 if this command has heredocs, 0 otherwise
+ */
+static int	command_has_heredoc(t_token *token, int target_index)
+{
+	t_token	*temp;
+	int		current_cmd_index;
+
+	temp = token;
+	current_cmd_index = 0;
+	
+	// Skip to the target command
+	while (temp && current_cmd_index < target_index)
+	{
+		if (temp->type == PIPE)
+			current_cmd_index++;
+		temp = temp->next;
+	}
+	
+	// Check if this command has any HERE tokens before the next PIPE or end
+	while (temp && temp->type != PIPE)
+	{
+		if (temp->type == HERE)
+			return (1);
+		temp = temp->next;
+	}
+	
+	return (0);
+}
+
+/**
+ * @brief Finds the last heredoc fd for a specific command in the pipeline
+ *
+ * @param mshell Pointer to the shell structure
+ * @param token Pointer to the token list
+ * @param target_index The command index to find heredoc for
+ * @return The fd of the last heredoc for this command, or -1 if none
+ */
+static int	get_command_heredoc_fd(t_shell *mshell, t_token *token, int target_index)
+{
+	t_token	*temp;
+	int		current_cmd_index;
+	int		heredoc_index;
+	int		last_heredoc_fd;
+
+	temp = token;
+	current_cmd_index = 0;
+	heredoc_index = 0;
+	last_heredoc_fd = -1;
+	
+	while (temp)
+	{
+		if (temp->type == PIPE)
+			current_cmd_index++;
+		else if (temp->type == HERE && current_cmd_index == target_index)
+		{
+			if (heredoc_index < mshell->num_heredoc && mshell->heredoc_fd[heredoc_index] >= 0)
+				last_heredoc_fd = mshell->heredoc_fd[heredoc_index];
+			heredoc_index++;
+		}
+		else if (temp->type == HERE)
+			heredoc_index++;
+		temp = temp->next;
+	}
+	
+	return (last_heredoc_fd);
+}
+
+/**
  * Sets up input/output redirection for a child process in a pipeline.
  *
  * @param index     The index of the current command in the pipeline
@@ -63,14 +135,17 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
  * @param pipes     2D array of pipe file descriptors [index][read=0/write=1]
  * @param fd        Array containing input (fd[0]) and output (fd[1])
  */
-void	setup_child(t_shell *mshell, int index, int *fd)
+void	setup_child(t_shell *mshell, int index, int *fd, t_token *token)
 {
-	if (mshell->heredoc_fd != NULL && mshell->num_heredoc > 0)
+	int	heredoc_fd;
+
+	if (mshell->heredoc_fd != NULL && mshell->num_heredoc > 0 && command_has_heredoc(token, index))
 	{
-		if (index < mshell->num_heredoc && mshell->heredoc_fd[index] >= 0)
+		heredoc_fd = get_command_heredoc_fd(mshell, token, index);
+		if (heredoc_fd >= 0)
 		{
-			dup2(mshell->heredoc_fd[index], STDIN_FILENO);
-			close(mshell->heredoc_fd[index]);
+			dup2(heredoc_fd, STDIN_FILENO);
+			close(heredoc_fd);
 		}
 	}
 	else if (index == 0)
