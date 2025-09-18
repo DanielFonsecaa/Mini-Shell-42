@@ -87,3 +87,12 @@ qualquer cena com variaveis nao existentes crasha -> FIXED
 cat << eof > file | cat file - FIXED
 
 ls " -la" | "ls -la" | cat - FIXED
+
+
+
+
+
+
+-----------------
+export a="at -e"
+c$a Makefile

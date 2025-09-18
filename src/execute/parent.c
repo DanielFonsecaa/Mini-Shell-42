@@ -87,7 +87,7 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints
 	}
 	else
 	{
-		expanded_name = expand_token_content(mshell, token->next);
+		expanded_name = ft_strdup(expand_token_content(mshell, token->next));
 		if (expanded_name && ft_strchr(expanded_name, ' '))
 		{
 			ft_printf_fd(2, ERR_AMBIGUOUS, expanded_name);
@@ -98,12 +98,12 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints
 	{
 		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags))
 		{
-			handle_child_free(mshell, head, expanded_name);
+			handle_child_free(mshell, head, NULL);
 			exit(ERROR);
 		}
 
 	}
-	if (!token->next->has_quote && expanded_name)
+	if (!token->next->has_quote && expanded_name && expanded_name != token->next->name)
 		free(expanded_name);
 }
 

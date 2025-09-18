@@ -11,6 +11,7 @@ int	syntax_error(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
 
+	(void)mshell;
 	temp = *token;
 	if (!check_pipeline(token))
 		return (ft_printf_fd(2, ERR_PIPELINE), 0);
@@ -22,9 +23,9 @@ int	syntax_error(t_shell *mshell, t_token **token)
 				return (0);
 			if (!temp->next)
 				return (0);
-			if (temp->type == INFILE)
-				if (!check_infile(temp) && !mshell->has_pipes)
-					return (0);
+//			if (temp->type == INFILE)
+//				if (!check_infile(temp) && !mshell->has_pipes)
+//					return (0);
 //			if (!check_perms(mshell, temp) && !mshell->has_pipes)
 //				return (0);
 		}
