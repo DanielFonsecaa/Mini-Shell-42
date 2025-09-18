@@ -65,6 +65,7 @@ ls -> sequencia FIXED
 
 echo a | cat << EOF -> da problemas,, leaks still reachable e nao fecha execucao
 
+echo hi | >./outfiles/outfile1 echo bye >./noperm -> no leaks but error should be with the file path, instead of just giving a file name we should handle a path as well
 
 
 
@@ -95,4 +96,4 @@ ls " -la" | "ls -la" | cat - FIXED
 
 -----------------
 export a="at -e"
-c$a Makefile
+c$a Makefile  -- FIXED

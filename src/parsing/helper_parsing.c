@@ -12,6 +12,8 @@ void	add_split_tokens(t_token **current, t_token *next, char **arr)
 		new->type = (*current)->type;
 		new->has_quote = false;
 		new->next = next;
+		if (next)
+			next->prev = new;
 		new->prev = (*current);
 		(*current)->next = new;
 		(*current) = new;

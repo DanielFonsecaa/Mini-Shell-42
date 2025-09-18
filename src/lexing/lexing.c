@@ -104,6 +104,7 @@ void	set_command(t_token **token)
 		if (temp->type == CMD)
 		{
 			flag = true;
+			//ft_printf_fd(1, "type - %d  name -%s\n", temp->type, temp->name);	
 			temp = temp->next;
 			continue ;
 		}
