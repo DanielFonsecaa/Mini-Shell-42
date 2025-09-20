@@ -48,15 +48,14 @@ problemas de conditional jumps depois de usar heredocs, testar bem isso, talvez 
 cat << EOF > test.txt | cat << EOF2 > test1.txt -> mesmo problema de contagem de heredoc
 
 cat << EOF
-> $USER -> isto crasha a shell, lidar com expansoes no heredoc
-para isto ter em conta que basta ir buscar o conteudo a lista do export, visto que nao faz diferenca usar quotes, resultado sempre o mesmo
+> $USER -> FIXED
 
 cat << echo | grep BCD
 > ABC
 > BCD
 > CDE
 > echo
-conditional jump -> acho que tem a ver com o numero de heredocs nao estar a ser atualizado ou a ser contado -> talvez adicionar um valor na linha de comando que conta os heredoc e ve se e maior ou nao que zero para entrar na verificacao
+FIXED I THINK - conditional jump -> acho que tem a ver com o numero de heredocs nao estar a ser atualizado ou a ser contado -> talvez adicionar um valor na linha de comando que conta os heredoc e ve se e maior ou nao que zero para entrar na verificacao
 
 nao temos signais de heredoc->CTRL-C CTRL-D
 

@@ -82,9 +82,9 @@ void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i)
 
 	j = 0;
 	start = *i;
-	while (line[*i] && !ft_iswhite_space(line[*i]))
+	while (line[*i] && line[*i] != ' ')
 	{
-		i++;
+		*i += 1;
 		j++;
 	}
 	name = ft_substr(line, start, j);
@@ -95,5 +95,4 @@ void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i)
 	while (node->content[++j])
 		write(fd, &node->content[j], 1);
 	free(name);
-	//maybe free node
 }
