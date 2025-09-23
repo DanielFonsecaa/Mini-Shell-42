@@ -20,6 +20,7 @@ int     open_file_and_dup(char	*file_name, int fd, int flag, t_shell *mshell);
 void	wait_and_get_exit_status(t_shell *mshell);
 void	set_exitcode_status(t_shell *mshell, int status);
 void	cleanup_and_wait(t_shell *mshell);
+t_token *get_command(t_token *token, int index);
 
 //heredoc
 int		create_heredoc(t_shell *mshell, char *limiter);

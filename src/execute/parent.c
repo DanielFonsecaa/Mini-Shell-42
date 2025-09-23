@@ -27,6 +27,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 	}
 	while (++i < mshell->num_commands)
 	{
+		temp = get_command(*token, i);
 		mshell->pids[i] = fork();
 		if (mshell->pids[i] == -1)
 			return (perror("fork"));
@@ -40,11 +41,33 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 			close(mshell->pipes[i - 1][0]);
 		if (i < mshell->num_commands - 1)
 			close(mshell->pipes[i][1]);
-		while (temp && temp->type != PIPE)
-			temp = temp->next;
-		if (temp)
-			temp = temp->next;
 	}
+}
+
+
+t_token *get_command(t_token *token, int index)
+{
+	t_token	*temp;
+	int		current_cmd;
+
+	temp = token;
+	current_cmd = 0;
+	while (temp)
+	{
+		if (temp->type == CMD)
+		{
+			//se achar o comando desse "grupo", acha o primeiro token daquele "grupo" e retorna ele
+			if (current_cmd == index)
+			{
+				while (temp->prev && temp->prev->type != PIPE)
+					temp = temp->prev;
+				return (temp);
+			}
+			current_cmd++;
+		}
+		temp = temp->next;
+	}
+	return (NULL);
 }
 
 /**

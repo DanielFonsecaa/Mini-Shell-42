@@ -24,11 +24,10 @@ int	parsing(t_shell *mshell, t_token **token)
 	set_command(token);
 	if (!init_shell_data(mshell, token))
 	{
-		ft_printf_fd(2, "%s\n", strerror(errno));
+		//ft_printf_fd(2, "%s\n", strerror(errno));
 		mshell->exit_code = 2;
 		return (0);
 	}
-	init_heredoc(mshell, token);
 	return (1);
 }
 
@@ -36,11 +35,19 @@ void	expansion(t_shell *mshell, t_token **token)
 {
 	t_token	*current;
 	t_token	*next;
+	//t_envp	*node;
 
 	current = *token;
+	
 	while (current)
 	{
 		next = current->next;
+		/* if (ft_strcmp(current->name, "~") || ft_strncmp(current->name, "~/", 2))
+		{
+			node = find_envp(mshell->env_list, "HOME");
+			current->name = node->content;
+			free(node);
+		} */
 		if (current->type == ARG || current->type == CMD
 			|| current->type == FLAG || current->type == OUTFILE
 			|| current->type == INFILE)

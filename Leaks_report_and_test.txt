@@ -101,29 +101,114 @@ c$a Makefile  -- FIXED
 
 
 -------------
-[space]
-
-echo [meta chars]
-
-arguments and flags env not support
-
 < Makefile grep NAME | wc -l > out
 
     put the result in out
 
-cat | cat | ls 
-works but prints broken pipe
-
 echo ~ is a expansion to HOME
 echo ~/test prints $HOME/test
-*
->
-<
-< 
-
-d|
 
 add safe_guards in cleanup and wait so that no conditional jumps happen
 
-echo " "'$USER"'"42 " ''"  | << -1"
-Corrigir expansoes vazias e mandar comandos a seguir-> export a e depois ls ou wtv
+TEST 149: KO
+    Input:        [> file1 | echo 42 | cat < file1 | grep 1 > file2 | wc -l]
+    Bash:         [0]
+    Minishell:    [0]
+
+    Lab creation:
+        cat 1 > file1
+        cat 2 > file2
+        cat 3 > file3
+        cat 4 > file4
+
+    Files content - Bash:
+        file1: []
+        file2: []
+        file3: [3]
+        file4: [4]
+
+    Files content - Minishell:
+        file1: [1]
+        file2: [1]
+        file3: [3]
+        file4: [4]
+
+----------------------------------------------------------------------
+
+TEST 156: KO
+    Input:        [> file1 | cat < file1]
+    Bash:         []
+    Minishell:    []
+
+    Lab creation:
+        cat 1 > file1
+        cat 2 > file2
+        cat 3 > file3
+        cat 4 > file4
+
+    Files content - Bash:
+        file1: []
+        file2: [2]
+        file3: [3]
+        file4: [4]
+
+    Files content - Minishell:
+        file1: [1]
+        file2: [2]
+        file3: [3]
+        file4: [4]
+
+----------------------------------------------------------------------
+
+TEST 157: KO
+    Input:        [> file1 | echo 42 < file1 | cat file1]
+    Bash:         []
+    Minishell:    []
+
+    Lab creation:
+        cat 1 > file1
+        cat 2 > file2
+        cat 3 > file3
+        cat 4 > file4
+
+    Files content - Bash:
+        file1: []
+        file2: [2]
+        file3: [3]
+        file4: [4]
+
+    Files content - Minishell:
+        file1: [1]
+        file2: [2]
+        file3: [3]
+        file4: [4]
+
+----------------------------------------------------------------------
+
+TEST 165: KO
+    Input:        [ls / | grep home | wc -l | < file1 > file2 | cat]
+    Bash:         []
+    Minishell:    []
+
+    Lab creation:
+        cat 1 > file1
+        cat 2 > file2
+        cat 3 > file3
+        cat 4 > file4
+
+    Files content - Bash:
+        file1: [1]
+        file2: []
+        file3: [3]
+        file4: [4]
+
+    Files content - Minishell:
+        file1: [1]
+        file2: [2]
+        file3: [3]
+        file4: [4]
+
+----------------------------------------------------------------------
+
+
+Press [1] to see passed tests, [n] to exit ([1]/n)?

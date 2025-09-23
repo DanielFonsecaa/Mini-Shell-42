@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 20:43:50 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/04/07 20:55:09 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/09/23 20:14:34 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,3 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	ft_bzero(ret, m);
 	return (ret);
 }
-/*
-#include <stdio.h>
-int	main()
-{
-	void *ptr = ft_calloc(5, sizeof(int));
-	if (ptr)
-	{
-		for (size_t i = 0; i < 5 * sizeof(int); i++)
-		{
-			if (((unsigned char *)ptr)[i] != 0)
-			{
-				printf("FAILED");
-				free(ptr);
-				return (0);
-			}
-		}
-			printf("SUCCESS");
-	}
-	else 
-		printf("FAILED");
-	free(ptr);
-}
-*/

@@ -52,10 +52,10 @@
 
 // Error Texts
 # define ERR_QUOTE "Error: Unmatched quotes in input\n"
-# define ERR_SYNTAX "Error: Syntax error in command line input\n"
 # define ERR_CMD "Error: Command not found\n"
 # define ERR_IS_DIR "Error: Is a directory\n"
 # define ERR_REDIRECT "Error: Invalid redirection syntax\n"
+# define ERR_SYNTAX "Error: Invalid syntax\n"
 # define ERR_PIPELINE "Error: Invalid pipeline syntax\n"
 # define ERR_EXPORT "minishell: export: %s: not a valid identifier\n"
 # define DEFINE_X "declare -x %s=\"%s\"\n"
@@ -67,6 +67,7 @@
 # define ERR_COMPUTER_ERROR "Error: Computer error\n"
 # define ERR_EXIT_NOT_NBR "Error exit: %s: numeric argument required\n"
 # define ERR_NO_FLAG_ALLOWED "Error: No flags allowed\n"
+# define ERR_NO_ARG_ALLOWED "Error: No arguments allowed\n"
 # define ERR_PWD "pwd: Error retrieving directory\n"
 # define ERR_MEMORY_SHLVL "Memory allocation failed for new shell level\n"
 # define ERR_SHLVLNOT_FOUND "Error: shell level not found\n"

@@ -76,15 +76,23 @@ char	**ft_copy_envp(t_envp *head)
 	i = -1;
 	while (temp)
 	{
-		size++;
+		if (temp->exported)
+			size++;
 		temp = temp->next;
 	}
 	ret = safe_calloc((size + 1), sizeof(char *));
 	temp = head;
-	while (++i < size && temp)
+	while (temp && i < size)
 	{
 		if (temp->exported)
-			ret[i] = ft_strjoin_three(temp->name, "=", temp->content);
+		{
+			ret[++i] = ft_strjoin_three(temp->name, "=", temp->content);
+			if (!ret[i])
+			{
+				free_arr(ret);
+				return (NULL);
+			}
+		}
 		if (!ret[i])
 		{
 			free_arr(ret);

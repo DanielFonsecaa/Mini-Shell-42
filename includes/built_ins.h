@@ -46,4 +46,8 @@ int		valid_n(char *str);
 int		handle_n(char **command_arr, int *i);
 char	which_quote(char *str);
 
+//env
+int		check_for_flags(t_shell *mshell);
+int		check_for_args(t_shell *mshell);
+
 #endif

@@ -14,7 +14,8 @@ int	create_heredoc(t_shell *mshell, char *limiter)
 			add_history(line);
 		if (!line || ft_strcmp(line, limiter) == 0)
 		{
-			//free, signals and stuff
+			if (line)
+				free(line);
 			break ;
 		}
 		write_to_fd(mshell, fd[1], line);

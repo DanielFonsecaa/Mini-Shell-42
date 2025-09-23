@@ -22,7 +22,7 @@ void	handle_env(t_shell *mshell, int fd)
 		ft_printf_fd(2, ERR_NO_ENVP);
 		return ;
 	}
-	if (check_for_flags(mshell))
+	if (check_for_args(mshell))
 		return ;
 	node = mshell->env_list;
 	while (node)
@@ -32,4 +32,23 @@ void	handle_env(t_shell *mshell, int fd)
 		node = node->next;
 	}
 	mshell->exit_code = 0;
+}
+
+int	check_for_args(t_shell *mshell)
+{
+	int	i;
+	int	check;
+
+	i = 0;
+	while (mshell->command[i])
+	{
+		check = 0;
+		if (mshell->command[i]->args)
+		{
+			ft_printf_fd(2, ERR_NO_ARG_ALLOWED);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }

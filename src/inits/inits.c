@@ -29,11 +29,16 @@ int	init_shell_data(t_shell *mshell, t_token **token)
 	mshell->tokens_size = token_list_size(*token);
 	pipe_and_redirects_count(mshell, token);
 	if (!syntax_error(mshell, token))
+	{
+		ft_printf_fd(2, ERR_SYNTAX);
+		mshell->num_heredoc = 0;
 		return (0);
+	}
 	mshell->num_commands = count_num_commands(token);
 	mshell->command = set_cmd_arr(mshell, token);
 	mshell->fd[0] = -1;
 	mshell->fd[1] = -1;
+	init_heredoc(mshell, token);
 	return (1);
 }
 
