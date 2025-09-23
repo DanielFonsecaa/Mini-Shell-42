@@ -47,6 +47,8 @@ t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
 	size_arr = mshell->num_commands;
 	i = -1;
 	temp = *token;
+	if (size_arr <= 0)
+		return (NULL);
 	command = safe_calloc(size_arr + 1, sizeof(t_cmd *));
 	while (i < size_arr && temp)
 	{

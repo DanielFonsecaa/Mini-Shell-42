@@ -13,6 +13,10 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 
 	i = -1;
 	temp = *token;
+	if (mshell->num_commands == 0)
+	{
+		handle_redirections(mshell, token, temp);
+	}
 	while (++i < mshell->num_commands)
 	{
 		mshell->pids[i] = fork();
@@ -69,6 +73,10 @@ void	handle_redirections(t_shell *mshell, t_token **head, t_token *token)
 		}
 		token = token->next;
 	}
+	if (mshell->num_commands == 0)
+	{
+		close(ints.fd);
+	}
 }
 
 void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints ints)
@@ -101,7 +109,8 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints
 			handle_child_free(mshell, head, expanded_name);
 			exit(ERROR);
 		}
-
+		if (mshell->num_commands == 0)
+			close(ints.fd);
 	}
 	if (!token->next->has_quote && expanded_name)
 		free(expanded_name);
