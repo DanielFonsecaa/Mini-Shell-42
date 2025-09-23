@@ -96,3 +96,31 @@ ls " -la" | "ls -la" | cat - FIXED
 -----------------
 export a="at -e"
 c$a Makefile  -- FIXED
+
+
+
+
+-------------
+[space]
+
+echo [meta chars]
+
+arguments and flags env not support
+
+< Makefile grep NAME | wc -l > out
+
+    put the result in out
+
+cat | cat | ls 
+works but prints broken pipe
+
+echo ~ is a expansion to HOME
+echo ~/test prints $HOME/test
+*
+>
+<
+< 
+
+d|
+
+add safe_guards in cleanup and wait so that no conditional jumps happen

@@ -1,9 +1,0 @@
-falta:
-
- - Expansions
- - HereDoc
- - sinais
- - quotes
- - testar redirections
- - testar pipeline
- - testar tudo. literalmente tudo.

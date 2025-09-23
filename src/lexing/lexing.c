@@ -14,7 +14,8 @@ int	tokenize(char *rd_l, t_token **token)
 	i = 0;
 	j = 0;
 	i = skip_whitespace(rd_l, i);
-	add_command_token(rd_l, token, &i);
+	if (!is_meta_char(rd_l[i]))
+		add_command_token(rd_l, token, &i);
 	while (rd_l[i])
 	{
 		i = skip_whitespace(rd_l, i);
@@ -29,7 +30,8 @@ int	tokenize(char *rd_l, t_token **token)
 		if (rd_l[i] && rd_l[i - 1] == '|')
 		{
 			i = skip_whitespace(rd_l, i);
-			add_command_token(rd_l, token, &i);
+			if (!is_meta_char(rd_l[i]))
+				add_command_token(rd_l, token, &i);
 		}
 	}
 	return (1);

@@ -10,12 +10,20 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 {
 	int		i;
 	t_token	*temp;
+	int	std_out;
+	int	std_in;
 
 	i = -1;
 	temp = *token;
 	if (mshell->num_commands == 0)
 	{
+		std_in = dup(STDIN_FILENO);
+		std_out = dup(STDOUT_FILENO);
 		handle_redirections(mshell, token, temp);
+		dup2(std_in, STDIN_FILENO);
+		dup2(std_out, STDOUT_FILENO);
+		close(std_in);
+		close(std_out);
 	}
 	while (++i < mshell->num_commands)
 	{
@@ -73,10 +81,6 @@ void	handle_redirections(t_shell *mshell, t_token **head, t_token *token)
 		}
 		token = token->next;
 	}
-	if (mshell->num_commands == 0)
-	{
-		close(ints.fd);
-	}
 }
 
 void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints ints)
@@ -104,13 +108,11 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints
 	}
 	if (!is_error && expanded_name)
 	{
-		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags))
+		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags) && mshell->num_commands > 0)
 		{
 			handle_child_free(mshell, head, expanded_name);
 			exit(ERROR);
 		}
-		if (mshell->num_commands == 0)
-			close(ints.fd);
 	}
 	if (!token->next->has_quote && expanded_name)
 		free(expanded_name);
