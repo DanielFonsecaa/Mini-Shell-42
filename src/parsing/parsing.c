@@ -25,7 +25,7 @@ int	parsing(t_shell *mshell, t_token **token)
 	if (!init_shell_data(mshell, token))
 	{
 		ft_printf_fd(2, "%s\n", strerror(errno));
-		mshell->exit_code = 1;
+		mshell->exit_code = 2;
 		return (0);
 	}
 	init_heredoc(mshell, token);

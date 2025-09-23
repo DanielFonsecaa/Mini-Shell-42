@@ -13,9 +13,6 @@ int	tokenize(char *rd_l, t_token **token)
 
 	i = 0;
 	j = 0;
-	i = skip_whitespace(rd_l, i);
-	if (!is_meta_char(rd_l[i]))
-		add_command_token(rd_l, token, &i);
 	while (rd_l[i])
 	{
 		i = skip_whitespace(rd_l, i);
@@ -75,17 +72,17 @@ void	set_t_type(t_token **token)
 	temp = *token;
 	while (temp)
 	{
-		if (ft_strcmp(temp->name, "<<") == 0)
+		if (ft_strcmp(temp->name, "<<") == 0 && !temp->has_quote)
 			temp->type = HERE;
-		else if (ft_strcmp(">>", temp->name) == 0)
+		else if (ft_strcmp(">>", temp->name) == 0 && !temp->has_quote)
 			temp->type = APPEND;
-		else if (ft_strcmp(">", temp->name) == 0)
+		else if (ft_strcmp(">", temp->name) == 0 && !temp->has_quote)
 			temp->type = OUTFILE;
-		else if (ft_strcmp("<", temp->name) == 0)
+		else if (ft_strcmp("<", temp->name) == 0 && !temp->has_quote)
 			temp->type = INFILE;
 		else if (temp->prev && temp->prev->type == HERE)
 			temp->type = LIMITER;
-		else if (ft_strcmp("|", temp->name) == 0)
+		else if (ft_strcmp("|", temp->name) == 0 && !temp->has_quote)
 			temp->type = PIPE;
 		else
 			set_t_arg(&temp);

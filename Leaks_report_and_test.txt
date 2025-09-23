@@ -124,3 +124,5 @@ echo ~/test prints $HOME/test
 d|
 
 add safe_guards in cleanup and wait so that no conditional jumps happen
+
+echo " "'$USER"'"42 " ''"  | << -1"

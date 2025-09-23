@@ -7,6 +7,8 @@ int	skip_whitespace(char *str, int i)
 	return (i);
 }
 
+
+//echo " "'$USER"'"42 " ''"  | << -1"
 int	next_token_len(char *s)
 {
 	int		i;
@@ -30,6 +32,8 @@ int	next_token_len(char *s)
 		}
 		if (!quote && (ft_iswhite_space(s[i]) || is_meta_char(s[i])))
 			break ;
+		else if ((s[i] == '"' || s[i] == '\''))
+			continue ;
 		else if (s[i])
 			i++;
 	}

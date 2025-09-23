@@ -45,6 +45,11 @@ int	check_pipeline(t_token **token)
 	t_token	*temp;
 
 	temp = *token;
+	if (temp)
+	{
+		if (!temp->prev && temp->type == PIPE)
+			return (0);
+	}
 	while (temp)
 	{
 		if (!(temp->has_quote))

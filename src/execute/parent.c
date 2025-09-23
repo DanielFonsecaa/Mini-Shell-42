@@ -108,7 +108,7 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints
 	}
 	if (!is_error && expanded_name)
 	{
-		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags) && mshell->num_commands > 0)
+		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags, mshell) && mshell->num_commands > 0)
 		{
 			handle_child_free(mshell, head, expanded_name);
 			exit(ERROR);
@@ -118,7 +118,7 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints
 		free(expanded_name);
 }
 
-int	open_file_and_dup(char	*file_name, int fd, int flags)
+int	open_file_and_dup(char	*file_name, int fd, int flags, t_shell *mshell)
 {
 	int	new_fd;
 
@@ -126,6 +126,7 @@ int	open_file_and_dup(char	*file_name, int fd, int flags)
 	if (new_fd == -1)
 	{
 		ft_printf_fd(2, ERR_NO_FILE, file_name);
+		mshell->exit_code = 1;
 //		perror("open");
 		return (0);
 	}
