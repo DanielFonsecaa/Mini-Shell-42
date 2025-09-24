@@ -12,11 +12,18 @@ t_envp	*create_node(char *name, char *content, bool exported)
 {
 	t_envp	*node;
 	char	*new_content;
+	char	quote_char;
 
 	if (!content)
 		new_content = ft_strdup("");
 	else if (has_quote(content))
-		new_content = ft_strtrim_char(content, which_quote(content));
+	{
+		quote_char = which_quote(content);
+		if (quote_char != 0)
+			new_content = ft_strtrim_char(content, quote_char);
+		else
+			new_content = ft_strdup(content);
+	}
 	else
 		new_content = ft_strdup(content);
 	node = safe_calloc(1, sizeof(t_envp));

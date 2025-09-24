@@ -124,9 +124,11 @@ char	*get_cmd_token(char *rd_l, int start, int len, char quote_char)
  * @brief Determines which type of quote char is at the beginning of a string.
  *
  * @param str Pointer to the string to examine
- * @return char of the first character of the string
+ * @return char The quote character if found, or 0 if no quote at start
  */
 char	which_quote(char *str)
 {
-	return (*str);
+	if (str && (*str == '"' || *str == '\''))
+		return (*str);
+	return (0);
 }
