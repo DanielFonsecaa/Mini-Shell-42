@@ -53,7 +53,11 @@ void	expansion(t_shell *mshell, t_token **token)
 			|| current->type == FLAG || current->type == OUTFILE
 			|| current->type == INFILE)
 		{
-			if (current->has_quote || ft_strchr(current->name, ' '))
+			if (is_export_assignment(current, token))
+			{
+				expand_export_assignment(mshell, current);
+			}
+			else if (current->has_quote || ft_strchr(current->name, ' '))
 				expand_quoted_token(mshell, current);
 			else
 				expand_unquoted(mshell, &current, token);
@@ -135,4 +139,52 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	if (arr && arr[0])
 		add_split_tokens(current, next, arr);
 	free_arr(arr);
+}
+
+int	is_export_assignment(t_token *current, t_token **head)
+{
+	t_token	*temp;
+
+	if (!current || current->type != ARG)
+		return (0);
+	temp = *head;
+	while (temp && temp != current)
+	{
+		if (temp->type == CMD && ft_strcmp(temp->name, "export") == 0)
+		{
+			if (ft_strchr(current->name, '='))
+				return (1);
+			return (0);
+		}
+		else if (temp->type == PIPE)
+			break;
+		temp = temp->next;
+	}
+	return (0);
+}
+
+void	expand_export_assignment(t_shell *mshell, t_token *token)
+{
+	char	*new_str;
+	char	*equals_pos;
+	int		i;
+	int		equals_index;
+
+	equals_pos = ft_strchr(token->name, '=');
+	if (!equals_pos)
+		return ;
+	equals_index = equals_pos - token->name;
+	i = 0;
+	new_str = safe_calloc(1, sizeof(char));
+	while (token->name[i])
+	{
+		if (i > equals_index && token->name[i] == '$' && token->name[i + 1] == '?')
+			new_str = append_exit_code(mshell, new_str, &i);
+		else if (i > equals_index && token->name[i] == '$' && token->name[i + 1])
+			new_str = append_content(mshell, &token, new_str, &i);
+		else
+			new_str = append_letter_unquoted(token, new_str, &i);
+	}
+	free(token->name);
+	token->name = new_str;
 }

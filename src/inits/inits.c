@@ -30,7 +30,7 @@ int	init_shell_data(t_shell *mshell, t_token **token)
 	pipe_and_redirects_count(mshell, token);
 	if (!syntax_error(mshell, token))
 	{
-		ft_printf_fd(2, ERR_SYNTAX);
+		ft_printf_fd(2, "Error: Invalid syntax\n");
 		mshell->num_heredoc = 0;
 		return (0);
 	}

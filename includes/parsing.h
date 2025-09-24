@@ -15,6 +15,8 @@ void	expand_quoted_token(t_shell *mshell, t_token *token);
 void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head);
 void	add_split_tokens(t_token **current, t_token *next, char **arr);
 void	expand_inside_quotes(t_token *token, t_shell *msh, char **str, int *i);
+int		is_export_assignment(t_token *current, t_token **head);
+void	expand_export_assignment(t_shell *mshell, t_token *token);
 
 //		Syntax Checks
 int		syntax_error(t_shell *mshell, t_token **token);
