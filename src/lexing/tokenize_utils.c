@@ -7,8 +7,6 @@ int	skip_whitespace(char *str, int i)
 	return (i);
 }
 
-
-//echo " "'$USER"'"42 " ''"  | << -1"
 int	next_token_len(char *s)
 {
 	int		i;
@@ -51,7 +49,12 @@ void	add_command_token(char *rd_l, t_token **token, int *i)
 
 int	handle_meta(char *rd_l, t_token **token, int i, int *j)
 {
-	while (rd_l[i + *j] && is_meta_char(rd_l[i + *j]))
+	char	c;
+
+	c = 0;
+	if (is_meta_char(rd_l[i + *j]))
+		c = rd_l[i + *j];
+	while (rd_l[i + *j] && is_meta_char(rd_l[i + *j]) && c == rd_l[i + *j])
 		(*j)++;
 	if (*j && is_meta_char(rd_l[i + *j - 1]))
 		ft_first_token(token, rd_l + i, *j);

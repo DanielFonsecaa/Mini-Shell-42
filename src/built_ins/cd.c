@@ -136,13 +136,15 @@ void	update_envp_with_string(t_shell *mshell, char *key, char *cwd)
 	char	*content;
 	char	*temp;
 	t_token	*token;
+	int		flag;
 
 	token = NULL;
 	content = ft_strjoin(key, "=");
 	temp = content;
+	flag = 0;
 	content = ft_strjoin(temp, cwd);
 	token = ft_newtoken(content);
-	update_export(mshell, &token);
+	update_export(mshell, &token, &flag);
 	free(temp);
 	free(content);
 	free(token->name);

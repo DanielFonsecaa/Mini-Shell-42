@@ -35,20 +35,21 @@ void	expansion(t_shell *mshell, t_token **token)
 {
 	t_token	*current;
 	t_token	*next;
-	//t_envp	*node;
+	t_envp	*node;
 
 	current = *token;
 	
 	while (current)
 	{
 		next = current->next;
-		/* if (ft_strcmp(current->name, "~") || ft_strncmp(current->name, "~/", 2))
+		if (ft_strcmp(current->name, "~") == 0 || ft_strncmp(current->name, "~/", 2) == 0)
 		{
 			node = find_envp(mshell->env_list, "HOME");
-			current->name = node->content;
-			free(node);
-		} */
-		if (current->type == ARG || current->type == CMD
+			free(current->name);
+			current->name = NULL;
+			current->name = ft_strdup(node->content);
+		}
+		else if (current->type == ARG || current->type == CMD
 			|| current->type == FLAG || current->type == OUTFILE
 			|| current->type == INFILE)
 		{

@@ -10,9 +10,11 @@
 void	handle_export(t_shell *mshell, t_token **token, int fd)
 {
 	t_token	*temp;
+	int		flag;
 
 	temp = (*token)->next;
 	mshell->exit_code = 1;
+	flag = 0;
 	if (check_for_flags(mshell))
 		return ;
 	if (!temp || temp->type == PIPE)
@@ -21,7 +23,7 @@ void	handle_export(t_shell *mshell, t_token **token, int fd)
 	{
 		while (temp && temp->type != PIPE)
 		{
-			update_export(mshell, &temp);
+			update_export(mshell, &temp, &flag);
 			temp = temp->next;
 		}
 	}
@@ -67,7 +69,7 @@ void	show_export(t_shell *mshell, t_envp *node, int fd)
  * @param mshell Pointer to the main shell structure
  * @param token Pointer to pointer of the current token
  */
-void	update_export(t_shell *mshell, t_token **token)
+void	update_export(t_shell *mshell, t_token **token, int *flag)
 {
 	t_token	*temp;
 	t_envp	*existing_node;
@@ -75,7 +77,8 @@ void	update_export(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	name = temp->name;
-	mshell->exit_code = 0;
+	if (!(*flag))
+		mshell->exit_code = 0;
 	existing_node = find_envp(mshell->env_list, name);
 	if (existing_node)
 		return (update_envp_var(temp->name, existing_node));
@@ -84,6 +87,7 @@ void	update_export(t_shell *mshell, t_token **token)
 		if (!validade_export_name(name))
 		{
 			mshell->exit_code = 1;
+			*flag = 1;
 			return ;
 		}
 		if (has_content(name))

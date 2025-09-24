@@ -6,7 +6,7 @@
  * @param mshell Pointer to the shell structure
  * @param fd
  */
-void	handle_env(t_shell *mshell, int fd)
+void	handle_env(t_shell *mshell, int fd, t_token **token)
 {
 	t_envp	*node;
 
@@ -22,7 +22,7 @@ void	handle_env(t_shell *mshell, int fd)
 		ft_printf_fd(2, ERR_NO_ENVP);
 		return ;
 	}
-	if (check_for_args(mshell))
+	if (check_for_args(mshell, token))
 		return ;
 	node = mshell->env_list;
 	while (node)
@@ -34,21 +34,20 @@ void	handle_env(t_shell *mshell, int fd)
 	mshell->exit_code = 0;
 }
 
-int	check_for_args(t_shell *mshell)
+int	check_for_args(t_shell *mshell, t_token **token)
 {
 	int	i;
-	int	check;
-
+	t_token	*temp;
+	
+	(void)mshell;
 	i = 0;
-	while (mshell->command[i])
+	temp = *token;
+	while (temp && temp->type != PIPE)
 	{
-		check = 0;
-		if (mshell->command[i]->args)
-		{
-			ft_printf_fd(2, ERR_NO_ARG_ALLOWED);
-			return (1);
-		}
+		temp = temp->next;
 		i++;
 	}
+	if (i > 1)
+		return (1);
 	return (0);
 }

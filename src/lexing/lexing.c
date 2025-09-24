@@ -13,6 +13,8 @@ int	tokenize(char *rd_l, t_token **token)
 
 	i = 0;
 	j = 0;
+
+
 	while (rd_l[i])
 	{
 		i = skip_whitespace(rd_l, i);
@@ -24,6 +26,8 @@ int	tokenize(char *rd_l, t_token **token)
 		if (rd_l[i] == '|' && rd_l[i + 1] == '|')
 			return (ft_printf_fd(2, ERR_PIPELINE), 0);
 		i = handle_meta(rd_l, token, i, &j);
+		if (j > 2)
+			return (ft_printf_fd(2, ERR_SYNTAX), 0);
 		if (rd_l[i] && rd_l[i - 1] == '|')
 		{
 			i = skip_whitespace(rd_l, i);

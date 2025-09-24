@@ -70,7 +70,7 @@ void	execute_built_in(t_shell *mshell, t_token **token, int fd)
 	if (ft_strcmp(temp->name, "echo") == 0)
 		handle_echo(mshell, fd);
 	else if (ft_strcmp(temp->name, "env") == 0)
-		handle_env(mshell, fd);
+		handle_env(mshell, fd, token);
 	else if (ft_strcmp(temp->name, "pwd") == 0)
 		handle_pwd(mshell, token, fd);
 	else if (ft_strcmp(temp->name, "exit") == 0)

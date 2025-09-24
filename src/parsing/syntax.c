@@ -49,7 +49,7 @@ int	check_pipeline(t_token **token)
 	{
 		if (!(temp->has_quote))
 		{
-			if (temp->next && temp->type == PIPE && temp->next->type == PIPE)
+			if (temp->next && (temp->type == PIPE || check_redir_type(temp)) && temp->next->type == PIPE)
 				return (0);
 		}
 		if (!(temp->has_quote))

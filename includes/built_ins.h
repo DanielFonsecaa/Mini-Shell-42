@@ -3,7 +3,7 @@
 
 // Built ins handlers
 void	handle_pwd(t_shell *mshell, t_token **token, int fd);
-void	handle_env(t_shell *mshell, int fd);
+void	handle_env(t_shell *mshell, int fd, t_token **token);
 void	handle_exit(t_shell *mshell, t_token **token);
 void	handle_export(t_shell *mshell, t_token **token, int fd);
 void	handle_cd(t_shell *mshell, t_token **token);
@@ -19,7 +19,7 @@ int		validade_export_name(char *name);
 //	Export Utils
 void	bubble_sort(t_envp **arr, int list_size);
 void	show_export(t_shell *mshell, t_envp *node, int fd);
-void	update_export(t_shell *mshell, t_token **token);
+void	update_export(t_shell *mshell, t_token **token, int *flag);
 void	update_envp_var(char *name, t_envp *node);
 void	append_envp_var(char *name, t_envp *node);
 void	create_envp_list(t_envp **env_list, char **env);
@@ -48,6 +48,6 @@ char	which_quote(char *str);
 
 //env
 int		check_for_flags(t_shell *mshell);
-int		check_for_args(t_shell *mshell);
+int		check_for_args(t_shell *mshell, t_token **token);
 
 #endif

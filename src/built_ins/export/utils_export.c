@@ -81,6 +81,13 @@ int	validade_export_name(char *name)
 			return (ft_printf_fd(2, ERR_EXPORT, name), 0);
 		i++;
 	}
+	i = 1;
+	while (name[i] && name[i] != '=' && name[i] != '+')
+	{
+		if (name[i] == '$')
+			return (ft_printf_fd(2, ERR_EXPORT, name), 0);
+		i++;
+	}
 	return (1);
 }
 

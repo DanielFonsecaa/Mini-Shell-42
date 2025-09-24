@@ -83,7 +83,7 @@ void	print_echo(char **arr, bool flag, int i, int fd)
 	{
 		name = ft_strdup(arr[i]);
 		ft_printf_fd(fd, "%s", name);
-		if (i < size - 1)
+		if (i < size - 1 && arr[i][0] && arr[i + 1][0])
 			ft_printf_fd(fd, " ");
 		if (arr[i])
 			free(name);
