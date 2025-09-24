@@ -113,6 +113,8 @@ void	update_envp_var(char *name, t_envp *node)
 	i = 0;
 	while (name[i] && (name[i] != '=' && name[i] != '+'))
 		i++;
+	if (!name[i])
+		return ;
 	if (name[i] == '+')
 		return (append_envp_var(name, node));
 	j = 0;

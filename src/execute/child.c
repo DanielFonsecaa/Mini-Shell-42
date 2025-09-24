@@ -12,6 +12,11 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 	char		*path;
 	struct stat	st;
 
+	if (!cmd->name)
+	{
+		handle_child_free(ms, head, NULL);
+		exit(0);
+	}
 	format_cmd(ms, cmd);
 	path = ft_get_path(ms->env_var, cmd->name);
 	handle_child();

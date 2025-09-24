@@ -48,22 +48,22 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 t_token *get_command(t_token *token, int index)
 {
 	t_token	*temp;
-	int		current_cmd;
+	t_token	*group_start;
+	int		current_group;
 
 	temp = token;
-	current_cmd = 0;
+	group_start = token;
+	current_group = 0;
+	if (index == 0)
+		return (group_start);
 	while (temp)
 	{
-		if (temp->type == CMD)
+		if (temp->type == PIPE)
 		{
-			//se achar o comando desse "grupo", acha o primeiro token daquele "grupo" e retorna ele
-			if (current_cmd == index)
-			{
-				while (temp->prev && temp->prev->type != PIPE)
-					temp = temp->prev;
-				return (temp);
-			}
-			current_cmd++;
+			current_group++;
+			//
+			if (current_group == index && temp->next)
+				return (temp->next);
 		}
 		temp = temp->next;
 	}

@@ -40,27 +40,41 @@ void	add_flag_arg_to_cmd(t_token **token, t_cmd *command)
 t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
+	t_token	*cmd_token;
 	t_cmd	**command;
 	int		i;
 	int		size_arr;
 
 	size_arr = mshell->num_commands;
-	i = -1;
+	i = 0;
 	temp = *token;
 	if (size_arr <= 0)
 		return (NULL);
 	command = safe_calloc(size_arr + 1, sizeof(t_cmd *));
-	while (i < size_arr && temp)
+	while (i < size_arr)
 	{
-		if (temp->type == CMD)
+		command[i] = safe_calloc(1, sizeof(t_cmd));
+		cmd_token = NULL;
+		while (temp && temp->type != PIPE)
 		{
-			i++;
-			command[i] = safe_calloc(1, sizeof(t_cmd));
-			command[i]->name = ft_strdup(temp->name);
+			if (temp->type == CMD && !cmd_token)
+				cmd_token = temp;
+			temp = temp->next;
 		}
+		if (cmd_token)
+			command[i]->name = ft_strdup(cmd_token->name);
 		else
-			add_flag_arg_to_cmd(&temp, command[i]);
-		temp = temp->next;
+			command[i]->name = NULL;
+		temp = get_command(*token, i);
+		while (temp && temp->type != PIPE)
+		{
+			if (temp->type == ARG || temp->type == FLAG)
+				add_flag_arg_to_cmd(&temp, command[i]);
+			temp = temp->next;
+		}
+		if (temp && temp->type == PIPE)
+			temp = temp->next;
+		i++;
 	}
 	return (command);
 }
@@ -76,11 +90,11 @@ int	count_num_commands(t_token **token)
 	t_token	*temp;
 	int		i;
 
-	i = 0;
+	i = 1;
 	temp = *token;
 	while (temp)
 	{
-		if (temp->type == CMD)
+		if (temp->type == PIPE)
 			i++;
 		temp = temp->next;
 	}
