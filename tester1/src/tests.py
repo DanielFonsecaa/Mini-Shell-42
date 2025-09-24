@@ -25,8 +25,8 @@ redirects: List[str]
 pipes: List[str]
 exit_status: List[str]
 mix_mandatory: List[str]
-booleans: List[str]
-wildcards: List[str]
+#booleans: List[str]
+#wildcards: List[str]
 mix_bonus: List[str]
 
 parsing = [

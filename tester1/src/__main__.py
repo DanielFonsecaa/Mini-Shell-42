@@ -111,13 +111,13 @@ def main(argv: List[str]) -> None:
 
     # BOOLEANS --------------------------------------------------------------->
 
-    printer.section("Booleans")
-    booleans.run()
+#    printer.section("Booleans")
+#    booleans.run()
 
     # WILDCARDS -------------------------------------------------------------->
 
-    printer.section("Wildcards")
-    wildcards.run()
+#   printer.section("Wildcards")
+#    wildcards.run()
 
     # # MIX BONUS ------------------------------------------------------------>
 

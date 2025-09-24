@@ -1,6 +1,6 @@
 nao temos signais de heredoc->CTRL-C CTRL-D
 
-echo a | cat << EOF -> leaks still reachable
+echo a | cat << EOF -> leaks still reachable  //sigpipe ?? talvez seja o que o vicente falou
 
 //talvez nao precise (
 -------------

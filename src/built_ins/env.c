@@ -36,9 +36,9 @@ void	handle_env(t_shell *mshell, int fd, t_token **token)
 
 int	check_for_args(t_shell *mshell, t_token **token)
 {
-	int	i;
+	int		i;
 	t_token	*temp;
-	
+
 	(void)mshell;
 	i = 0;
 	temp = *token;

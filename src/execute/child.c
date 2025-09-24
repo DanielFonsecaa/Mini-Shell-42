@@ -43,25 +43,25 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 	ms->pipes = NULL;
 	if ((errno == EACCES) && (stat(path, &st) == 0) && S_ISDIR(st.st_mode))
 	{
-    ft_printf_fd(2, ERR_IS_DIR);
-    handle_error_shell(ms, head);
-    exit(126);
+		ft_printf_fd(2, ERR_IS_DIR);
+		handle_error_shell(ms, head);
+		exit(126);
 	}
 	else
 	{
-    ft_printf_fd(2, "%s: %s\n", cmd->name, strerror(errno));
-    handle_error_shell(ms, head);
-    if (errno == EACCES || errno == EISDIR)
-        exit(126);
-    else if (errno == ENOENT)
-        exit(127);
-    else
-        exit(1);
+		ft_printf_fd(2, "%s: %s\n", cmd->name, strerror(errno));
+		handle_error_shell(ms, head);
+		if (errno == EACCES || errno == EISDIR)
+			exit(126);
+		else if (errno == ENOENT)
+			exit(127);
+		else
+			exit(1);
 	}
 }
 
 /**
- * @brief Checks if the command at given index has heredocs by parsing token structure
+ * @brief Checks if the command at index has heredocs
  *
  * @param token Pointer to the token list
  * @param target_index The command index to check for heredocs
@@ -74,7 +74,7 @@ static int	command_has_heredoc(t_token *token, int target_index)
 
 	temp = token;
 	current_cmd_index = 0;
-		while (temp && current_cmd_index < target_index)
+	while (temp && current_cmd_index < target_index)
 	{
 		if (temp->type == PIPE)
 			current_cmd_index++;
@@ -97,7 +97,8 @@ static int	command_has_heredoc(t_token *token, int target_index)
  * @param target_index The command index to find heredoc for
  * @return The fd of the last heredoc for this command, or -1 if none
  */
-static int	get_command_heredoc_fd(t_shell *mshell, t_token *token, int target_index)
+static int	get_command_heredoc_fd(t_shell *mshell, t_token *token,
+				int target_index)
 {
 	t_token	*temp;
 	int		current_cmd_index;
@@ -108,14 +109,14 @@ static int	get_command_heredoc_fd(t_shell *mshell, t_token *token, int target_in
 	current_cmd_index = 0;
 	heredoc_index = 0;
 	last_heredoc_fd = -1;
-	
 	while (temp)
 	{
 		if (temp->type == PIPE)
 			current_cmd_index++;
 		else if (temp->type == HERE && current_cmd_index == target_index)
 		{
-			if (heredoc_index < mshell->num_heredoc && mshell->heredoc_fd[heredoc_index] >= 0)
+			if (heredoc_index < mshell->num_heredoc
+				&& mshell->heredoc_fd[heredoc_index] >= 0)
 				last_heredoc_fd = mshell->heredoc_fd[heredoc_index];
 			heredoc_index++;
 		}
@@ -123,7 +124,6 @@ static int	get_command_heredoc_fd(t_shell *mshell, t_token *token, int target_in
 			heredoc_index++;
 		temp = temp->next;
 	}
-	
 	return (last_heredoc_fd);
 }
 
@@ -139,7 +139,8 @@ void	setup_child(t_shell *mshell, int index, int *fd, t_token *token)
 {
 	int	heredoc_fd;
 
-	if (mshell->heredoc_fd != NULL && mshell->num_heredoc > 0 && command_has_heredoc(token, index))
+	if (mshell->heredoc_fd != NULL && mshell->num_heredoc > 0
+		&& command_has_heredoc(token, index))
 	{
 		heredoc_fd = get_command_heredoc_fd(mshell, token, index);
 		if (heredoc_fd >= 0)
@@ -204,11 +205,11 @@ void	format_cmd(t_shell *mshell, t_cmd *command)
  */
 char	*ft_get_path(char **envp, char *cmd)
 {
-	char	**full_path;
-	char	*half_path;
-	char	*path;
-	int		i;
-	struct	stat st;
+	char		**full_path;
+	char		*half_path;
+	char		*path;
+	int			i;
+	struct stat	st;
 
 	i = 0;
 	if (!envp || !cmd)
@@ -236,7 +237,7 @@ char	*ft_get_path(char **envp, char *cmd)
 			{
 				free(path);
 				i++;
-				continue;
+				continue ;
 			}
 			return (free_arr(full_path), path);
 		}

@@ -13,8 +13,6 @@ int	tokenize(char *rd_l, t_token **token)
 
 	i = 0;
 	j = 0;
-
-
 	while (rd_l[i])
 	{
 		i = skip_whitespace(rd_l, i);
@@ -107,7 +105,6 @@ void	set_command(t_token **token)
 		if (temp->type == CMD)
 		{
 			flag = true;
-			//ft_printf_fd(1, "type - %d  name -%s\n", temp->type, temp->name);	
 			temp = temp->next;
 			continue ;
 		}
@@ -118,7 +115,6 @@ void	set_command(t_token **token)
 		}
 		else if (temp->type == PIPE)
 			flag = false;
-		//ft_printf_fd(1, "type - %d  name -%s\n", temp->type, temp->name);	
 		temp = temp->next;
 	}
 }

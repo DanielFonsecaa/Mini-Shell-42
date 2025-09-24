@@ -49,7 +49,8 @@ int	check_pipeline(t_token **token)
 	{
 		if (!(temp->has_quote))
 		{
-			if (temp->next && (temp->type == PIPE || check_redir_type(temp)) && temp->next->type == PIPE)
+			if (temp->next && (temp->type == PIPE
+					|| check_redir_type(temp)) && temp->next->type == PIPE)
 				return (0);
 		}
 		if (!(temp->has_quote))
@@ -93,7 +94,6 @@ int	check_perms(t_shell *mshell, t_token *token)
 int	helper_check_perms(char *token_name, char *path_name)
 {
 	(void)token_name;
-	//ft_printf_fd(2, ERR_NO_PERMS, token_name);
 	free(path_name);
 	return (0);
 }

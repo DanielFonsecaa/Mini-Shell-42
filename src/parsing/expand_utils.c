@@ -38,10 +38,10 @@ char	*append_content(t_shell *mshell, t_token **token, char *str, int *i)
 	char	*new_content;
 	int		start;
 	int		len;
+	char	tmp[2];
 
 	start = *i + 1;
 	len = 0;
-	
 	if (ft_isdigit((*token)->name[start]))
 	{
 		len = 1;
@@ -49,9 +49,8 @@ char	*append_content(t_shell *mshell, t_token **token, char *str, int *i)
 		*i = start + len;
 		return (str);
 	}
-	
-	if ((*token)->name[start] == '!' || (*token)->name[start] == '#' 
-		|| (*token)->name[start] == '$' || (*token)->name[start] == '*' 
+	if ((*token)->name[start] == '!' || (*token)->name[start] == '#'
+		|| (*token)->name[start] == '$' || (*token)->name[start] == '*'
 		|| (*token)->name[start] == '@' || (*token)->name[start] == '-')
 	{
 		len = 1;
@@ -59,17 +58,14 @@ char	*append_content(t_shell *mshell, t_token **token, char *str, int *i)
 		*i = start + len;
 		return (str);
 	}
-	
 	if (!ft_isalpha((*token)->name[start]) && (*token)->name[start] != '_')
 	{
-		char tmp[2];
 		tmp[0] = '$';
 		tmp[1] = '\0';
 		str = ft_strjoin_free(str, tmp);
 		*i = start;
 		return (str);
 	}
-	
 	while ((*token)->name[start + len])
 	{
 		if (!(ft_isalnum((*token)->name[start + len])

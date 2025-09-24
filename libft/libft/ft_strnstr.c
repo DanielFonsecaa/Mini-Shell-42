@@ -6,7 +6,7 @@
 /*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 15:19:47 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/04/06 15:40:45 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/09/24 19:31:45 by dda-fons         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,21 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;
 	size_t	j;
-	char	*temp;
 
 	if (!big)
 		return (NULL);
-	i = 0;
+	i = -1;
 	if (little[0] == '\0')
-	{
-		temp = (char *)&big[0];
-		return (temp);
-	}
+		return ((char *)&big[0]);
 	if (len == 0)
 		return (NULL);
-	while (big[i] && i < len)
+	while (big[++i] && i < len)
 	{
 		j = 0;
 		while (big[i + j] == little[j] && i + j < len && little[j])
 			j ++;
 		if (!little[j])
-		{
-			temp = (char *)&big[i];
-			return (temp);
-		}
-		i ++;
+			return ((char *)&big[i]);
 	}
 	return (0);
 }

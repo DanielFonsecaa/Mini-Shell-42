@@ -58,8 +58,6 @@ void	cleanup_and_wait(t_shell *mshell)
 	wait_and_get_exit_status(mshell);
 	cleanup_pipes(mshell->pipes, mshell->num_commands - 1, mshell);
 	mshell->pipes = NULL;
-	
-	// Close any remaining heredoc fds in parent
 	if (mshell->heredoc_fd && mshell->num_heredoc > 0)
 	{
 		i = 0;
@@ -73,7 +71,6 @@ void	cleanup_and_wait(t_shell *mshell)
 		mshell->heredoc_fd = NULL;
 		mshell->num_heredoc = 0;
 	}
-	
 	if (mshell->pids)
 		free(mshell->pids);
 	mshell->pids = NULL;

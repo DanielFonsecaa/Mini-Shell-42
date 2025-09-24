@@ -9,9 +9,9 @@
 void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 {
 	int		i;
+	int		std_out;
+	int		std_in;
 	t_token	*temp;
-	int	std_out;
-	int	std_in;
 
 	i = -1;
 	temp = *token;
@@ -44,8 +44,7 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 	}
 }
 
-
-t_token *get_command(t_token *token, int index)
+t_token	*get_command(t_token *token, int index)
 {
 	t_token	*temp;
 	t_token	*group_start;
@@ -61,7 +60,6 @@ t_token *get_command(t_token *token, int index)
 		if (temp->type == PIPE)
 		{
 			current_group++;
-			//
 			if (current_group == index && temp->next)
 				return (temp->next);
 		}
@@ -84,7 +82,8 @@ void	handle_redirections(t_shell *mshell, t_token **head, t_token *token)
 	ints.flags = 0;
 	while (token && token->type != PIPE)
 	{
-		if (token->type == INFILE && !(mshell->heredoc_fd != NULL && mshell->num_heredoc > 0))
+		if (token->type == INFILE
+			&& !(mshell->heredoc_fd != NULL && mshell->num_heredoc > 0))
 		{
 			ints.flags = O_RDONLY;
 			ints.fd = STDIN_FILENO;
@@ -106,7 +105,8 @@ void	handle_redirections(t_shell *mshell, t_token **head, t_token *token)
 	}
 }
 
-void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints ints)
+void	helper_handle_redir(t_shell *mshell, t_token *token,
+			t_token **head, t_ints ints)
 {
 	char	*expanded_name;
 	int		is_error;
@@ -131,7 +131,8 @@ void	helper_handle_redir(t_shell *mshell, t_token *token, t_token **head, t_ints
 	}
 	if (!is_error && expanded_name)
 	{
-		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags, mshell) && mshell->num_commands > 0)
+		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags, mshell)
+			&& mshell->num_commands > 0)
 		{
 			handle_child_free(mshell, head, expanded_name);
 			exit(ERROR);
@@ -150,7 +151,6 @@ int	open_file_and_dup(char	*file_name, int fd, int flags, t_shell *mshell)
 	{
 		ft_printf_fd(2, ERR_NO_FILE, file_name);
 		mshell->exit_code = 1;
-//		perror("open");
 		return (0);
 	}
 	dup2(new_fd, fd);

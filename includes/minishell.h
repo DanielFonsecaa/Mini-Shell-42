@@ -73,6 +73,7 @@
 # define ERR_SHLVLNOT_FOUND "Error: shell level not found\n"
 # define ERR_NO_PERMS "minishell: %s: Permission denied\n"
 # define ERR_AMBIGUOUS "minishell: ambiguous redirect: %s\n"
+# define BASH_1000 "bash: warning: shell level (%d) too high, resetting to 1\n"
 
 extern int	g_sig;
 

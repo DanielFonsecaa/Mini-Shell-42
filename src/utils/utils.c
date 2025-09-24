@@ -23,7 +23,7 @@ void	modify_shell_level(t_envp *node, int value)
 	new_level = ft_atoi(old_level);
 	if (new_level >= 999)
 	{
-		ft_printf("bash: warning: shell level (%d) too high, resetting to 1\n", new_level + 1);
+		ft_printf(BASH_1000, new_level + 1);
 		str_level = ft_itoa(1);
 	}
 	else

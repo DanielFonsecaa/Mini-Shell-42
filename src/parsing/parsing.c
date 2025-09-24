@@ -37,11 +37,11 @@ void	expansion(t_shell *mshell, t_token **token)
 	t_envp	*node;
 
 	current = *token;
-	
 	while (current)
 	{
 		next = current->next;
-		if (ft_strcmp(current->name, "~") == 0 || ft_strncmp(current->name, "~/", 2) == 0)
+		if (ft_strcmp(current->name, "~") == 0
+			|| ft_strncmp(current->name, "~/", 2) == 0)
 		{
 			node = find_envp(mshell->env_list, "HOME");
 			free(current->name);
@@ -99,7 +99,8 @@ void	expand_inside_quotes(t_token *token, t_shell *msh, char **str, int *i)
 			== '?' && quote_char == '"')
 			*str = append_exit_code(msh, *str, i);
 		else if (token->name[*i] == '$' && token->name[*i + 1]
-			&& (token->name[*i + 1] != quote_char) && token->name[*i + 1] != ' ' && quote_char == '"')
+			&& (token->name[*i + 1] != quote_char)
+			&& token->name[*i + 1] != ' ' && quote_char == '"')
 			*str = append_content(msh, &token, *str, i);
 		else
 			*str = append_letter_unquoted(token, *str, i);
@@ -116,7 +117,8 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 
 	expanded = expand_token_content(mshell, *current);
 	next = (*current)->next;
-	if ((!expanded || !expanded[0]) && (*current)->type == CMD && (*current)->name[0] == '$')
+	if ((!expanded || !expanded[0]) && (*current)->type == CMD
+		&& (*current)->name[0] == '$')
 	{
 		if (expanded)
 			free(expanded);
@@ -125,7 +127,8 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	}
 	arr = ft_split(expanded, ' ');
 	free(expanded);
-	if ((!arr || !arr[0]) && (*current)->type == CMD && (*current)->name[0] == '$')
+	if ((!arr || !arr[0]) && (*current)->type == CMD
+		&& (*current)->name[0] == '$')
 	{
 		if (arr)
 			free(arr);
@@ -156,7 +159,7 @@ int	is_export_assignment(t_token *current, t_token **head)
 			return (0);
 		}
 		else if (temp->type == PIPE)
-			break;
+			break ;
 		temp = temp->next;
 	}
 	return (0);
@@ -177,9 +180,11 @@ void	expand_export_assignment(t_shell *mshell, t_token *token)
 	new_str = safe_calloc(1, sizeof(char));
 	while (token->name[i])
 	{
-		if (i > equals_index && token->name[i] == '$' && token->name[i + 1] == '?')
+		if (i > equals_index && token->name[i] == '$'
+			&& token->name[i + 1] == '?')
 			new_str = append_exit_code(mshell, new_str, &i);
-		else if (i > equals_index && token->name[i] == '$' && token->name[i + 1])
+		else if (i > equals_index && token->name[i] == '$'
+			&& token->name[i + 1])
 			new_str = append_content(mshell, &token, new_str, &i);
 		else
 			new_str = append_letter_unquoted(token, new_str, &i);

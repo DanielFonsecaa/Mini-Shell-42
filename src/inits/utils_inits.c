@@ -112,13 +112,11 @@ char	**ft_copy_envp(t_envp *head)
 void	create_pipes(int num_pipes, t_shell *mshell)
 {
 	int	i;
-//falta lidar com erros caso falhe
+
 	i = 0;
 	if (num_pipes <= 0)
 		return ;
 	mshell->pipes = safe_calloc(num_pipes, sizeof(int *));
-	//if (!mshell->pipes)
-	// mshell->exit_code = X; and return ;
 	while (i < num_pipes)
 	{
 		mshell->pipes[i] = safe_calloc(2, sizeof(int));

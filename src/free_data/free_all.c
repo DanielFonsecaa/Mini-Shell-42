@@ -73,7 +73,6 @@ void	free_all(t_shell *mshell, t_token **token)
 	free_list(token);
 	if (mshell->command)
 		free_cmd_struct(mshell);
-	//free_envp_list(mshell);
 	if (mshell->env_var)
 	{
 		free_arr(mshell->env_var);

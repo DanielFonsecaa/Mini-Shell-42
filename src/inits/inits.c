@@ -62,14 +62,8 @@ void	init_token_data(t_shell *mshell, t_token **token)
  */
 void	init_pipeline(t_shell *mshell)
 {
-	// falta lidar com erros no create pipes caso falhe
 	create_pipes(mshell->num_commands - 1, mshell);
 	mshell->pids = safe_malloc(sizeof(pid_t) * mshell->num_commands);
-	if (!mshell->pids)
-	{
-		// ft_printf_fd(); display error
-		// mshell->exit_code = X; and return ;
-	}
 }
 
 void	init_values(int *len, int *start, int *in_quote, int *i)
