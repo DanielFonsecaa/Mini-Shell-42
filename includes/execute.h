@@ -25,7 +25,7 @@ t_token	*get_command(t_token *token, int index);
 
 //heredoc
 int		create_heredoc(t_shell *mshell, char *limiter);
-void	init_heredoc(t_shell *mshell, t_token **token);
+int		init_heredoc(t_shell *mshell, t_token **token);
 void	write_to_fd(t_shell *mshell, int fd, char *line);
 void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i);
 

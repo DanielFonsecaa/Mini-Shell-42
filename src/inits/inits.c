@@ -32,13 +32,19 @@ int	init_shell_data(t_shell *mshell, t_token **token)
 	{
 		ft_printf_fd(2, "Error: Invalid syntax\n");
 		mshell->num_heredoc = 0;
+		mshell->exit_code = 2;
 		return (0);
 	}
 	mshell->num_commands = count_num_commands(token);
 	mshell->command = set_cmd_arr(mshell, token);
 	mshell->fd[0] = -1;
 	mshell->fd[1] = -1;
-	init_heredoc(mshell, token);
+	if (!init_heredoc(mshell, token))
+	{
+		if (g_sig == 130)
+			mshell->exit_code = 130;
+		return (0);
+	}
 	return (1);
 }
 

@@ -39,6 +39,7 @@ void	show_export(t_shell *mshell, t_envp *node, int fd)
 {
 	t_envp	**arr;
 	t_envp	*temp;
+	char	*escaped;
 	int		list_size;
 	int		i;
 
@@ -58,9 +59,40 @@ void	show_export(t_shell *mshell, t_envp *node, int fd)
 	bubble_sort(arr, list_size);
 	i = -1;
 	while (++i < list_size)
-		ft_printf_fd(fd, DEFINE_X, arr[i]->name, arr[i]->content);
+	{
+		escaped = escape_export_content(arr[i]->content);
+		if (escaped)
+			ft_printf_fd(fd, DEFINE_X, arr[i]->name, escaped);
+		else
+			ft_printf_fd(fd, DEFINE_X, arr[i]->name, "");
+	}
 	free(arr);
 	mshell->exit_code = 0;
+}
+
+char *escape_export_content(const char *content)
+{
+    int i = 0, j = 0, extra = 0;
+    char *escaped;
+
+    if (!content)
+        return NULL;
+    for (i = 0; content[i]; i++)
+        if (content[i] == '`')
+            extra++;
+    escaped = malloc(i + extra + 1);
+    if (!escaped)
+        return NULL;
+    i = 0;
+    j = 0;
+    while (content[i])
+    {
+        if (content[i] == '`')
+            escaped[j++] = '\\';
+        escaped[j++] = content[i++];
+    }
+    escaped[j] = 0;
+    return escaped;
 }
 
 /**

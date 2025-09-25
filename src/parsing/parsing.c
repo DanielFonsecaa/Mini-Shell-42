@@ -24,7 +24,7 @@ int	parsing(t_shell *mshell, t_token **token)
 	set_command(token);
 	if (!init_shell_data(mshell, token))
 	{
-		mshell->exit_code = 2;
+		
 		return (0);
 	}
 	return (1);

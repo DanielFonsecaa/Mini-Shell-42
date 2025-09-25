@@ -25,22 +25,23 @@ int	create_heredoc(t_shell *mshell, char *limiter)
 	return (fd[0]);
 }
 
-void	init_heredoc(t_shell *mshell, t_token **token)
+int	init_heredoc(t_shell *mshell, t_token **token)
 {
 	int		heredoc_count;
 	int		i;
 	t_token	*temp;
 
 	temp = *token;
+	handle_signal();
 	heredoc_count = mshell->num_heredoc;
 	if (heredoc_count == 0)
 	{
 		mshell->heredoc_fd = NULL;
-		return ;
+		return (0);
 	}
 	mshell->heredoc_fd = safe_malloc(sizeof(int) * heredoc_count);
 	if (!mshell->heredoc_fd)
-		return ;
+		return (0);
 	i = 0;
 	while (temp && i < heredoc_count)
 	{
@@ -51,6 +52,7 @@ void	init_heredoc(t_shell *mshell, t_token **token)
 		}
 		temp = temp->next;
 	}
+	return (1);
 }
 
 void	write_to_fd(t_shell *mshell, int fd, char *line)

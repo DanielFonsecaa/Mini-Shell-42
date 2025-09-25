@@ -97,9 +97,11 @@ char	*get_cmd_token(char *rd_l, int start, int len, char quote_char)
 	int		i;
 	int		in_quote;
 
-	name = safe_calloc(len + 1, sizeof(char));
 	in_quote = 0;
 	i = 0;
+	if (len == 1)
+		return (ft_substr(rd_l, start, 3));
+	name = safe_calloc(len + 1, sizeof(char));
 	while (i < len)
 	{
 		if (!in_quote && (rd_l[start] == '\'' || rd_l[start] == '"'))
