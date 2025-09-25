@@ -5,7 +5,7 @@
 void	free_all(t_shell *mshell, t_token **token);
 void	handle_error_shell(t_shell *mshell, t_token **token);
 void	handle_child_free(t_shell *mshell, t_token **token, char *path);
-void	heredoc_child_cleanup(t_shell *mshell, t_token **token);
+void	free_heredoc_child(t_shell *mshell, t_token **token);
 
 //free data
 void	free_list(t_token **token);

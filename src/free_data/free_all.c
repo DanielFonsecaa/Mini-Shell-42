@@ -121,3 +121,19 @@ void	free_all(t_shell *mshell, t_token **token)
 		mshell->pids = NULL;
 	}
 }
+
+void	free_heredoc_child(t_shell *mshell, t_token **token)
+{
+	free_list(token);
+	if (mshell->command)
+		free_cmd_struct(mshell);
+	free_envp_list(mshell);
+	if (mshell->env_var)
+		free_arr(mshell->env_var);
+	if (mshell->exec_command)
+		free_arr(mshell->exec_command);
+	if (mshell->fake_cwd)
+		free(mshell->fake_cwd);
+	if (mshell->rd_l)
+		free(mshell->rd_l);
+}

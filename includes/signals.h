@@ -8,6 +8,6 @@ void	handle_child(void);
 void	handle_quit_child(int sig);
 void	block_parent_signals(void);
 void	restore_parent_signals(void);
-void	handle_sigpipe(int sig);
+void	handle_heredoc_signal(int sig);
 
 #endif

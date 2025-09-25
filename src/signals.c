@@ -18,6 +18,17 @@ void	handle_ctrl_c(int sig)
 	}
 }
 
+void	handle_heredoc_signal(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_sig = 130;
+		ft_printf_fd(1, "\n");
+		close(STDIN_FILENO);
+		signal(SIGINT, handle_heredoc_signal);
+	}
+}
+
 void	handle_child(void)
 {
 	signal(SIGINT, SIG_DFL);
