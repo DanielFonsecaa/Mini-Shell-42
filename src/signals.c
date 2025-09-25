@@ -31,6 +31,7 @@ void	handle_signal(void)
 {
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGPIPE, handle_sigpipe);
 }
 
 /**
@@ -49,4 +50,14 @@ void	restore_parent_signals(void)
 {
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void	handle_sigpipe(int sig)
+{
+	if (sig == SIGPIPE)
+	{
+		// Set exit code for broken pipe
+		g_sig = 141; // 128 + SIGPIPE (13)
+		// Don't exit immediately, let the program handle cleanup
+	}
 }

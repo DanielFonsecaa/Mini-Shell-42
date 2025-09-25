@@ -81,8 +81,17 @@ void	print_echo(char **arr, bool flag, int i, int fd)
 		size++;
 	while (arr[i])
 	{
+		if (g_sig == 141) // SIGPIPE received
+		{
+			return ;
+		}
 		name = ft_strdup(arr[i]);
 		ft_printf_fd(fd, "%s", name);
+		if (g_sig == 141) // Check again after write
+		{
+			free(name);
+			return ;
+		}
 		if (i < size - 1 && arr[i][0] && arr[i + 1][0])
 			ft_printf_fd(fd, " ");
 		if (arr[i])
@@ -90,6 +99,6 @@ void	print_echo(char **arr, bool flag, int i, int fd)
 		name = NULL;
 		i++;
 	}
-	if (!flag)
+	if (!flag && g_sig != 141)
 		ft_printf_fd(fd, "\n");
 }

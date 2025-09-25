@@ -37,6 +37,11 @@ void	set_exitcode_status(t_shell *mshell, int status)
 			ft_printf_fd(1, "Quit (core dumped)\n");
 			mshell->exit_code = 131;
 		}
+		else if (WTERMSIG(status) == SIGPIPE)
+		{
+			mshell->exit_code = 0; // 128 + SIGPIPE (13)
+			// Don't print anything for SIGPIPE, it's normal in pipelines
+		}
 		else
 			mshell->exit_code = 128 + WTERMSIG(status);
 	}

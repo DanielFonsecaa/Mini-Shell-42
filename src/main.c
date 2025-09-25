@@ -19,6 +19,11 @@ static void	run_shell(t_shell *mshell, t_token **token)
 			add_history(mshell->rd_l);
 		if (g_sig == 130)
 			mshell->exit_code = 130;
+		if (g_sig == 141)
+		{
+			mshell->exit_code = 0;
+			g_sig = 0; // Reset the signal
+		}
 		if (!mshell->rd_l)
 		{
 			ft_printf("exit\n");
