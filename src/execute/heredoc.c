@@ -29,29 +29,86 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 {
 	int		heredoc_count;
 	int		i;
+	int		pid;
 	t_token	*temp;
+	int		fd[2];
+	int		status;
+	char	*line;
 
 	temp = *token;
-	handle_signal();
+	status = 0;
+	block_parent_signals();
 	heredoc_count = mshell->num_heredoc;
 	if (heredoc_count == 0)
 	{
 		mshell->heredoc_fd = NULL;
 		return (0);
 	}
+	
+	// Initialize the array in parent process
 	mshell->heredoc_fd = safe_malloc(sizeof(int) * heredoc_count);
 	if (!mshell->heredoc_fd)
 		return (0);
+	
+	// Initialize all values to -1 (invalid fd)
+	for (int j = 0; j < heredoc_count; j++)
+		mshell->heredoc_fd[j] = -1;
+	
 	i = 0;
+	// Create pipes BEFORE forking so both processes can access them
 	while (temp && i < heredoc_count)
 	{
 		if (temp->type == HERE && temp->next)
 		{
-			mshell->heredoc_fd[i] = create_heredoc(mshell, temp->next->name);
-			i++;
+			if (pipe(fd) == -1)
+				return (0);
+			
+			pid = fork();
+			if (pid == -1)
+				return (0);
+			
+			if (pid == 0)  // Child process
+			{
+				signal(SIGINT, handle_heredoc_signal);
+				close(fd[0]);  // Child only writes, close read end
+				
+				while (1)
+				{
+					line = readline("> ");
+					if (!line || ft_strcmp(line, temp->next->name) == 0)
+					{
+						if (line)
+							free(line);
+						break;
+					}
+					write_to_fd(mshell, fd[1], line);
+					if (line)
+						free(line);
+				}
+				close(fd[1]);
+				exit(0);
+			}
+			else  // Parent process
+			{
+				close(fd[1]);  // Parent only reads, close write end
+				mshell->heredoc_fd[i] = fd[0];  // Store read end
+				
+				waitpid(pid, &status, 0);
+				if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+				{
+					close(fd[0]);
+					handle_error_shell(mshell, token);
+					g_sig = 130;
+					mshell->exit_code = 130;
+					return (0);
+				}
+				i++;
+			}
 		}
 		temp = temp->next;
 	}
+	
+	restore_parent_signals();
 	return (1);
 }
 
