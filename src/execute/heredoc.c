@@ -4,11 +4,12 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 {
 	int		heredoc_count;
 	int		i;
-	int		pid;
+	//int		pid;
 	t_token	*temp;
 	int		fd[2];
-	int		status;
+	int		stdin;
 	char	*line;
+	int		code;
 
 	temp = *token;
 	block_parent_signals();
@@ -18,88 +19,57 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 		mshell->heredoc_fd = NULL;
 		return (1);
 	}
-
+	stdin = dup(STDIN_FILENO);
 	mshell->heredoc_fd = safe_malloc(sizeof(int) * heredoc_count);
 	if (!mshell->heredoc_fd)
 		return (0);
 	for (int j = 0; j < heredoc_count; j++)
 		mshell->heredoc_fd[j] = -1;
-	pid = fork();
-	if (pid < 0)
-		return (0);
-	if (pid == 0) // CHILD: handles ALL heredocs
+	signal(SIGINT, handle_heredoc_signal);
+	temp = *token;
+	i = 0;
+	while (temp && i < heredoc_count)
 	{
-		signal(SIGINT, handle_heredoc_signal);
-		temp = *token;
-		i = 0;
-		while (temp && i < heredoc_count)
+		if (temp->type == HERE && temp->next)
 		{
-			if (temp->type == HERE && temp->next)
+			if (pipe(fd) == -1)
+				exit(1);
+			while (1)
 			{
-				if (pipe(fd) == -1)
-					exit(1);
-				while (1)
+				line = readline("> ");
+				if (!line || ft_strcmp(line, temp->next->name) == 0 || g_sig == 130)
 				{
-					line = readline("> ");
-					if (!line || ft_strcmp(line, temp->next->name) == 0 || g_sig == 130)
-					{
-						if (line)
-							free(line);
-						temp = temp->next;
-						break;
-					}
-					if (g_sig != 130)
-						write_to_fd(mshell, fd[1], line);
 					if (line)
 						free(line);
+					temp = temp->next;
+					break;
 				}
-				close(fd[1]);
-				mshell->heredoc_fd[i] = fd[0];
-				i++;
+				if (g_sig != 130)
+					write_to_fd(mshell, fd[1], line);
+				if (line)
+					free(line);
 			}
-            // If Ctrl+C, abort ALL heredocs immediately
-			if (g_sig == 130) {
-            	break;
-        }
-			temp = temp->next;
+			close(fd[1]);
+			mshell->heredoc_fd[i] = fd[0];
+			i++;
 		}
-		free_heredoc_child(mshell, token);
-		if (mshell->heredoc_fd)
-			free(mshell->heredoc_fd);
+        // If Ctrl+C, abort ALL heredocs immediately
 		if (g_sig == 130)
-			exit(130);
-		else
-			exit(0); // success, or exit(130) if you detect Ctrl+C in child
+        	break;
+		temp = temp->next;
 	}
-	else // PARENT
-	{
-		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status)) // child killed by signal
-		{
-			int sig = WTERMSIG(status);
-			for (i = 0; i < heredoc_count; i++)
-			{
-				if (mshell->heredoc_fd[i] != -1)
-					close(mshell->heredoc_fd[i]);
-			}
-			g_sig = 128 + sig;
-			mshell->exit_code = 128 + sig;
-		}
-		else if (WIFEXITED(status)) // child called exit()
-		{
-			int code = WEXITSTATUS(status);
-			if (code == 130) // Ctrl+C in heredoc!
-			{
-				for (i = 0; i < heredoc_count; i++)
-				{
-					if (mshell->heredoc_fd[i] != -1)
-						close(mshell->heredoc_fd[i]);
-				}
-				g_sig = code;
-				mshell->exit_code = code;
-			}
-		}
-	}
+	//free_heredoc_child(mshell, token);
+	//close(fd[0]);
+		//if (mshell->heredoc_fd)
+		//	free(mshell->heredoc_fd);
+	if (g_sig == 130)
+		code = 130;
+	else
+		code = 0; // success, or exit(130) if you detect Ctrl+C in child
+	g_sig = code;
+	mshell->exit_code = code;
+	dup2(stdin, STDIN_FILENO);
+	close(stdin);
 	restore_parent_signals();
 	return (1);
 }
