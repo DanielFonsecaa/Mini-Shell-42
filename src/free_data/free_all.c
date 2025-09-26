@@ -61,6 +61,8 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
 		mshell->rd_l = NULL;
 	}
 	free_heredoc(mshell);
+	free(mshell->pids);
+	mshell->pids = NULL;
 }
 
 /**
