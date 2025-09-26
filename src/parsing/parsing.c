@@ -43,6 +43,8 @@ void	expansion(t_shell *mshell, t_token **token)
 			|| ft_strncmp(current->name, "~/", 2) == 0)
 		{
 			node = find_envp(mshell->env_list, "HOME");
+			if (!node)
+				return ;
 			free(current->name);
 			current->name = NULL;
 			current->name = ft_strdup(node->content);

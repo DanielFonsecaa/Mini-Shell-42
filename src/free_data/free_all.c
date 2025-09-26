@@ -60,6 +60,7 @@ void	handle_error_shell(t_shell *mshell, t_token **token)
 		free(mshell->rd_l);
 		mshell->rd_l = NULL;
 	}
+	free_heredoc(mshell);
 }
 
 /**

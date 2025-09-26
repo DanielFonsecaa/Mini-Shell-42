@@ -65,7 +65,7 @@ void	free_envp_content(char *name, char *content)
 
 void	free_heredoc(t_shell *mshell)
 {
-	if (mshell->heredoc_fd != NULL)
+	if (mshell->heredoc_fd)
 	{
 		free(mshell->heredoc_fd);
 		mshell->heredoc_fd = NULL;

@@ -41,6 +41,7 @@ int	init_shell_data(t_shell *mshell, t_token **token)
 	mshell->fd[1] = -1;
 	if (!init_heredoc(mshell, token))
 	{
+		free_heredoc(mshell);
 		if (g_sig == 130)
 			mshell->exit_code = 130;
 		return (0);

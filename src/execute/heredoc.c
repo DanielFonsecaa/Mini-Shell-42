@@ -27,7 +27,6 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 	pid = fork();
 	if (pid < 0)
 		return (0);
-
 	if (pid == 0) // CHILD: handles ALL heredocs
 	{
 		signal(SIGINT, handle_heredoc_signal);
@@ -46,6 +45,7 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 					{
 						if (line)
 							free(line);
+						temp = temp->next;
 						break;
 					}
 					if (g_sig != 130)
@@ -63,7 +63,6 @@ int	init_heredoc(t_shell *mshell, t_token **token)
         }
 			temp = temp->next;
 		}
-
 		free_heredoc_child(mshell, token);
 		if (mshell->heredoc_fd)
 			free(mshell->heredoc_fd);
@@ -83,7 +82,6 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 				if (mshell->heredoc_fd[i] != -1)
 					close(mshell->heredoc_fd[i]);
 			}
-		//	handle_error_shell(mshell, token);
 			g_sig = 128 + sig;
 			mshell->exit_code = 128 + sig;
 		}
@@ -97,13 +95,11 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 					if (mshell->heredoc_fd[i] != -1)
 						close(mshell->heredoc_fd[i]);
 				}
-			//	handle_error_shell(mshell, token);
 				g_sig = code;
 				mshell->exit_code = code;
 			}
 		}
 	}
-	mshell->num_heredoc = 0;
 	restore_parent_signals();
 	return (1);
 }

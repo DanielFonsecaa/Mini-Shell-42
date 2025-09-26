@@ -19,7 +19,6 @@ void	handle_env(t_shell *mshell, int fd, t_token **token)
 	if (!mshell->env_list)
 	{
 		mshell->exit_code = 1;
-		ft_printf_fd(2, ERR_NO_ENVP);
 		return ;
 	}
 	if (check_for_args(mshell, token))
