@@ -39,7 +39,7 @@ int	init_shell_data(t_shell *mshell, t_token **token)
 	mshell->command = set_cmd_arr(mshell, token);
 	mshell->fd[0] = -1;
 	mshell->fd[1] = -1;
-	if (!init_heredoc(mshell, token, token))
+	if (!init_heredoc(mshell, token))
 	{
 		if (g_sig == 130)
 			mshell->exit_code = 130;

@@ -1,7 +1,0 @@
-nao temos signais de heredoc->CTRL-C CTRL-D
-
-echo a | cat << EOF -> leaks still reachable  //sigpipe ?? talvez seja o que o vicente falou
-
-//talvez nao precise (
--------------
-add safe_guards in cleanup and wait so that no conditional jumps happen   )

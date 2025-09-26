@@ -94,6 +94,7 @@ $(NAME): $(BUILD_PATH) $(LIBFT_ARC) $(OBJS)
 	@printf "	╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝\n"
 	@printf "$(D)\n"
 	@printf "$(B)$(SILV)                           Made by dda-fons & Michel-kun $(D)\n"
+	@printf "USAGE: valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all  --track-origins=yes --tool=memcheck ./minishell $(D)\n"
 	@printf "\n"
 
 $(BUILD_PATH):
@@ -116,7 +117,6 @@ clean:
 fclean: clean
 	@echo "  $(B)$(GOLD)Cleaning executables$(D)"
 	@$(RM) $(NAME)
-	@$(RM) readline.supp
 	@$(MAKE) $(LIBFT_PATH) fclean >/dev/null
 	@echo "  $(B)$(GOLD)Removing $(SILV)$(NAME)$(GOLD) file: $(D)$(_SUCCESS)"
 
@@ -128,9 +128,9 @@ run: re
 gdb: re
 	gdb --tui ./minishell
 
-val: re
-	@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp
-	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all  --track-origins=yes --tool=memcheck ./$(NAME)
+#val: re
+#@echo "{\n   leak readline\n   Memcheck:Leak\n...\n   fun:readline\n}\n{\n   leak add_history\n   Memcheck:Leak\n...\n   fun:add_history\n}" > readline.supp
+#@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all  --track-origins=yes --tool=memcheck ./$(NAME)
 
 tester: re $(NAME)
 	@echo "  $(B)$(GOLD)Setting up minishell tester...$(D)"

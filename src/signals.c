@@ -21,12 +21,13 @@ void	handle_ctrl_c(int sig)
 void	handle_heredoc_signal(int sig)
 {
 	if (sig == SIGINT)
-	{
-		g_sig = 130;
-		ft_printf_fd(1, "\n");
-		close(STDIN_FILENO);
-		signal(SIGINT, handle_heredoc_signal);
-	}
+    {
+        g_sig = 130;
+        write(STDOUT_FILENO, "\n", 1); // print newline for prompt
+        close(STDIN_FILENO); // abort readline!
+        // DO NOT close(STDOUT_FILENO);
+		//signal(SIGINT, handle_heredoc_signal);
+    }
 }
 
 void	handle_child(void)
