@@ -231,7 +231,7 @@ char	*ft_get_path(char **envp, char *cmd)
 		half_path = ft_strjoin(full_path[i], "/");
 		path = ft_strjoin(half_path, cmd);
 		free(half_path);
-		if (access(path, F_OK) == 0)
+		if (access(path, F_OK | X_OK) == 0)
 		{
 			if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 			{

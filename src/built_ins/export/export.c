@@ -62,7 +62,11 @@ void	show_export(t_shell *mshell, t_envp *node, int fd)
 	{
 		escaped = escape_export_content(arr[i]->content);
 		if (escaped)
+		{
 			ft_printf_fd(fd, DEFINE_X, arr[i]->name, escaped);
+			free(escaped);
+			escaped = NULL;
+		}
 		else
 			ft_printf_fd(fd, DEFINE_X, arr[i]->name, "");
 	}
@@ -80,7 +84,7 @@ char *escape_export_content(const char *content)
     for (i = 0; content[i]; i++)
         if (content[i] == '`')
             extra++;
-    escaped = malloc(i + extra + 1);
+    escaped = safe_malloc(i + extra + 1);
     if (!escaped)
         return NULL;
     i = 0;
@@ -91,7 +95,7 @@ char *escape_export_content(const char *content)
             escaped[j++] = '\\';
         escaped[j++] = content[i++];
     }
-    escaped[j] = 0;
+    escaped[j] = '\0';
     return escaped;
 }
 

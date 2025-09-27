@@ -21,16 +21,11 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 		return (1);
 	}
 	stdin = dup(STDIN_FILENO);
-	limiter = temp->next->name;
-	if (limiter[0] == '\'' || limiter[0] == '"')
-	{
-		limiter = ft_strtrim_char(limiter, which_quote(limiter));
-	}
 	mshell->heredoc_fd = safe_malloc(sizeof(int) * heredoc_count);
 	if (!mshell->heredoc_fd)
-		return (0);
+	return (0);
 	for (int j = 0; j < heredoc_count; j++)
-		mshell->heredoc_fd[j] = -1;
+	mshell->heredoc_fd[j] = -1;
 	signal(SIGINT, handle_heredoc_signal);
 	temp = *token;
 	i = 0;
@@ -38,6 +33,13 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 	{
 		if (temp->type == HERE && temp->next)
 		{
+			limiter = temp->next->name;
+			if (limiter[0] == '\'' || limiter[0] == '"')
+			{
+				limiter = ft_strtrim_char(limiter, which_quote(limiter));
+			}
+			else
+				limiter = ft_strdup(temp->next->name);
 			if (pipe(fd) == -1)
 				exit(1);
 			while (1)
