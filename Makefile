@@ -17,7 +17,6 @@ BUILD_PATH		= .build
 READLINE_PATH	= vendor/readline/
 
 FILES			=	main.c \
-					signals.c \
 					built_ins/built_ins.c \
 					built_ins/cd.c \
 					built_ins/echo.c \
@@ -26,16 +25,18 @@ FILES			=	main.c \
 					built_ins/pwd.c \
 					built_ins/unset.c \
 					built_ins/export/export.c \
+					built_ins/export/show_update.c \
 					built_ins/export/utils_list_export.c \
 					built_ins/export/utils_export.c \
 					execute/child.c \
 					execute/heredoc.c \
+					execute/helper_child.c \
 					execute/helper_parent.c \
 					execute/main_execution.c \
 					execute/parent.c \
 					free_data/free_all.c \
 					free_data/free_data.c \
-					free_data/free_pipeline.c \
+					free_data/free_more_data.c \
 					inits/inits.c \
 					inits/utils_inits.c \
 					inits/utils_inits_command.c \
@@ -43,11 +44,15 @@ FILES			=	main.c \
 					lexing/tokenize_utils.c \
 					lexing/utils_lex.c \
 					lexing/utils_list_lex.c \
+					parsing/append.c\
 					parsing/expand_utils.c\
+					parsing/expand.c\
 					parsing/helper_parsing.c \
 					parsing/parsing.c \
 					parsing/syntax.c \
 					safe/safe_functions.c \
+					signals/main_signals.c \
+					signals/signals.c \
 					utils/utils.c
 
 SRC				= $(addprefix $(SRC_PATH)/, $(FILES))

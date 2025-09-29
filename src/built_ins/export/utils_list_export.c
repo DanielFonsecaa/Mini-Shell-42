@@ -98,7 +98,7 @@ void	create_envp_list(t_envp **env_list, char **env)
 		if (!content)
 			content = "";
 		envp_list_addback(env_list, create_node(name, content, true));
-		free_envp_content(name, content);
+		free_strs(name, content);
 	}
 }
 

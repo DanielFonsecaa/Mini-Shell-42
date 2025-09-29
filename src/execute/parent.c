@@ -9,22 +9,12 @@
 void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 {
 	int		i;
-	int		std_out;
-	int		std_in;
 	t_token	*temp;
 
-	i = -1;
 	temp = *token;
+	i = -1;
 	if (mshell->num_commands == 0)
-	{
-		std_in = dup(STDIN_FILENO);
-		std_out = dup(STDOUT_FILENO);
-		handle_redirections(mshell, token, temp);
-		dup2(std_in, STDIN_FILENO);
-		dup2(std_out, STDOUT_FILENO);
-		close(std_in);
-		close(std_out);
-	}
+		handle_single_command(mshell, token, temp);
 	while (++i < mshell->num_commands)
 	{
 		temp = get_command(*token, i);
@@ -44,30 +34,6 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token)
 	}
 }
 
-t_token	*get_command(t_token *token, int index)
-{
-	t_token	*temp;
-	t_token	*group_start;
-	int		current_group;
-
-	temp = token;
-	group_start = token;
-	current_group = 0;
-	if (index == 0)
-		return (group_start);
-	while (temp)
-	{
-		if (temp->type == PIPE)
-		{
-			current_group++;
-			if (current_group == index && temp->next)
-				return (temp->next);
-		}
-		temp = temp->next;
-	}
-	return (NULL);
-}
-
 /**
  * @brief Handles input/output redirections for shell commands
  *
@@ -75,46 +41,41 @@ t_token	*get_command(t_token *token, int index)
  * @param fd Array of file descriptors [0] for input, [1] for output
  */
 
-void	handle_redirections(t_shell *mshell, t_token **head, t_token *token)
+void	handle_redirections(t_shell *ms, t_token **head, t_token *tok)
 {
 	t_ints	ints;
 
 	ints.flags = 0;
-	while (token && token->type != PIPE)
+	while (tok && tok->type != PIPE)
 	{
-		if (token->type == INFILE
-			&& !(mshell->heredoc_fd != NULL && mshell->num_heredoc > 0))
+		if (tok->type == 3 && !(ms->heredoc_fd != NULL && ms->num_heredoc > 0))
 		{
 			ints.flags = O_RDONLY;
 			ints.fd = STDIN_FILENO;
-			helper_handle_redir(mshell, token, head, ints);
+			helper_handle_redir(ms, tok, head, ints);
 		}
-		else if (token->type == OUTFILE)
+		else if (tok->type == OUTFILE)
 		{
 			ints.flags = O_WRONLY | O_CREAT | O_TRUNC;
 			ints.fd = STDOUT_FILENO;
-			helper_handle_redir(mshell, token, head, ints);
+			helper_handle_redir(ms, tok, head, ints);
 		}
-		else if (token->type == APPEND)
+		else if (tok->type == APPEND)
 		{
 			ints.flags = O_WRONLY | O_CREAT | O_APPEND;
 			ints.fd = STDOUT_FILENO;
-			helper_handle_redir(mshell, token, head, ints);
+			helper_handle_redir(ms, tok, head, ints);
 		}
-		token = token->next;
+		tok = tok->next;
 	}
 }
 
-void	helper_handle_redir(t_shell *mshell, t_token *token,
-			t_token **head, t_ints ints)
+static char	*expand_redir_filename(t_shell *mshell, t_token *token, int *is_er)
 {
 	char	*expanded_name;
-	int		is_error;
 
 	expanded_name = NULL;
-	is_error = 0;
-	if (!token->next)
-		return ;
+	*is_er = 0;
 	if (token->next->has_quote)
 	{
 		expand_quoted_token(mshell, token->next);
@@ -126,15 +87,27 @@ void	helper_handle_redir(t_shell *mshell, t_token *token,
 		if (expanded_name && ft_strchr(expanded_name, ' '))
 		{
 			ft_printf_fd(2, ERR_AMBIGUOUS, expanded_name);
-			is_error = 1;
+			*is_er = 1;
 		}
 	}
+	return (expanded_name);
+}
+
+void	helper_handle_redir(t_shell *ms, t_token *token,
+		t_token **head, t_ints ints)
+{
+	char	*expanded_name;
+	int		is_error;
+
+	if (!token->next)
+		return ;
+	expanded_name = expand_redir_filename(ms, token, &is_error);
 	if (!is_error && expanded_name)
 	{
-		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags, mshell)
-			&& mshell->num_commands > 0)
+		if (!open_file_and_dup(expanded_name, ints.fd, ints.flags, ms)
+			&& ms->num_commands > 0)
 		{
-			handle_child_free(mshell, head, expanded_name);
+			handle_child_free(ms, head, expanded_name);
 			exit(ERROR);
 		}
 	}

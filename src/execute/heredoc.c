@@ -4,7 +4,6 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 {
 	int		heredoc_count;
 	int		i;
-	//int		pid;
 	t_token	*temp;
 	int		fd[2];
 	int		stdin;
@@ -23,9 +22,9 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 	stdin = dup(STDIN_FILENO);
 	mshell->heredoc_fd = safe_malloc(sizeof(int) * heredoc_count);
 	if (!mshell->heredoc_fd)
-	return (0);
+		return (0);
 	for (int j = 0; j < heredoc_count; j++)
-	mshell->heredoc_fd[j] = -1;
+		mshell->heredoc_fd[j] = -1;
 	signal(SIGINT, handle_heredoc_signal);
 	temp = *token;
 	i = 0;
@@ -35,9 +34,7 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 		{
 			limiter = temp->next->name;
 			if (limiter[0] == '\'' || limiter[0] == '"')
-			{
 				limiter = ft_strtrim_char(limiter, which_quote(limiter));
-			}
 			else
 				limiter = ft_strdup(temp->next->name);
 			if (pipe(fd) == -1)
@@ -55,7 +52,7 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 						limiter = NULL;
 					}
 					temp = temp->next;
-					break;
+					break ;
 				}
 				if (g_sig != 130)
 					write_to_fd(mshell, fd[1], line);
@@ -66,19 +63,14 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 			mshell->heredoc_fd[i] = fd[0];
 			i++;
 		}
-        // If Ctrl+C, abort ALL heredocs immediately
 		if (g_sig == 130)
-        	break;
+			break ;
 		temp = temp->next;
 	}
-	//free_heredoc_child(mshell, token);
-	//close(fd[0]);
-		//if (mshell->heredoc_fd)
-		//	free(mshell->heredoc_fd);
 	if (g_sig == 130)
 		code = 130;
 	else
-		code = 0; // success, or exit(130) if you detect Ctrl+C in child
+		code = 0;
 	g_sig = code;
 	mshell->exit_code = code;
 	dup2(stdin, STDIN_FILENO);

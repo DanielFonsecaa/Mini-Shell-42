@@ -22,7 +22,7 @@ static void	run_shell(t_shell *mshell, t_token **token)
 		if (g_sig == 141)
 		{
 			mshell->exit_code = 0;
-			g_sig = 0; // Reset the signal
+			g_sig = 0;
 		}
 		if (!mshell->rd_l)
 		{

@@ -1,5 +1,28 @@
 #include "../../includes/minishell.h"
 
+void	free_heredoc(t_shell *mshell)
+{
+	if (mshell->heredoc_fd)
+	{
+		free(mshell->heredoc_fd);
+		mshell->heredoc_fd = NULL;
+	}
+}
+
+/**
+ * @brief Frees the content of an environment variable.
+ * 
+ * @param name The name of the environment variable.
+ * @param content The content of the environment variable.
+ */
+void	free_strs(char *name, char *content)
+{
+	free(name);
+	name = NULL;
+	free(content);
+	content = NULL;
+}
+
 /**
  * @brief Closes all file descriptors associated with a pipeline
  *
@@ -8,21 +31,33 @@
  * @param fd_in Input file descriptor to close (if > 2)
  * @param fd_out Output file descriptor to close (if > 2)
  */
-void	close_fds(int **pipes, int num_pipes, int fd_in, int fd_out)
+void	close_fds(int **pipes, int num_pipes, int *fd)
 {
 	int	i;
 
 	i = 0;
-	while (i < num_pipes - 1)
+	if (fd)
 	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
+		while (i < num_pipes - 1)
+		{
+			close(pipes[i][0]);
+			close(pipes[i][1]);
+			i++;
+		}
+		if (fd[0] > 2)
+			close(fd[0]);
+		if (fd[1] > 2)
+			close(fd[1]);
 	}
-	if (fd_in > 2)
-		close(fd_in);
-	if (fd_out > 2)
-		close(fd_out);
+	else
+	{
+		while (i < num_pipes - 1)
+		{
+			close(pipes[i][0]);
+			close(pipes[i][1]);
+			i++;
+		}
+	}
 }
 
 /**

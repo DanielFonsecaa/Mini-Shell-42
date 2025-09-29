@@ -29,6 +29,35 @@ void	add_flag_arg_to_cmd(t_token **token, t_cmd *command)
 	}
 }
 
+t_token	*add_to_array(t_cmd **cmd, t_token **head, t_token *token, int *i)
+{
+	t_token	*cmd_token;
+
+	cmd[*i] = safe_calloc(1, sizeof(t_cmd));
+	cmd_token = NULL;
+	while (token && token->type != PIPE)
+	{
+		if (token->type == CMD && !cmd_token)
+			cmd_token = token;
+		token = token->next;
+	}
+	if (cmd_token)
+		cmd[*i]->name = ft_strdup(cmd_token->name);
+	else
+		cmd[*i]->name = NULL;
+	token = get_command(*head, *i);
+	while (token && token->type != PIPE)
+	{
+		if (token->type == ARG || token->type == FLAG)
+			add_flag_arg_to_cmd(&token, cmd[*i]);
+		token = token->next;
+	}
+	if (token && token->type == PIPE)
+		token = token->next;
+	*i += 1;
+	return (token);
+}
+
 /**
  * @brief Creates and initializes an array of command structures
  *
@@ -40,7 +69,6 @@ void	add_flag_arg_to_cmd(t_token **token, t_cmd *command)
 t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
-	t_token	*cmd_token;
 	t_cmd	**command;
 	int		i;
 	int		size_arr;
@@ -52,30 +80,7 @@ t_cmd	**set_cmd_arr(t_shell *mshell, t_token **token)
 		return (NULL);
 	command = safe_calloc(size_arr + 1, sizeof(t_cmd *));
 	while (i < size_arr)
-	{
-		command[i] = safe_calloc(1, sizeof(t_cmd));
-		cmd_token = NULL;
-		while (temp && temp->type != PIPE)
-		{
-			if (temp->type == CMD && !cmd_token)
-				cmd_token = temp;
-			temp = temp->next;
-		}
-		if (cmd_token)
-			command[i]->name = ft_strdup(cmd_token->name);
-		else
-			command[i]->name = NULL;
-		temp = get_command(*token, i);
-		while (temp && temp->type != PIPE)
-		{
-			if (temp->type == ARG || temp->type == FLAG)
-				add_flag_arg_to_cmd(&temp, command[i]);
-			temp = temp->next;
-		}
-		if (temp && temp->type == PIPE)
-			temp = temp->next;
-		i++;
-	}
+		temp = add_to_array(command, token, temp, &i);
 	return (command);
 }
 

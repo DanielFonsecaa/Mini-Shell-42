@@ -3,6 +3,7 @@
 
 // lex related
 int		tokenize(char *rd_l, t_token **token);
+int		handle_quote(char *str, int *start, int *in_quote, char *quote_char);
 void	ft_first_token(t_token **token, char *line, int size);
 void	set_t_type(t_token **token);
 void	type_file(t_token **token);

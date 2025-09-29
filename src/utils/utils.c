@@ -21,21 +21,33 @@ void	modify_shell_level(t_envp *node, int value)
 	}
 	old_level = existing_node->content;
 	new_level = ft_atoi(old_level);
+	str_level = ft_itoa(new_level + value);
 	if (new_level >= 999)
 	{
 		ft_printf(BASH_1000, new_level + 1);
 		str_level = ft_itoa(1);
 	}
-	else
-		str_level = ft_itoa(new_level + value);
-	if (!str_level)
-	{
-		ft_printf_fd(2, ERR_MEMORY_SHLVL);
-		return ;
-	}
 	existing_node->content = str_level;
 	existing_node->exported = true;
 	free(old_level);
+}
+
+int	handle_quote(char *str, int *start, int *in_quote, char *quote_char)
+{
+	if (!(*in_quote) && (str[*start] == '\'' || str[*start] == '"'))
+	{
+		*in_quote = 1;
+		*quote_char = str[*start];
+		(*start)++;
+		return (1);
+	}
+	if (*in_quote && str[*start] == *quote_char)
+	{
+		*in_quote = 0;
+		(*start)++;
+		return (1);
+	}
+	return (0);
 }
 
 int	check_for_flags(t_shell *mshell)
@@ -64,64 +76,6 @@ int	check_for_flags(t_shell *mshell)
 	return (0);
 }
 
-char	*extract_cmd_token(char *rd_l, int *i)
-{
-	int		start;
-	int		in_quote;
-	char	quote_char;
-	int		len;
-
-	init_values(&len, &start, &in_quote, i);
-	quote_char = 0;
-	while (rd_l[(*i)])
-	{
-		if (!in_quote && (rd_l[*i] == '\'' || rd_l[*i] == '"'))
-		{
-			in_quote = 1;
-			quote_char = rd_l[*i];
-		}
-		else if (in_quote && rd_l[*i] == quote_char)
-			in_quote = 0;
-		else if (!in_quote && ft_iswhite_space(rd_l[*i]))
-			break ;
-		else
-			len++;
-		(*i)++;
-	}
-	return (get_cmd_token(rd_l, start, len, quote_char));
-}
-
-char	*get_cmd_token(char *rd_l, int start, int len, char quote_char)
-{
-	char	*name;
-	int		i;
-	int		in_quote;
-
-	in_quote = 0;
-	i = 0;
-	if (len == 1)
-		return (ft_substr(rd_l, start, 3));
-	name = safe_calloc(len + 1, sizeof(char));
-	while (i < len)
-	{
-		if (!in_quote && (rd_l[start] == '\'' || rd_l[start] == '"'))
-		{
-			in_quote = 1;
-			quote_char = rd_l[start];
-			start++;
-			continue ;
-		}
-		else if (in_quote && rd_l[start] == quote_char)
-		{
-			in_quote = 0;
-			start++;
-			continue ;
-		}
-		name[i++] = rd_l[start++];
-	}
-	return (name);
-}
-
 /**
  * @brief Determines which type of quote char is at the beginning of a string.
  *
@@ -133,4 +87,11 @@ char	which_quote(char *str)
 	if (str && (*str == '"' || *str == '\''))
 		return (*str);
 	return (0);
+}
+
+int	skip_whitespace(char *str, int i)
+{
+	while (str[i] && ft_iswhite_space(str[i]))
+		i++;
+	return (i);
 }

@@ -25,7 +25,7 @@ void	append_envp_var(char *name, t_envp *node);
 void	create_envp_list(t_envp **env_list, char **env);
 void	create_envp_var(t_shell *mshell, t_token **token, bool exported);
 void	envp_list_addback(t_envp **list, t_envp *new_node);
-char    *escape_export_content(const char *content);
+char	*escape_export_content(const char *content);
 int		envp_list_size(t_envp *node);
 t_envp	*create_node(char *name, char *content, bool exported);
 t_envp	*find_envp(t_envp *node, char *name);

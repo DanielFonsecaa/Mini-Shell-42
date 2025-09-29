@@ -40,7 +40,7 @@ void	remove_envp_var(t_envp **head, t_envp *node)
 	if (ft_strcmp(temp->name, node->name) == 0)
 	{
 		*head = temp->next;
-		free_envp_content(temp->name, temp->content);
+		free_strs(temp->name, temp->content);
 		free(temp);
 		temp = NULL;
 		return ;
@@ -50,7 +50,7 @@ void	remove_envp_var(t_envp **head, t_envp *node)
 		if (ft_strcmp(temp->next->name, node->name) == 0)
 		{
 			temp->next = node->next;
-			free_envp_content(node->name, node->content);
+			free_strs(node->name, node->content);
 			free(node);
 			node = NULL;
 			return ;

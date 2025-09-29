@@ -57,36 +57,18 @@ int	count_type_till_pipe(t_token *token, int type)
 	return (i);
 }
 
-/**
- * @brief Creates a deep copy of an environment variables array
- *
- * @param envp Array of environment variable strings to copy (NULL-terminated)
- * @return char** Pointer to the newly allocated copy of the environment array,
- *                or NULL if memory allocation fails
- */
-char	**ft_copy_envp(t_envp *head)
+static char	**helper_copy_envp(t_envp *node, int size)
 {
-	int		i;
-	int		size;
 	char	**ret;
-	t_envp	*temp;
+	int		i;
 
-	temp = head;
-	size = 0;
 	i = -1;
-	while (temp)
-	{
-		if (temp->exported)
-			size++;
-		temp = temp->next;
-	}
 	ret = safe_calloc((size + 1), sizeof(char *));
-	temp = head;
-	while (temp && i < size)
+	while (node && i < size)
 	{
-		if (temp->exported)
+		if (node->exported)
 		{
-			ret[++i] = ft_strjoin_three(temp->name, "=", temp->content);
+			ret[++i] = ft_strjoin_three(node->name, "=", node->content);
 			if (!ret[i])
 			{
 				free_arr(ret);
@@ -98,8 +80,35 @@ char	**ft_copy_envp(t_envp *head)
 			free_arr(ret);
 			return (NULL);
 		}
+		node = node->next;
+	}
+	return (ret);
+}
+
+/**
+ * @brief Creates a deep copy of an environment variables array
+ *
+ * @param envp Array of environment variable strings to copy (NULL-terminated)
+ * @return char** Pointer to the newly allocated copy of the environment array,
+ *                or NULL if memory allocation fails
+ */
+char	**ft_copy_envp(t_envp *head)
+{
+	int		size;
+	char	**ret;
+	t_envp	*temp;
+
+	temp = head;
+	size = 0;
+	while (temp)
+	{
+		if (temp->exported)
+			size++;
 		temp = temp->next;
 	}
+	temp = head;
+	ret = NULL;
+	ret = helper_copy_envp(temp, size);
 	return (ret);
 }
 

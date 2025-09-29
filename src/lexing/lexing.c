@@ -20,7 +20,6 @@ int	tokenize(char *rd_l, t_token **token)
 		if (j > 0 && !is_meta_char(rd_l[i]))
 			ft_first_token(token, rd_l + i, j);
 		i += j;
-		j = 0;
 		if (rd_l[i] == '|' && rd_l[i + 1] == '|')
 			return (ft_printf_fd(2, ERR_PIPELINE), 0);
 		i = handle_meta(rd_l, token, i, &j);

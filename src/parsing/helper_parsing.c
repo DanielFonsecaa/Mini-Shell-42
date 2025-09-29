@@ -1,26 +1,6 @@
 #include "../../includes/minishell.h"
 
-void	add_split_tokens(t_token **current, t_token *next, char **arr)
-{
-	int		i;
-	t_token	*new;
-
-	i = 1;
-	while (arr[i])
-	{
-		new = ft_newtoken(arr[i]);
-		new->type = (*current)->type;
-		new->has_quote = false;
-		new->next = next;
-		if (next)
-			next->prev = new;
-		new->prev = (*current);
-		(*current)->next = new;
-		(*current) = new;
-		i++;
-	}
-}
-
+//removed current = NULL before current = head in both ifs
 void	remove_token_from_list(t_token **current, t_token **head)
 {
 	t_token	*prev;
@@ -30,7 +10,6 @@ void	remove_token_from_list(t_token **current, t_token **head)
 		*head = (*current)->next;
 		free((*current)->name);
 		free(*current);
-		*current = NULL;
 		*current = *head;
 		if (*current)
 			(*current)->prev = NULL;
@@ -44,7 +23,6 @@ void	remove_token_from_list(t_token **current, t_token **head)
 		prev->next = (*current)->next;
 		free((*current)->name);
 		free(*current);
-		*current = NULL;
 		*current = prev->next;
 		if (current && prev)
 			(*current)->prev = prev;
@@ -86,4 +64,35 @@ int	check_infile(t_token *token)
 	else
 		close(fd);
 	return (1);
+}
+
+char	*expand_token_content(t_shell *mshell, t_token *token)
+{
+	char	*new_str;
+	int		i;
+
+	i = 0;
+	new_str = safe_calloc(ft_strlen(token->name) + 1, sizeof(char));
+	while (token->name[i])
+	{
+		if (token->name[i] == '$' && token->name[i + 1] == '?'
+			&& token->type == ARG)
+			new_str = append_exit_code(mshell, new_str, &i);
+		else if (token->name[i] == '$' && token->name[i + 1])
+			new_str = append_content(mshell, &token, new_str, &i);
+		else
+			new_str = append_letter_unquoted(token, new_str, &i);
+	}
+	return (new_str);
+}
+
+char	*append_exit_code(t_shell *mshell, char *new_str, int *i)
+{
+	char	*exit_code;
+
+	exit_code = ft_itoa(mshell->exit_code);
+	new_str = ft_strjoin_free(new_str, exit_code);
+	free(exit_code);
+	*i += 2;
+	return (new_str);
 }

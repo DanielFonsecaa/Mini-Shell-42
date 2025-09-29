@@ -10,8 +10,13 @@ void	execute_pipe_redirect(t_shell *mshell, t_token **token);
 
 //Child related
 void	format_cmd(t_shell *mshell, t_cmd *command);
+void	setup_child_input(t_shell *mshell, int index,
+			int *fd, t_token *token);
 char	*ft_get_path(char **envp, char *cmd);
 void	setup_child(t_shell *mshell, int index, int *fd, t_token *token);
+int		command_has_heredoc(t_token *token, int target_index);
+int		get_command_heredoc_fd(t_shell *mshell, t_token *token, int i);
+char	*find_executable_in_path(char **full_path, char *cmd);
 
 //Parent related
 void	handle_redirections(t_shell *mshell, t_token **head, t_token *token);
@@ -22,10 +27,9 @@ void	wait_and_get_exit_status(t_shell *mshell);
 void	set_exitcode_status(t_shell *mshell, int status);
 void	cleanup_and_wait(t_shell *mshell);
 t_token	*get_command(t_token *token, int index);
+void	handle_single_command(t_shell *mshell, t_token **token, t_token *temp);
 
 //heredoc
-int		create_heredoc(t_shell *mshell, char *limiter, t_token **head);
-void	heredoc_child_process(t_shell *mshell, int fd[2], char *limiter, t_token **head);
 int		init_heredoc(t_shell *mshell, t_token **token);
 void	write_to_fd(t_shell *mshell, int fd, char *line);
 void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i);

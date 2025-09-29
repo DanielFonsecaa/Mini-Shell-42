@@ -23,9 +23,7 @@ int	parsing(t_shell *mshell, t_token **token)
 	set_t_type(token);
 	set_command(token);
 	if (!init_shell_data(mshell, token))
-	{
 		return (0);
-	}
 	return (1);
 }
 
@@ -33,22 +31,13 @@ void	expansion(t_shell *mshell, t_token **token)
 {
 	t_token	*current;
 	t_token	*next;
-	t_envp	*node;
 
 	current = *token;
 	while (current)
 	{
 		next = current->next;
-		if (ft_strcmp(current->name, "~") == 0
-			|| ft_strncmp(current->name, "~/", 2) == 0)
-		{
-			node = find_envp(mshell->env_list, "HOME");
-			if (!node)
-				return ;
-			free(current->name);
-			current->name = NULL;
-			current->name = ft_strdup(node->content);
-		}
+		if (try_expand_tilde(mshell, current))
+			;
 		else if (current->type == ARG || current->type == CMD
 			|| current->type == FLAG || current->type == OUTFILE
 			|| current->type == INFILE)
@@ -66,48 +55,21 @@ void	expansion(t_shell *mshell, t_token **token)
 	}
 }
 
-void	expand_quoted_token(t_shell *mshell, t_token *token)
+int	try_expand_tilde(t_shell *mshell, t_token *current)
 {
-	char	*new_str;
-	int		i;
+	t_envp	*node;
 
-	i = 0;
-	new_str = safe_calloc(1, sizeof(char));
-	while (token->name[i])
+	if (ft_strcmp(current->name, "~") == 0
+		|| ft_strncmp(current->name, "~/", 2) == 0)
 	{
-		if (token->name[i] == '"' || token->name[i] == '\'')
-			expand_inside_quotes(token, mshell, &new_str, &i);
-		else if (token->name[i] == '$' && token->name[i + 1] == '?')
-			new_str = append_exit_code(mshell, new_str, &i);
-		else if (token->name[i] == '$' && token->name[i + 1])
-			new_str = append_content(mshell, &token, new_str, &i);
-		else
-			new_str = append_letter_unquoted(token, new_str, &i);
+		node = find_envp(mshell->env_list, "HOME");
+		if (!node)
+			return (1);
+		free(current->name);
+		current->name = ft_strdup(node->content);
+		return (1);
 	}
-	free(token->name);
-	token->name = new_str;
-}
-
-void	expand_inside_quotes(t_token *token, t_shell *msh, char **str, int *i)
-{
-	char	quote_char;
-
-	quote_char = token->name[*i];
-	(*i)++;
-	while (token->name[*i] && token->name[*i] != quote_char)
-	{
-		if (token->name[*i] == '$' && token->name[*i + 1]
-			== '?' && quote_char == '"')
-			*str = append_exit_code(msh, *str, i);
-		else if (token->name[*i] == '$' && token->name[*i + 1]
-			&& (token->name[*i + 1] != quote_char)
-			&& token->name[*i + 1] != ' ' && quote_char == '"')
-			*str = append_content(msh, &token, *str, i);
-		else
-			*str = append_letter_unquoted(token, *str, i);
-	}
-	if (token->name[*i] == quote_char)
-		(*i)++;
+	return (0);
 }
 
 void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
@@ -118,24 +80,12 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 
 	expanded = expand_token_content(mshell, *current);
 	next = (*current)->next;
-	if ((!expanded || !expanded[0]) && (*current)->type == CMD
-		&& (*current)->name[0] == '$')
-	{
-		if (expanded)
-			free(expanded);
-		remove_token_from_list(current, head);
+	if (remove_if_empty(expanded, NULL, current, head))
 		return ;
-	}
 	arr = ft_split(expanded, ' ');
 	free(expanded);
-	if ((!arr || !arr[0]) && (*current)->type == CMD
-		&& (*current)->name[0] == '$')
-	{
-		if (arr)
-			free(arr);
-		remove_token_from_list(current, head);
+	if (remove_if_empty(NULL, arr, current, head))
 		return ;
-	}
 	free((*current)->name);
 	(*current)->name = ft_strdup(arr[0]);
 	(*current)->next = next;
@@ -144,52 +94,23 @@ void	expand_unquoted(t_shell *mshell, t_token **current, t_token **head)
 	free_arr(arr);
 }
 
-int	is_export_assignment(t_token *current, t_token **head)
+void	add_split_tokens(t_token **current, t_token *next, char **arr)
 {
-	t_token	*temp;
-
-	if (!current || current->type != ARG)
-		return (0);
-	temp = *head;
-	while (temp && temp != current)
-	{
-		if (temp->type == CMD && ft_strcmp(temp->name, "export") == 0)
-		{
-			if (ft_strchr(current->name, '='))
-				return (1);
-			return (0);
-		}
-		else if (temp->type == PIPE)
-			break ;
-		temp = temp->next;
-	}
-	return (0);
-}
-
-void	expand_export_assignment(t_shell *mshell, t_token *token)
-{
-	char	*new_str;
-	char	*equals_pos;
 	int		i;
-	int		equals_index;
+	t_token	*new;
 
-	equals_pos = ft_strchr(token->name, '=');
-	if (!equals_pos)
-		return ;
-	equals_index = equals_pos - token->name;
-	i = 0;
-	new_str = safe_calloc(1, sizeof(char));
-	while (token->name[i])
+	i = 1;
+	while (arr[i])
 	{
-		if (i > equals_index && token->name[i] == '$'
-			&& token->name[i + 1] == '?')
-			new_str = append_exit_code(mshell, new_str, &i);
-		else if (i > equals_index && token->name[i] == '$'
-			&& token->name[i + 1])
-			new_str = append_content(mshell, &token, new_str, &i);
-		else
-			new_str = append_letter_unquoted(token, new_str, &i);
+		new = ft_newtoken(arr[i]);
+		new->type = (*current)->type;
+		new->has_quote = false;
+		new->next = next;
+		if (next)
+			next->prev = new;
+		new->prev = (*current);
+		(*current)->next = new;
+		(*current) = new;
+		i++;
 	}
-	free(token->name);
-	token->name = new_str;
 }

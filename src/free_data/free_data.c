@@ -48,30 +48,6 @@ void	free_arr(char **arr)
 	arr = NULL;
 }
 
-//NOT BEING USED
-/**
- * @brief Frees the content of an environment variable.
- * 
- * @param name The name of the environment variable.
- * @param content The content of the environment variable.
- */
-void	free_envp_content(char *name, char *content)
-{
-	free(name);
-	name = NULL;
-	free(content);
-	content = NULL;
-}
-
-void	free_heredoc(t_shell *mshell)
-{
-	if (mshell->heredoc_fd)
-	{
-		free(mshell->heredoc_fd);
-		mshell->heredoc_fd = NULL;
-	}
-}
-
 /**
  * @brief Frees the entire environment variable list.
  * 

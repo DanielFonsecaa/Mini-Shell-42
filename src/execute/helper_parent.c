@@ -1,5 +1,43 @@
 #include "../../includes/minishell.h"
 
+t_token	*get_command(t_token *token, int index)
+{
+	t_token	*temp;
+	t_token	*group_start;
+	int		current_group;
+
+	temp = token;
+	group_start = token;
+	current_group = 0;
+	if (index == 0)
+		return (group_start);
+	while (temp)
+	{
+		if (temp->type == PIPE)
+		{
+			current_group++;
+			if (current_group == index && temp->next)
+				return (temp->next);
+		}
+		temp = temp->next;
+	}
+	return (NULL);
+}
+
+void	handle_single_command(t_shell *mshell, t_token **token, t_token *temp)
+{
+	int	std_in;
+	int	std_out;
+
+	std_in = dup(STDIN_FILENO);
+	std_out = dup(STDOUT_FILENO);
+	handle_redirections(mshell, token, temp);
+	dup2(std_in, STDIN_FILENO);
+	dup2(std_out, STDOUT_FILENO);
+	close(std_in);
+	close(std_out);
+}
+
 /**
  * @brief Waits for all child to complete and retrieves the exit status
  *        of the last command in the pipeline.
@@ -38,10 +76,7 @@ void	set_exitcode_status(t_shell *mshell, int status)
 			mshell->exit_code = 131;
 		}
 		else if (WTERMSIG(status) == SIGPIPE)
-		{
-			mshell->exit_code = 0; // 128 + SIGPIPE (13)
-			// Don't print anything for SIGPIPE, it's normal in pipelines
-		}
+			mshell->exit_code = 0;
 		else
 			mshell->exit_code = 128 + WTERMSIG(status);
 	}

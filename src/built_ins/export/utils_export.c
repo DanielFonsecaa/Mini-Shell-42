@@ -59,7 +59,7 @@ void	create_envp_var(t_shell *mshell, t_token **token, bool export)
 	if (!content)
 		content = "";
 	envp_list_addback(&(mshell->env_list), create_node(name, content, export));
-	free_envp_content(name, content);
+	free_strs(name, content);
 }
 
 /**

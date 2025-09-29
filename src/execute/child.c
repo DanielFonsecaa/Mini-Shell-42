@@ -1,4 +1,7 @@
 #include "../../includes/minishell.h"
+#include <string.h>   // for strchr, ft_strnstr
+#include <unistd.h>   // for access, F_OK, X_OK
+#include <sys/stat.h> // for struct stat, stat, S_ISDIR
 
 /**
  * @brief Executes a child command in a forked process.
@@ -7,40 +10,23 @@
  * @param token Pointer to token array for error handling cleanup
  * @param command Pointer to command structure
  */
-void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
-{
-	char		*path;
-	struct stat	st;
 
-	if (!cmd->name)
-	{
-		handle_child_free(ms, head, NULL);
-		exit(0);
-	}
-	format_cmd(ms, cmd);
-	path = ft_get_path(ms->env_var, cmd->name);
-	handle_child();
-	if (is_built_in(toke))
-	{
-		execute_built_in(ms, toke, STDOUT_FILENO);
-		handle_child_free(ms, head, path);
-		exit (ms->exit_code);
-	}
-	if (!path)
-	{
-		handle_error_shell(ms, head);
-		cleanup_pipes(ms->pipes, ms->num_commands - 1, ms);
-		ms->pipes = NULL;
-		free(ms->pids);
-		ms->pids = NULL;
-		ft_printf_fd(2, ERR_CMD);
-		exit(NOT_FOUND);
-	}
-	execve(path, ms->exec_command, ms->env_var);
-	if (path != cmd->name)
-		free(path);
+static void	handle_cmd_not_found(t_shell *ms, t_token **head)
+{
+	handle_error_shell(ms, head);
 	cleanup_pipes(ms->pipes, ms->num_commands - 1, ms);
 	ms->pipes = NULL;
+	free(ms->pids);
+	ms->pids = NULL;
+	ft_printf_fd(2, ERR_CMD);
+	exit(NOT_FOUND);
+}
+
+static void	handle_execve_error(t_shell *ms, t_token **head,
+	t_cmd *cmd, char *path)
+{
+	struct stat	st;
+
 	if ((errno == EACCES) && (stat(path, &st) == 0) && S_ISDIR(st.st_mode))
 	{
 		ft_printf_fd(2, ERR_IS_DIR);
@@ -60,71 +46,32 @@ void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 	}
 }
 
-/**
- * @brief Checks if the command at index has heredocs
- *
- * @param token Pointer to the token list
- * @param target_index The command index to check for heredocs
- * @return 1 if this command has heredocs, 0 otherwise
- */
-static int	command_has_heredoc(t_token *token, int target_index)
+void	exec_child_cmd(t_shell *ms, t_token **toke, t_token **head, t_cmd *cmd)
 {
-	t_token	*temp;
-	int		current_cmd_index;
+	char	*path;
 
-	temp = token;
-	current_cmd_index = 0;
-	while (temp && current_cmd_index < target_index)
+	if (!cmd->name)
 	{
-		if (temp->type == PIPE)
-			current_cmd_index++;
-		temp = temp->next;
+		handle_child_free(ms, head, NULL);
+		exit(0);
 	}
-	while (temp && temp->type != PIPE)
+	format_cmd(ms, cmd);
+	path = ft_get_path(ms->env_var, cmd->name);
+	handle_child();
+	if (is_built_in(toke))
 	{
-		if (temp->type == HERE)
-			return (1);
-		temp = temp->next;
+		execute_built_in(ms, toke, STDOUT_FILENO);
+		handle_child_free(ms, head, path);
+		exit(ms->exit_code);
 	}
-	return (0);
-}
-
-/**
- * @brief Finds the last heredoc fd for a specific command in the pipeline
- *
- * @param mshell Pointer to the shell structure
- * @param token Pointer to the token list
- * @param target_index The command index to find heredoc for
- * @return The fd of the last heredoc for this command, or -1 if none
- */
-static int	get_command_heredoc_fd(t_shell *mshell, t_token *token,
-				int target_index)
-{
-	t_token	*temp;
-	int		current_cmd_index;
-	int		heredoc_index;
-	int		last_heredoc_fd;
-
-	temp = token;
-	current_cmd_index = 0;
-	heredoc_index = 0;
-	last_heredoc_fd = -1;
-	while (temp)
-	{
-		if (temp->type == PIPE)
-			current_cmd_index++;
-		else if (temp->type == HERE && current_cmd_index == target_index)
-		{
-			if (heredoc_index < mshell->num_heredoc
-				&& mshell->heredoc_fd[heredoc_index] >= 0)
-				last_heredoc_fd = mshell->heredoc_fd[heredoc_index];
-			heredoc_index++;
-		}
-		else if (temp->type == HERE)
-			heredoc_index++;
-		temp = temp->next;
-	}
-	return (last_heredoc_fd);
+	if (!path)
+		handle_cmd_not_found(ms, head);
+	execve(path, ms->exec_command, ms->env_var);
+	if (path != cmd->name)
+		free(path);
+	cleanup_pipes(ms->pipes, ms->num_commands - 1, ms);
+	ms->pipes = NULL;
+	handle_execve_error(ms, head, cmd, path);
 }
 
 /**
@@ -137,25 +84,7 @@ static int	get_command_heredoc_fd(t_shell *mshell, t_token *token,
  */
 void	setup_child(t_shell *mshell, int index, int *fd, t_token *token)
 {
-	int	heredoc_fd;
-
-	if (mshell->heredoc_fd != NULL && mshell->num_heredoc > 0
-		&& command_has_heredoc(token, index))
-	{
-		heredoc_fd = get_command_heredoc_fd(mshell, token, index);
-		if (heredoc_fd >= 0)
-		{
-			dup2(heredoc_fd, STDIN_FILENO);
-			close(heredoc_fd);
-		}
-	}
-	else if (index == 0)
-	{
-		if (fd && fd[0] > 2)
-			dup2(fd[0], STDIN_FILENO);
-	}
-	else
-		dup2(mshell->pipes[index - 1][0], STDIN_FILENO);
+	setup_child_input(mshell, index, fd, token);
 	if (index == mshell->num_commands - 1)
 	{
 		if (fd && fd[1] > 2)
@@ -163,53 +92,14 @@ void	setup_child(t_shell *mshell, int index, int *fd, t_token *token)
 	}
 	else
 		dup2(mshell->pipes[index][1], STDOUT_FILENO);
-	if (fd)
-		close_fds(mshell->pipes, mshell->num_commands, fd[0], fd[1]);
-	else
-		close_fds(mshell->pipes, mshell->num_commands, -1, -1);
+	close_fds(mshell->pipes, mshell->num_commands, fd);
 }
 
-/**
- * @brief Formats a command structure into an executable command array.
- *
- * @param mshell Pointer to the shell structure
- * @param command Pointer to the command structure
- */
-void	format_cmd(t_shell *mshell, t_cmd *command)
-{
-	int	i;
-	int	size;
-
-	i = 0;
-	size = 0;
-	if (command->name)
-		size++;
-	i = 0;
-	while (command->args && command->args[i++])
-		size++;
-	mshell->exec_command = safe_calloc(size + 1, sizeof(char *));
-	size = 0;
-	i = 0;
-	if (command->name)
-		mshell->exec_command[i++] = ft_strdup(command->name);
-	while (command->args && command->args[size])
-		mshell->exec_command[i++] = ft_strdup(command->args[size++]);
-}
-
-/**
- * @brief Search for the full path of a command
- *
- * @param envp Array of environment variables
- * @param cmd The command name to search for
- * @return Returns the full path to the executable if found or NULL
- */
 char	*ft_get_path(char **envp, char *cmd)
 {
-	char		**full_path;
-	char		*half_path;
-	char		*path;
-	int			i;
-	struct stat	st;
+	char	**full_path;
+	char	*result;
+	int		i;
 
 	i = 0;
 	if (!envp || !cmd)
@@ -225,24 +115,8 @@ char	*ft_get_path(char **envp, char *cmd)
 	if (!envp[i])
 		return (NULL);
 	full_path = ft_split(envp[i] + 5, ':');
-	i = 0;
-	while (full_path[i])
-	{
-		half_path = ft_strjoin(full_path[i], "/");
-		path = ft_strjoin(half_path, cmd);
-		free(half_path);
-		if (access(path, F_OK | X_OK) == 0)
-		{
-			if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
-			{
-				free(path);
-				i++;
-				continue ;
-			}
-			return (free_arr(full_path), path);
-		}
-		free(path);
-		i++;
-	}
+	result = find_executable_in_path(full_path, cmd);
+	if (result)
+		return (free_arr(full_path), result);
 	return (free_arr(full_path), NULL);
 }
