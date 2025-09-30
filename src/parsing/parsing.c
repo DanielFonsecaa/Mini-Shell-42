@@ -23,7 +23,9 @@ int	parsing(t_shell *mshell, t_token **token)
 	set_t_type(token);
 	set_command(token);
 	if (!init_shell_data(mshell, token))
+	{
 		return (0);
+	}
 	return (1);
 }
 

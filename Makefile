@@ -30,6 +30,7 @@ FILES			=	main.c \
 					built_ins/export/utils_export.c \
 					execute/child.c \
 					execute/heredoc.c \
+					execute/heredoc_helper.c \
 					execute/helper_child.c \
 					execute/helper_parent.c \
 					execute/main_execution.c \

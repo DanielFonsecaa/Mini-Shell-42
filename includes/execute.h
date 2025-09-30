@@ -31,7 +31,12 @@ void	handle_single_command(t_shell *mshell, t_token **token, t_token *temp);
 
 //heredoc
 int		init_heredoc(t_shell *mshell, t_token **token);
+void	make_heredoc(t_shell *mshell, t_token *temp, int heredoc_count);
+int		handle_heredoc(t_shell *mshell, char *limiter, int *fd, int i);
+int 	process_heredoc_line(t_shell *mshell, int fd, char *line, char *limiter);
 void	write_to_fd(t_shell *mshell, int fd, char *line);
 void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i);
+int		setup_heredoc_array(t_shell *mshell, int heredoc_count);
+void	init_limiter(t_token *temp, char **limiter);
 
 #endif

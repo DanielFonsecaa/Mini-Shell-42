@@ -2,82 +2,27 @@
 
 int	init_heredoc(t_shell *mshell, t_token **token)
 {
-	int		heredoc_count;
-	int		i;
 	t_token	*temp;
-	int		fd[2];
 	int		stdin;
-	char	*line;
-	int		code;
-	char	*limiter;
 
 	temp = *token;
 	block_parent_signals();
-	heredoc_count = mshell->num_heredoc;
-	if (heredoc_count == 0)
+	if (mshell->num_heredoc == 0)
 	{
 		mshell->heredoc_fd = NULL;
 		return (1);
 	}
 	stdin = dup(STDIN_FILENO);
-	mshell->heredoc_fd = safe_malloc(sizeof(int) * heredoc_count);
-	if (!mshell->heredoc_fd)
+	if (!setup_heredoc_array(mshell, mshell->num_heredoc))
 		return (0);
-	for (int j = 0; j < heredoc_count; j++)
-		mshell->heredoc_fd[j] = -1;
 	signal(SIGINT, handle_heredoc_signal);
-	temp = *token;
-	i = 0;
-	while (temp && i < heredoc_count)
-	{
-		if (temp->type == HERE && temp->next)
-		{
-			limiter = temp->next->name;
-			if (limiter[0] == '\'' || limiter[0] == '"')
-				limiter = ft_strtrim_char(limiter, which_quote(limiter));
-			else
-				limiter = ft_strdup(temp->next->name);
-			if (pipe(fd) == -1)
-				exit(1);
-			while (1)
-			{
-				line = readline("> ");
-				if (!line || ft_strcmp(line, limiter) == 0 || g_sig == 130)
-				{
-					if (line)
-						free(line);
-					if (limiter)
-					{
-						free(limiter);
-						limiter = NULL;
-					}
-					temp = temp->next;
-					break ;
-				}
-				if (g_sig != 130)
-					write_to_fd(mshell, fd[1], line);
-				if (line)
-					free(line);
-			}
-			close(fd[1]);
-			mshell->heredoc_fd[i] = fd[0];
-			i++;
-		}
-		if (g_sig == 130)
-			break ;
-		temp = temp->next;
-	}
+	make_heredoc(mshell, temp, mshell->num_heredoc);
 	if (g_sig == 130)
-		code = 130;
-	else
-		code = 0;
-	g_sig = code;
-	mshell->exit_code = code;
+	{
+		mshell->exit_code = 130;
+	}
 	dup2(stdin, STDIN_FILENO);
 	close(stdin);
-	if (limiter)
-		free(limiter);
-	limiter = NULL;
 	restore_parent_signals();
 	return (1);
 }
@@ -112,7 +57,7 @@ void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i)
 
 	j = 0;
 	start = *i;
-	while (line[*i] && line[*i] != ' ')
+	while (line[*i] && (line[*i] != ' ' && line[*i] != '\'' && line[*i] != '"'))
 	{
 		*i += 1;
 		j++;
@@ -120,7 +65,11 @@ void	find_node_write_replace(t_shell *mshell, int fd, char *line, int *i)
 	name = ft_substr(line, start, j);
 	node = find_envp(mshell->env_list, name);
 	if (!node)
+	{
+		if (name)
+			free(name);
 		return ;
+	}
 	j = -1;
 	while (node->content[++j])
 		write(fd, &node->content[j], 1);

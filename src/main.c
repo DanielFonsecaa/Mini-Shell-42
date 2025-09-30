@@ -2,6 +2,20 @@
 
 int	g_sig;
 
+static void	set_g_sig_code(t_shell *mshell)
+{
+	if (g_sig == 130)
+	{
+		mshell->exit_code = 130;
+		g_sig = 0;
+	}
+	if (g_sig == 141)
+	{
+		mshell->exit_code = 0;
+		g_sig = 0;
+	}
+}
+
 /**
  * @brief Runs the main shell loop, handling user input and command execution
  *
@@ -13,17 +27,12 @@ static void	run_shell(t_shell *mshell, t_token **token)
 {
 	while (mshell->is_running)
 	{
+		restore_parent_signals();
 		init_shell_envp_cwd(mshell);
 		mshell->rd_l = readline(mshell->fake_cwd);
 		if (mshell->rd_l && mshell->rd_l[0])
 			add_history(mshell->rd_l);
-		if (g_sig == 130)
-			mshell->exit_code = 130;
-		if (g_sig == 141)
-		{
-			mshell->exit_code = 0;
-			g_sig = 0;
-		}
+		set_g_sig_code(mshell);
 		if (!mshell->rd_l)
 		{
 			ft_printf("exit\n");
@@ -37,7 +46,6 @@ static void	run_shell(t_shell *mshell, t_token **token)
 		}
 		execute_cmd_line(mshell, token);
 		free_all(mshell, token);
-		g_sig = 0;
 	}
 	modify_shell_level(mshell->env_list, -1);
 	free_envp_list(mshell);
