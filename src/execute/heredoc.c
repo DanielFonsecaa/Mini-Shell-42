@@ -17,11 +17,12 @@ int	init_heredoc(t_shell *mshell, t_token **token)
 		return (0);
 	signal(SIGINT, handle_heredoc_signal);
 	make_heredoc(mshell, temp, mshell->num_heredoc);
+	dup2(stdin, STDIN_FILENO);
 	if (g_sig == 130)
 	{
 		mshell->exit_code = 130;
+		return (0);
 	}
-	dup2(stdin, STDIN_FILENO);
 	close(stdin);
 	restore_parent_signals();
 	return (1);

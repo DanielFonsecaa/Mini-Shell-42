@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_helper.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mipinhei <mipinhei@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/01 15:19:16 by mipinhei          #+#    #+#             */
+/*   Updated: 2025/10/01 15:19:17 by mipinhei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	init_limiter(t_token *temp, char **limiter)
@@ -34,7 +46,7 @@ int	handle_heredoc(t_shell *mshell, char *limiter, int *fd, int i)
 	char	*line;
 
 	if (pipe(fd) == -1)
-		exit(1);
+		return (0);
 	while (g_sig != 130)
 	{
 		line = readline("> ");

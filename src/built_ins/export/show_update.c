@@ -26,13 +26,12 @@ static void	print_export_list(t_envp **arr, int list_size, int fd)
 	while (++i < list_size)
 	{
 		escaped = escape_export_content(arr[i]->content);
-		if (escaped)
-		{
+		if (escaped && arr[i]->exported)
 			ft_printf_fd(fd, DEFINE_X, arr[i]->name, escaped);
-			free(escaped);
-		}
 		else
-			ft_printf_fd(fd, DEFINE_X, arr[i]->name, "");
+			ft_printf_fd(fd, DEFINE_X_2, arr[i]->name);
+		if (escaped)
+			free(escaped);
 	}
 }
 

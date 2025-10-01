@@ -14,9 +14,9 @@ void	handle_exit(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	status = 0;
-	if (temp->next && temp->next->next)
+	if (temp->next && temp->next->next && temp->next->next->type != PIPE)
 	{
-		ft_printf_fd(2, "bash: exit: too many arguments\n");
+		ft_printf_fd(2, "minishell: exit: too many arguments\n");
 		mshell->exit_code = 1;
 		return ;
 	}

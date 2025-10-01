@@ -48,10 +48,12 @@ void	create_envp_var(t_shell *mshell, t_token **token, bool export)
 	temp = *token;
 	end = 0;
 	start = 0;
-	while (temp->name[end] && temp->name[end] != '=')
+	while (temp->name[end] && temp->name[end] != '=' && temp->name[end] != '+')
 		end++;
 	name = ft_substr(temp->name, start, end);
 	start += end;
+	if (temp->name[start] == '+' && temp->name[start + 1] == '=')
+		start++;
 	end = 0;
 	while (temp->name[end + start])
 		end++;

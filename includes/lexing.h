@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexing.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mipinhei <mipinhei@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/01 15:22:34 by mipinhei          #+#    #+#             */
+/*   Updated: 2025/10/01 15:22:35 by mipinhei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LEXING_H
 # define LEXING_H
 
@@ -19,15 +31,16 @@ t_token	*token_lst_last(t_token *token);
 // lex utils
 int		is_meta_char(char c);
 int		has_quote(char *str);
+int		_inside_quotes(char *rd_l, int *j, char c);
+int		skip_whitespace(char *str, int i);
+int		next_token_len(char *s);
 int		skip_inside_quotes(char *rd_l, int *j, char c);
+int		handle_meta(char *rd_l, t_token **token, int i, int *j);
+void	add_command_token(char *rd_l, t_token **token, int *i);
+void	remove_token_from_list(t_token **current, t_token **head);
 void	print_list(t_token **token);
 void	init_values(int *len, int *start, int *in_quote, int *i);
 void	set_t_arg(t_token **token);
-int		skip_whitespace(char *str, int i);
-int		next_token_len(char *s);
-void	add_command_token(char *rd_l, t_token **token, int *i);
-int		handle_meta(char *rd_l, t_token **token, int i, int *j);
-void	remove_token_from_list(t_token **current, t_token **head);
 void	set_command(t_token **token);
 
 #endif

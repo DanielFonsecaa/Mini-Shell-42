@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mipinhei <mipinhei@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/01 15:15:54 by mipinhei          #+#    #+#             */
+/*   Updated: 2025/10/01 15:19:57 by mipinhei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	next_token_len(char *s)
@@ -70,7 +82,8 @@ char	*extract_cmd_token(char *rd_l, int *i)
 		}
 		else if (in_quote && rd_l[*i] == quote_char)
 			in_quote = 0;
-		else if (!in_quote && ft_iswhite_space(rd_l[*i]))
+		else if (!in_quote && (ft_iswhite_space(rd_l[*i])
+				|| is_meta_char(rd_l[*i])))
 			break ;
 		else
 			len++;

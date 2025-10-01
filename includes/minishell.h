@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mipinhei <mipinhei@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/01 15:22:11 by mipinhei          #+#    #+#             */
+/*   Updated: 2025/10/01 15:22:12 by mipinhei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -59,6 +71,7 @@
 # define ERR_PIPELINE "Error: Invalid pipeline syntax\n"
 # define ERR_EXPORT "minishell: export: %s: not a valid identifier\n"
 # define DEFINE_X "declare -x %s=\"%s\"\n"
+# define DEFINE_X_2 "declare -x %s\n"
 # define ERR_CD_ARGS "minishell: cd: too many arguments\n"
 # define ERR_NO_FILE "minishell: %s:  No such file or directory\n"
 # define ERR_CD_NO_ENVP "minishell: cd: %s is not set\n"
