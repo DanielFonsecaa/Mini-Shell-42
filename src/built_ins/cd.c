@@ -12,24 +12,21 @@
 
 #include "../../includes/minishell.h"
 
-/**
- * @brief Handles the cd command in the minishell
- *
- * @param mshell Pointer to the shell structure
- * @param token Pointer to pointer of the token list
- */
 void	handle_cd(t_shell *mshell, t_token **token)
 {
 	t_token	*temp;
 
 	temp = (*token)->next;
-	if (token_list_size(temp) > 1)
+	
+	if (!count_cd_args(temp))
 	{
 		ft_printf_fd(2, ERR_CD_ARGS);
 		mshell->exit_code = 1;
+		return;
 	}
-	else if (token_list_size(temp) == 0 || ft_strcmp(temp->name, "--") == 0
-		|| ft_strcmp(temp->name, "~") == 0)
+	if (!temp || temp->type == PIPE)
+		cd_to_key(mshell, "HOME");
+	else if (ft_strcmp(temp->name, "--") == 0 || ft_strcmp(temp->name, "~") == 0)
 		cd_to_key(mshell, "HOME");
 	else if (!cd_syntax(mshell, &temp))
 		mshell->exit_code = 2;
@@ -40,7 +37,7 @@ void	handle_cd(t_shell *mshell, t_token **token)
 	}
 	else
 		change_dir(mshell, &temp);
-}
+}	
 
 /**
  * @brief Changes the current directory to the specified path.

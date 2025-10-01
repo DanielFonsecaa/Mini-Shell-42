@@ -49,6 +49,7 @@ void	change_dir(t_shell *mshell, t_token **token);
 void	cd_to_key(t_shell *mshell, char *key);
 int		cd_syntax(t_shell *mshell, t_token **token);
 void	update_envp_with_string(t_shell *mshell, char *key, char *cwd);
+int     count_cd_args(t_token *temp);
 
 // Unset Utils
 void	remove_envp_var(t_envp **head, t_envp *node);
