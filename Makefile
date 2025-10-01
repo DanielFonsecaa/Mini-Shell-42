@@ -49,6 +49,7 @@ FILES			=	main.c \
 					parsing/append.c\
 					parsing/expand_utils.c\
 					parsing/expand.c\
+					parsing/expand_export.c\
 					parsing/helper_parsing.c \
 					parsing/parsing.c \
 					parsing/syntax.c \
