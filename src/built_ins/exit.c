@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dda-fons <dda-fons@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: mipinhei <mipinhei@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 15:39:11 by dda-fons          #+#    #+#             */
-/*   Updated: 2025/10/01 15:39:11 by dda-fons         ###   ########.fr       */
+/*   Updated: 2025/10/02 10:01:32 by mipinhei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	handle_exit(t_shell *mshell, t_token **token)
 
 	temp = *token;
 	status = 0;
+	if (temp->next && temp->next->type == PIPE)
+		return ;
 	if (temp->next)
 	{
 		value = temp->next->name;
