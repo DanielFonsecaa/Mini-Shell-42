@@ -19,6 +19,7 @@ READLINE_PATH	= vendor/readline/
 FILES			=	main.c \
 					built_ins/built_ins.c \
 					built_ins/cd.c \
+					built_ins/cd_util.c \
 					built_ins/echo.c \
 					built_ins/env.c \
 					built_ins/exit.c \
@@ -48,6 +49,7 @@ FILES			=	main.c \
 					parsing/append.c\
 					parsing/expand_utils.c\
 					parsing/expand.c\
+					parsing/expand_export.c\
 					parsing/helper_parsing.c \
 					parsing/parsing.c \
 					parsing/syntax.c \
