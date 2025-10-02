@@ -1,22 +1,28 @@
 # Mini-Shell 42
-<!--div>
+
+<div align="center">
 
 <img width="150" height="150" alt="minishelle" src="https://github.com/user-attachments/assets/da3ca75d-8424-4fc2-a581-66f60fca2c5b" />
-</div-->
-**Mini-Shell** is a project completed as part of the 42 School curriculum. The goal is to recreate a minimal UNIX shell that behaves similarly to Bash, implementing parsing, execution, pipelines, redirections, and built-in commands, while managing environment variables and handling signals.
+</div>
+
+ **Mini-Shell** is a project completed as part of the 42 School curriculum. The goal is to recreate a minimal UNIX shell that behaves similarly to Bash, implementing parsing, execution, pipelines, redirections, and built-in commands, while managing environment variables and handling signals.
 
 > _"The objective of this project is to create a simple shell, reproducing the behavior of Bash as closely as possible, with a focus on understanding how a shell works internally."_
 
+
 ---
+
+<div align="center">
+  
 [![Co-author: DanielFonsecaa](https://img.shields.io/badge/Co--author-DanielFonsecaa-blue)](https://github.com/DanielFonsecaa)
 [![Co-author: NukyYuki](https://img.shields.io/badge/Co--author-NukyYuki-pink)](https://github.com/NukyYuki)
 
-<!--div>
 
 | Grade                                                             | Evaluation Information           |
 | :---------------------------------------------------------------- | :------------------------------- |
 | <img src="https://img.shields.io/badge/100%20%2F%20100%20%E2%98%85-sucess"/>  | `3 peers` `1 hour` |
-</div-->
+</div>
+
 ---
 
 ## Table of Contents
@@ -24,14 +30,12 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Project Structure](#project-structure)
 - [Builtins Implemented](#builtins-implemented)
 - [Parsing & Execution](#parsing--execution)
 - [Signals & Error Handling](#signals--error-handling)
 - [Bonus / Extra Features](#bonus--extra-features)
 - [Known Issues](#known-issues)
 - [Authors](#authors)
-- [License](#license)
 
 ---
 
